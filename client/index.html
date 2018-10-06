@@ -260,7 +260,7 @@
                                     <h5 class="card-title">${todo.title}</h5>
                                     <p class="card-text">Status: ${todo.status}</p>
                                     <button class="btn btn-warning">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button class="btn btn-danger" onclick="deletetodo('${todo._id}')">Delete</button>
                                     <button class="btn btn-primary" onclick="getdetail('${todo._id}')">Detail</button>
                                 </div>
                             </div><br/>
@@ -345,8 +345,8 @@
                                     <h5 class="card-title">${todo.title}</h5>
                                     <p class="card-text">Status: ${todo.status}</p>
                                     <button class="btn btn-warning">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
-                                    <button class="btn btn-primary" onclick="getdetail('${todo._id}')>Detail</button>
+                                    <button class="btn btn-danger" onclick="deletetodo('${todo._id}')">Delete</button>
+                                    <button class="btn btn-primary" onclick="getdetail('${todo._id}')">Detail</button>
                                 </div>
                             </div>`)  
                         });
@@ -377,7 +377,7 @@
                 }
             })
             .done(result =>{
-                console.log('Detail of TODO--->', result.data)
+                // console.log('Detail of TODO--->', result.data)
                 let singletodo = result.data
                 let rawdate = new Date(result.data.duedate)
                 $('#individualtodo').empty()
@@ -421,7 +421,7 @@
                 }
             })
               .done(result=>{
-                  console.log('Create success-->', result)
+                //   console.log('Create success-->', result)
 
                   // let update the lists
                   $.ajax({
@@ -446,7 +446,7 @@
                                     <h5 class="card-title">${todo.title}</h5>
                                     <p class="card-text">Status: ${todo.status}</p>
                                     <button class="btn btn-warning">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button class="btn btn-danger" onclick="deletetodo('${todo._id}')">Delete</button>
                                     <button class="btn btn-primary" onclick="getdetail('${todo._id}')">Detail</button>
                                 </div>
                             </div><br/>
@@ -460,6 +460,59 @@
               })
               .fail(error =>{
                 console.log('ERROR Create Todo: ',error)
+              })
+        }
+
+        // delete individual todo
+        function deletetodo(deleteid){
+            let token = localStorage.getItem('token')
+            $('#individualtodo').empty()
+            $.ajax({
+                method: 'DELETE',
+                url: `http://localhost:3006/todolists/${deleteid}`,
+                headers: {
+                    token: token
+                }
+            })
+              .done(result => {
+                //   console.log('DELETE SUCCESS--->', result)
+                  // let update the lists
+                  $.ajax({
+                        method: 'GET',
+                        url: 'http://localhost:3006/todolists/lists',
+                        headers: {
+                        token: token
+                        }
+                    })
+                    .done(result=>{
+                        // console.log('Hasil---->', result.data)
+                        let hasil = result.data
+                        $('#listtask').empty()
+                        $('#listtask').append(
+                            `<h2>List section</h2>
+                            <hr>`
+                        )
+                        hasil.forEach(todo => {
+                            $('#listtask').append(
+                            `<div class="card" style="width: 16rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">${todo.title}</h5>
+                                    <p class="card-text">Status: ${todo.status}</p>
+                                    <button class="btn btn-warning">Edit</button>
+                                    <button class="btn btn-danger" onclick="deletetodo('${todo._id}')">Delete</button>
+                                    <button class="btn btn-primary" onclick="getdetail('${todo._id}')">Detail</button>
+                                </div>
+                            </div><br/>
+                            `)  
+                        });
+                        $('#createtodoModal').modal('hide')
+                    })
+                    .fail(error=>{
+                        console.log('ERROR Get list of todo ',error)
+                    })
+              })
+              .fail(error =>{
+                console.log('ERROR Delete todo ',error)
               })
         }
 
