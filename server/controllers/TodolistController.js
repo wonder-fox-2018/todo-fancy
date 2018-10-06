@@ -15,7 +15,7 @@ class TodolistController{
         Todolist.create({
             title: req.body.title,
             description: req.body.description,
-            status: 'UNCOMPLETE',
+            status: 'INCOMPLETE',
             duedate: datecheck,
             todouserid: req.decoded.userid
         })
@@ -48,7 +48,20 @@ class TodolistController{
 
     // display lists of todo by user id
     static displayListTodoByUserid(req,res){
-
+        Todolist.find({
+            todouserid: req.decoded.userid
+        })
+          .then(todolists=>{
+            res.status(200).json({
+                msg: `List of todo by user ${req.decoded.name}`,
+                data: todolists
+            })
+          })
+          .catch(error =>{
+              res.status(500).json({
+                  msg: 'ERROR Display list of Todo', error
+              })
+          })
     }
 
     // display individual todo

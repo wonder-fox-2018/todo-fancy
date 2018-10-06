@@ -5,7 +5,7 @@ const TodolistController = require('../controllers/TodolistController')
 const isLogin = require('../middlewares/isLogin')
 
 router.post('/', isLogin, TodolistController.createTodo)
-      .post('/lists', isLogin, TodolistController.displayListTodoByUserid)
+      .get('/lists', isLogin, TodolistController.displayListTodoByUserid)
       .get('/:id', isLogin, TodolistController.displayIndividualTodo)
       .put('/:id', isLogin, TodolistController.editIndividualTodo)
       .delete('/:id',isLogin, TodolistController.deleteIndividualTodo)
