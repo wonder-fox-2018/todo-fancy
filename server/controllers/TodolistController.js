@@ -89,7 +89,57 @@ class TodolistController{
 
     // delete individual todo
     static deleteIndividualTodo(req,res){
-
+        Todolist.findOne({
+            _id: req.params.id
+        })
+         .then( todolist =>{
+            // check if the user is authorized
+            if(todolist && todolist.todouserid == req.decoded.userid){
+                // delete the id from user table
+                User.findOneAndUpdate({
+                    _id: req.decoded.userid
+                },{
+                    $pull: {
+                        listsTask: todolist._id
+                    }
+                })
+                .then(user =>{
+                    // now delete the todolist
+                    Todolist.findOneAndRemove({
+                        _id: req.params.id
+                    })
+                     .then(tododelete =>{
+                        res.status(200).json({
+                            msg: 'Todo has been deleted',
+                            data: tododelete
+                        })
+                     })
+                     .catch(error=>{
+                        res.status(500).json({
+                            msg: 'ERROR Delete todo ',error
+                        }) 
+                     })
+                })
+                .catch(error=>{
+                    res.status(500).json({
+                        msg: 'ERROR removing todo from user table ',error
+                    })
+                })
+            }else if(todolist === null){
+                res.status(400).json({
+                    msg: 'Todolist was not found'
+                })
+            }else if(todolist.todouserid != req.decoded.userid){
+                res.status(403).json({
+                    msg: 'You are not authorized to delete'
+                })
+            }
+         })
+         .catch( error =>{
+            res.status(500).json({
+                msg: 'ERROR Delete details of Todo ',error
+            })
+         })
     }
 }
 
