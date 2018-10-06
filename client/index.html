@@ -68,7 +68,8 @@
                     </div>
                     <div class="col-md-3">
                         <div id="listtask">
-                            List section
+                            <h1>List section</h1>
+                            <hr>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -153,10 +154,12 @@
                 $('#loginnavbar').show()
                 $('#registernavbar').show()
                 $('#logoutnavbar').hide()
+                // $('#listtask').hide()
             }else{
                 $('#loginnavbar').hide()
                 $('#registernavbar').hide()
                 $('#logoutnavbar').show()
+                // $('#listtask').show()
             }
         });
 
@@ -196,7 +199,7 @@
                             <h5>Welcome ${result.name}</h5>
                         </div>`
                     )
-                    // $('#loginModal').hide()
+                    $('#loginModal').modal('hide')
                     // get list of data
                     $.ajax({
                         method: 'GET',
@@ -207,6 +210,19 @@
                     })
                     .done(result=>{
                         console.log('Hasil---->', result.data)
+                        let hasil = result.data
+                        $('#listtask').empty()
+                        hasil.forEach(todo => {
+                            $('#listtask').append(
+                            `<div class="card" style="width: 18rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">${todo.title}</h5>
+                                    <p class="card-text">${todo.description}</p>
+                                    <a href="#" class="btn btn-primary">Edit</a>
+                                    <a href="#" class="btn btn-primary">Delete</a>
+                                </div>
+                            </div>`)  
+                        });
                     })
                     .fail(error=>{
                         console.log('ERROR Get list of todo ',error)
@@ -259,7 +275,7 @@
                             <h5>Welcome ${result.name}</h5>
                         </div>`
                     )
-                    // $('#loginModal').hide()
+                    $('#registerModal').modal('hide')
                 })
                 .fail(error=>{
                     console.log('ERROR Register JWT TOKEN: ',error)
@@ -277,6 +293,7 @@
             $('#loginnavbar').show()
             $('#registernavbar').show()
             $('#navbarwelcome').empty()
+            $('#listtask').empty()
         }
     </script>
     <!--Bootstrap dependencies-->
