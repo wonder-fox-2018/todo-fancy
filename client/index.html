@@ -183,7 +183,8 @@
             </div>
         </div>
     </div>
-
+   
+    <!--
     <script>
         $(document).ready(function() {
             let token = localStorage.getItem('token')
@@ -207,7 +208,6 @@
         function onSignIn(googleUser) {
             let profile = googleUser.getBasicProfile();
             let id_token = googleUser.getAuthResponse().id_token;
-            // console.log('GOOGLE Token---->', id_token)
             // console.log('Name: ' + profile.getName());
             // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 
@@ -220,7 +220,6 @@
                 }
             })
             .done(user=>{
-            //    console.log('hasil---->', user)
                let jwttoken = user.token
                localStorage.setItem('token', user.token)
 
@@ -264,7 +263,6 @@
                         }
                     })
                       .done(result=>{
-                        //   console.log('Hasil---->', result.data)
                           let hasil = result.data
                           $('#listtask').empty()
                           $('#listtask').append(
@@ -329,7 +327,6 @@
                     }
                 })
                 .done(result=>{
-                    // console.log('hasil---->', result)
                     $('#navbarwelcome').empty()
                     $('#navbarwelcome').append(
                         `<div style= "color: white">
@@ -348,7 +345,6 @@
                         }
                     })
                     .done(result=>{
-                        // console.log('Hasil---->', result.data)
                         let hasil = result.data
                         $('#listtask').empty()
                         $('#listtask').append(
@@ -414,7 +410,6 @@
                     }
                 })
                 .done(result=>{
-                    // console.log('hasil---->', result)
                     $('#navbarwelcome').empty()
                     $('#navbarwelcome').append(
                         `<div style= "color: white">
@@ -433,7 +428,6 @@
                         }
                     })
                     .done(result=>{
-                        // console.log('Hasil---->', result.data)
                         let hasil = result.data
                         $('#listtask').empty()
                         $('#listtask').append(
@@ -469,8 +463,6 @@
         // get detail of Todo
         function getdetail(detailid){
             let token = localStorage.getItem('token')
-            // console.log('Token Detail----->',token),
-            // console.log('Edit id---->', editid)
             $.ajax({
                 method: 'GET',
                 url: `http://localhost:3006/todolists/${detailid}`,
@@ -479,7 +471,6 @@
                 }
             })
             .done(result =>{
-                // console.log('Detail of TODO--->', result.data)
                 let singletodo = result.data
                 let rawdate = new Date(result.data.duedate)
                 $('#individualtodo').empty()
@@ -523,7 +514,6 @@
                 }
             })
               .done(result=>{
-                //   console.log('Create success-->', result)
 
                   // let update the lists
                   $.ajax({
@@ -534,7 +524,6 @@
                         }
                     })
                     .done(result=>{
-                        // console.log('Hasil---->', result.data)
                         let hasil = result.data
                         $('#listtask').empty()
                         $('#listtask').append(
@@ -617,7 +606,6 @@
                         });
                         // let get the todo display
                         getdetail(editid)
-                        // $('#individualtodo').empty()
                     })
                     .fail(error=>{
                         console.log('ERROR Get list of todo ',error)
@@ -632,8 +620,6 @@
         function getformedittodo(editid){
             $('#individualtodo').empty()
             let token = localStorage.getItem('token')
-            // console.log('Token Detail----->',token),
-            // console.log('Edit id---->', editid)
             $.ajax({
                 method: 'GET',
                 url: `http://localhost:3006/todolists/${editid}`,
@@ -642,7 +628,6 @@
                 }
             })
             .done(result =>{
-                // console.log('Detail of TODO--->', result.data)
                 let singletodo = result.data
                 let rawdate = new Date(result.data.duedate)
                 $('#individualtodo').empty()
@@ -692,7 +677,6 @@
                 }
             })
               .done(result => {
-                //   console.log('DELETE SUCCESS--->', result)
                   // let update the lists
                   $.ajax({
                         method: 'GET',
@@ -702,7 +686,6 @@
                         }
                     })
                     .done(result=>{
-                        // console.log('Hasil---->', result.data)
                         let hasil = result.data
                         $('#listtask').empty()
                         $('#listtask').append(
@@ -744,7 +727,8 @@
             $('#individualtodo').empty()
             $('#sidebarnavcustom').hide()
         }
-    </script>
+    </script> -->
+    <script src="./src/index.js"></script>
     <!--Bootstrap dependencies-->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
