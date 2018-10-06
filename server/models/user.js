@@ -14,6 +14,9 @@ const UserSchema = new Schema({
     },
     password: {
         type: String
+    },
+    thirdpartylogin: {
+        type: String
     }
 },{
     timestamps : true
@@ -21,5 +24,5 @@ const UserSchema = new Schema({
 
 UserSchema.plugin(beautify)
 
-const User = UserSchema.model('User', UserSchema)
+const User = mongoose.model('User', UserSchema)
 module.exports = User
