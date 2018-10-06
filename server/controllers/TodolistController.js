@@ -59,14 +59,27 @@ class TodolistController{
           })
           .catch(error =>{
               res.status(500).json({
-                  msg: 'ERROR Display list of Todo', error
+                  msg: 'ERROR Display list of Todo ', error
               })
           })
     }
 
     // display individual todo
     static displayIndividualTodo(req,res){
-
+        Todolist.findOne({
+            _id: req.params.id
+        })
+         .then(todolist =>{
+             res.status(200).json({
+                msg: 'Detail of todo',
+                data: todolist
+             })
+         })
+         .catch(error =>{
+             res.status(500).json({
+                 msg: 'ERROR Display details of Todo ',error
+             }) 
+         })
     }
 
     // edit individual todo
