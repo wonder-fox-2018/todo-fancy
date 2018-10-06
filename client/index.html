@@ -471,9 +471,6 @@
             let editstatus = $('#edittodostatus').val()
             let editduedate = $('#edittododuedate').val()
             
-
-            console.log('EDIT DATA---->', token, edittitle, editdescription, editstatus, editduedate)
-            console.log('EDIT ID----->', editid)
             $.ajax({
                 method: 'PUT',
                 url: `http://localhost:3006/todolists/${editid}`,
@@ -509,7 +506,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">${todo.title}</h5>
                                     <p class="card-text">Status: ${todo.status}</p>
-                                    <button class="btn btn-warning">Edit</button>
+                                    <button class="btn btn-warning" onclick="getformedittodo('${todo._id}')" >Edit</button>
                                     <button class="btn btn-danger" onclick="deletetodo('${todo._id}')">Delete</button>
                                     <button class="btn btn-primary" onclick="getdetail('${todo._id}')">Detail</button>
                                 </div>
@@ -518,12 +515,11 @@
                         });
                         // let get the todo display
                         getdetail(editid)
-
+                        // $('#individualtodo').empty()
                     })
                     .fail(error=>{
                         console.log('ERROR Get list of todo ',error)
                     })
-
               })
               .fail(error =>{
                 console.log('ERROR Edit Todo: ',error)  
@@ -534,8 +530,8 @@
         function getformedittodo(editid){
             $('#individualtodo').empty()
             let token = localStorage.getItem('token')
-            // console.log('Token Detail----->',token),
-            // console.log('Edit id---->', editid)
+            console.log('Token Detail----->',token),
+            console.log('Edit id---->', editid)
             $.ajax({
                 method: 'GET',
                 url: `http://localhost:3006/todolists/${editid}`,
