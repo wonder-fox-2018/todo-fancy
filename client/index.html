@@ -1,32 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- google-meta -->
+    <!-- <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com"> -->
 
     <!-- Bootstrap CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+    <!-- google-signin -->
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 
     <title>Document</title>
 </head>
 <style>
+    #form-container {
+        margin-top: 5%;
+    }
 
-</style>
-<body>
+    .g-signin2 {
+        margin-top: 5%;
+    }
+
     
 
+</style>
+
+<body>
+
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <h1>To Do <span class="badge badge-primary">Fancy</span></h1>
+        </li>
+    </ul>
+
+
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col">
+
+            </div>
+
+            <div class="col" id="form-container">
+
+                <div id="login-form">
+
+                    <form>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" name="email" aria-describedby="emailHelp"
+                                placeholder="Enter email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Password">
+                        </div>
+
+                        <div class="form-group">
+                            <small id="emailHelp" class="form-text text-muted">Has no account?</small>
+                            <button type="button" class="btn  btn-sm" onclick="toggleForm()">Register Here</button>
+                        </div>
+                    </form>
+                    <button class="btn btn-primary btn-block" onclick="login()">Login</button>
+                    <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+
+                </div>
+
+                <div id="register-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" name="email" aria-describedby="emailHelp"
+                                placeholder="Enter email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" name="name" aria-describedby="emailHelp"
+                                placeholder="Enter your name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Password">
+                        </div>
+
+                        <div class="form-group">
+                            <small id="emailHelp" class="form-text text-muted">Has an account?</small>
+                            <button type="button" class="btn  btn-sm" onclick="toggleForm()">Login Here</button>
+                        </div>
+                    </form>
+                    <button class="btn btn-primary btn-block" onclick="register()">Register</button>
+                </div>
+
+
+
+
+            </div>
+
+            <div class="col">
+
+            </div>
+        </div>
+
+    </div>
+    </div>
 
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-    crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <!-- bootsrap -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <!--  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
     <script>
-    
+        $().ready(() => {
+            $('#register-form').hide();
+
+        })
+
+        function toggleForm() {
+            $('#register-form').slideToggle();
+            $(`#login-form`).slideToggle();
+        }
+
+        function login() {
+          
+           $.ajax({
+               method: 'POST',
+               url: 'http://localhost:3000/login',
+               data: {
+                   email: $('#login-form input[name=email]').val(),
+                   password: $('#login-form input[name=password]').val()
+
+               }
+           }).done((result) => {
+               localStorage.setItem('access-token', result.output);
+               window.location.replace('./content.html');
+           }).fail((err) => {
+              console.log(err);
+           });
+        }
+
+        function register() {
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3000/register',
+                data: {
+                    email: $('#register-form input[name=email]').val(),
+                   password: $('#register-form input[name=password]').val(),
+                   name: $('#register-form input[name=name]').val()
+                }
+            }).done((result) => {
+                console.log(result);
+                toggleForm();
+            }).fail((err) => {
+                console.log(err);
+            });
+        }
     </script>
 </body>
+
 </html>
