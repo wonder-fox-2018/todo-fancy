@@ -54,27 +54,27 @@
             <div id="sidebarcustom">
                 <div class="row">
                     <div class="col-md-3 sidbar">
-                        Sidebar section
-                        <div class="sidebar-sticky">
-                            <ul class="nav flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">
-                                    <span data-feather="bar-chart-2"></span>
-                                        Add Task
-                                    </a>
-                                </li>
-                            </ul>
+                        <div id="sidebarnavcustom">
+                            Sidebar section
+                            <div class="sidebar-sticky">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">
+                                        <span data-feather="bar-chart-2"></span>
+                                            Add Task
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div> 
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div id="listtask">
-                            <h1>List section</h1>
-                            <hr>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div id="detailtask">
-                            Detail section
+                        <div id="individualtodo">
+                            
                         </div>
                     </div>
                 </div>
@@ -192,13 +192,14 @@
                     }
                 })
                 .done(result=>{
-                    console.log('hasil---->', result)
+                    // console.log('hasil---->', result)
                     $('#navbarwelcome').empty()
                     $('#navbarwelcome').append(
                         `<div style= "color: white">
                             <h5>Welcome ${result.name}</h5>
                         </div>`
                     )
+                    $('#sidebarnavcustom').show()
                     $('#loginModal').modal('hide')
                     // get list of data
                     $.ajax({
@@ -209,19 +210,25 @@
                         }
                     })
                     .done(result=>{
-                        console.log('Hasil---->', result.data)
+                        // console.log('Hasil---->', result.data)
                         let hasil = result.data
                         $('#listtask').empty()
+                        $('#listtask').append(
+                            `<h2>List section</h2>
+                            <hr>`
+                        )
                         hasil.forEach(todo => {
                             $('#listtask').append(
-                            `<div class="card" style="width: 18rem;">
+                            `<div class="card" style="width: 16rem;">
                                 <div class="card-body">
                                     <h5 class="card-title">${todo.title}</h5>
-                                    <p class="card-text">${todo.description}</p>
-                                    <a href="#" class="btn btn-primary">Edit</a>
-                                    <a href="#" class="btn btn-primary">Delete</a>
+                                    <p class="card-text">Status: ${todo.status}</p>
+                                    <button class="btn btn-warning">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                    <button class="btn btn-primary" onclick="getdetail('${todo._id}')">Detail</button>
                                 </div>
-                            </div>`)  
+                            </div><br/>
+                            `)  
                         });
                     })
                     .fail(error=>{
@@ -268,7 +275,7 @@
                     }
                 })
                 .done(result=>{
-                    console.log('hasil---->', result)
+                    // console.log('hasil---->', result)
                     $('#navbarwelcome').empty()
                     $('#navbarwelcome').append(
                         `<div style= "color: white">
@@ -276,6 +283,37 @@
                         </div>`
                     )
                     $('#registerModal').modal('hide')
+                    $('#sidebarnavcustom').show()
+
+                    // get list of data
+                    $.ajax({
+                        method: 'GET',
+                        url: 'http://localhost:3006/todolists/lists',
+                        headers: {
+                        token: localStorage.getItem('token')
+                        }
+                    })
+                    .done(result=>{
+                        // console.log('Hasil---->', result.data)
+                        let hasil = result.data
+                        $('#listtask').empty()
+                        $('#listtask').append(
+                            `<h2>List section</h2>
+                            <hr>`
+                        )
+                        hasil.forEach(todo => {
+                            $('#listtask').append(
+                            `<div class="card" style="width: 16rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">${todo.title}</h5>
+                                    <p class="card-text">Status: ${todo.status}</p>
+                                    <button class="btn btn-warning">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
+                                    <button class="btn btn-primary" onclick="getdetail('${todo._id}')>Detail</button>
+                                </div>
+                            </div>`)  
+                        });
+                    })
                 })
                 .fail(error=>{
                     console.log('ERROR Register JWT TOKEN: ',error)
@@ -283,6 +321,46 @@
             })
             .fail(error =>{
                 console.log('ERROR Register: ',error)
+            })
+        }
+        
+        // get detail of Todo
+        function getdetail(editid){
+            let token = localStorage.getItem('token')
+            // console.log('Token Detail----->',token),
+            // console.log('Edit id---->', editid)
+            $.ajax({
+                method: 'GET',
+                url: `http://localhost:3006/todolists/${editid}`,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+            .done(result =>{
+                console.log('Detail of TODO--->', result.data)
+                let singletodo = result.data
+                let rawdate = new Date(result.data.duedate)
+                $('#individualtodo').empty()
+                $('#individualtodo').append(
+                    `
+                    <h3>Detail section</h3>
+                    <hr>
+                    <div class="card" style="width: 30rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">${singletodo.title}</h5>
+                            <p class="card-text">Status: ${singletodo.status}</p>
+                            <p class="card-text">Due date: ${rawdate.getFullYear()} - ${rawdate.getMonth()+1} - ${rawdate.getDate()}</p>
+                            <hr>
+                            <p class="card-text">Description: ${singletodo.description}</p>
+
+                        </div>
+                    </div><br/>
+
+                    `
+                )
+            })
+            .fail(error =>{
+                console.log('ERROR Get Detail: ',error)
             })
         }
 
@@ -294,6 +372,8 @@
             $('#registernavbar').show()
             $('#navbarwelcome').empty()
             $('#listtask').empty()
+            $('#individualtodo').empty()
+            $('#sidebarnavcustom').hide()
         }
     </script>
     <!--Bootstrap dependencies-->
