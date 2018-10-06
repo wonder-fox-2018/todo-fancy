@@ -84,8 +84,58 @@ class TodolistController{
 
     // edit individual todo
     static editIndividualTodo(req,res){
+        Todolist.findOne({
+            _id: req.params.id    
+        })
+         .then(todolist =>{
+            // check if the user is authorized
+            if(todolist && todolist.todouserid == req.decoded.userid){
+                // validate status
+                if(req.body.status === 'COMPLETE' || req.body.status === 'INCOMPLETE'){
+                    let editDate = checkDate(req.body.duedate)
 
-    }
+                    Todolist.findOneAndUpdate({
+                        _id: req.params.id
+                    },{
+                        title: req.body.title,
+                        description: req.body.description,
+                        status: req.body.status,
+                        duedate: editDate,
+                        todouserid: req.decoded.userid
+                    })
+                     .then(todoupdate =>{
+                        res.status(200).json({
+                            msg: 'Todo has been updated',
+                            data: todoupdate
+                        })
+                     })
+                     .catch(error =>{
+                         res.status(500).json({
+                             msg: 'ERROR: ',error
+                         })
+                     })
+
+                }else{
+                    res.status(500).json({
+                        msg: 'ERROR Status should be COMPLETE or INCOMPLETE'
+                    })
+                }
+            }else if(todolist === null){
+                res.status(400).json({
+                    msg: 'Todolist was not found'
+                })
+            }else if(todolist.todouserid != req.decoded.userid){
+                res.status(403).json({
+                    msg: 'You are not authorized to edit'
+                })
+            }
+         })
+         .catch(error=>{
+            res.status(500).json({
+                msg: 'ERROR Edit details of Todo ',error
+            }) 
+         })
+    } 
 
     // delete individual todo
     static deleteIndividualTodo(req,res){
