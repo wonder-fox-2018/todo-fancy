@@ -50,14 +50,11 @@ module.exports = {
        
    },
 
-
-
-
    findById: (req, res) => {
        User.findById(req.decoded.id).populate('todo').exec().then((user) => {
-           res.status(200).json(user);
+           ServerResponse.success(res, 200, 'user info', user);
        }).catch((err) => {
-           res.send(err);
+           ServerResponse.error(res, 500, err);
        });
    }
 };
