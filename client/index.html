@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">      
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="742869772361-kfh91dq01j03ih9o1gt2mq3n9ca066ou.apps.googleusercontent.com">
     <link rel="stylesheet" href="./asset/custom.css" type="text/css">
     <title>Global Todolist</title>
 </head>
@@ -105,6 +107,7 @@
                 </form>
             </div>
             <div class="modal-footer">
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="loginuser()">Login</button>
             </div>
@@ -139,6 +142,7 @@
                 </form>
             </div>
             <div class="modal-footer">
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" onclick="registeruser()">Register</button>
             </div>
@@ -188,14 +192,112 @@
                 $('#loginnavbar').show()
                 $('#registernavbar').show()
                 $('#logoutnavbar').hide()
+                $('#sidebarnavcustom').hide()
                 // $('#listtask').hide()
             }else{
                 $('#loginnavbar').hide()
                 $('#registernavbar').hide()
                 $('#logoutnavbar').show()
+                $('#sidebarnavcustom').show()
                 // $('#listtask').show()
             }
         });
+
+        // google login
+        function onSignIn(googleUser) {
+            let profile = googleUser.getBasicProfile();
+            let id_token = googleUser.getAuthResponse().id_token;
+            // console.log('GOOGLE Token---->', id_token)
+            // console.log('Name: ' + profile.getName());
+            // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+            // send google token to server
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3006/user/logingoogle',
+                data: {
+                  googletoken: id_token    
+                }
+            })
+            .done(user=>{
+            //    console.log('hasil---->', user)
+               let jwttoken = user.token
+               localStorage.setItem('token', user.token)
+
+               // automatically disconnect this app with google  
+               const auth2 = gapi.auth2.getAuthInstance();
+                 auth2.signOut().then(function () {
+                 console.log('User signed out.');
+               });
+               
+               $('#logoutnavbar').show()
+               $('#loginnavbar').hide()
+               $('#registernavbar').hide()
+               $('#sidebarnavcustom').show()
+                
+               $.ajax({
+                  method: 'GET',
+                  url: 'http://localhost:3006/users/detail',
+                  headers:{
+                    token: jwttoken
+                  }  
+               })
+                 .then(result=>{
+                    $('#navbarwelcome').empty()
+                    $('#navbarwelcome').append(
+                        `<div style= "color: white">
+                            <h5>Welcome ${result.name}</h5>
+                        </div>`
+                    )
+                    $('#sidebarnavcustom').show()
+                    // both modals need to be closed since we only have one output 
+                    // for login and register via google
+                    $('#loginModal').modal('hide')
+                    $('#registerModal').modal('hide')
+                    
+                    // get list of data
+                    $.ajax({
+                        method: 'GET',
+                        url: 'http://localhost:3006/todolists/lists',
+                        headers: {
+                        token: localStorage.getItem('token')
+                        }
+                    })
+                      .done(result=>{
+                        //   console.log('Hasil---->', result.data)
+                          let hasil = result.data
+                          $('#listtask').empty()
+                          $('#listtask').append(
+                              `<h2>List section</h2>
+                              <hr>`
+                          )
+                          hasil.forEach(todo => {
+                              $('#listtask').append(
+                              `<div class="card" style="width: 16rem;">
+                                  <div class="card-body">
+                                      <h5 class="card-title">${todo.title}</h5>
+                                      <p class="card-text">Status: ${todo.status}</p>
+                                      <button class="btn btn-warning" onclick="getformedittodo('${todo._id}')">Edit</button>
+                                      <button class="btn btn-danger" onclick="deletetodo('${todo._id}')">Delete</button>
+                                      <button class="btn btn-primary" onclick="getdetail('${todo._id}')">Detail</button>
+                                  </div>
+                              </div><br/>
+                              `)  
+                          });
+                      })
+                      .fail(error=>{
+                         console.log('ERROR Get list of todo via Google: ',error)
+                      })
+
+                 })
+                 .catch(error=>{
+                    console.log('ERROR get user detail via GOOGLE: ',error) 
+                 })
+            })
+            .fail(error=>{
+              console.log('ERROR Get jwt Token via GOOGLE: ',error)
+            })
+        }
 
         // Login user
         function loginuser(){
@@ -530,8 +632,8 @@
         function getformedittodo(editid){
             $('#individualtodo').empty()
             let token = localStorage.getItem('token')
-            console.log('Token Detail----->',token),
-            console.log('Edit id---->', editid)
+            // console.log('Token Detail----->',token),
+            // console.log('Edit id---->', editid)
             $.ajax({
                 method: 'GET',
                 url: `http://localhost:3006/todolists/${editid}`,
