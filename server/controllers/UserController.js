@@ -100,6 +100,24 @@ class UserController{
     static loginGoogle(req,res){
 
     }
+
+    // get info of user by email
+    static getUserDetail(req,res){
+        User.findOne({
+            email: req.body.email
+        }).populate('listsTask')
+          .then(user =>{
+            res.status(200).json({
+                msg: `Detail of user ${user.name}`,
+                data: user
+            })
+          })
+          .catch(error =>{
+            res.status(500).json({
+                msg: 'ERROR: ',error
+            })
+          })
+    }
 }
 
 module.exports = UserController

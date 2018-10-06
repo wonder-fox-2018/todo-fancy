@@ -17,7 +17,11 @@ const UserSchema = new Schema({
     },
     thirdpartylogin: {
         type: String
-    }
+    },
+    listsTask: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Todolist'
+    }]
 },{
     timestamps : true
 })
