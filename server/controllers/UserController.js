@@ -104,7 +104,7 @@ class UserController{
     // get info of user by email
     static getUserDetail(req,res){
         User.findOne({
-            email: req.body.email
+            email: req.decoded.email
         }).populate('listsTask')
           .then(user =>{
             res.status(200).json({
