@@ -155,7 +155,7 @@ class TodolistController{
                 })
                 .then(user =>{
                     // now delete the todolist
-                    Todolist.findOneAndRemove({
+                    Todolist.findOneAndDelete({
                         _id: req.params.id
                     })
                      .then(tododelete =>{
