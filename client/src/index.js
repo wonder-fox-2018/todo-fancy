@@ -16,9 +16,25 @@ $(document).ready(function() {
     }
 });
 
+function globalproductivitydisplay(complete, incomplete){
+    let globalcomplete = Number(complete)
+    let globalincomplete = Number(incomplete)
+    let productivityPercent = (globalcomplete*100 /(globalcomplete + globalincomplete)).toFixed(1)
+    $('#globalproductivity').empty()
+    $('#globalproductivity').append(
+        `<h3>Productivity Fact: </h3><hr>
+        <h5>Hey do you know that people only finish </h5> 
+        <h2><b style= "color: red">${productivityPercent} % </b></h2> <h5>of their task</h5>
+        <br>
+        <h5>How about you?</h5>
+        <h5>Have you been productive?</h5>
+        `
+    )
+}
+
 // google login
 function onSignIn(googleUser) {
-    let profile = googleUser.getBasicProfile();
+    // let profile = googleUser.getBasicProfile();
     let id_token = googleUser.getAuthResponse().id_token;
     // console.log('GOOGLE Token---->', id_token)
     // console.log('Name: ' + profile.getName());
@@ -97,6 +113,8 @@ function onSignIn(googleUser) {
                       </div><br/>
                       `)  
                   });
+                  // calculate global productivity
+                globalproductivitydisplay(result.globalcomplete, result.globalincomplete)
               })
               .fail(error=>{
                  console.log('ERROR Get list of todo via Google: ',error)
@@ -161,7 +179,6 @@ function loginuser(){
                 }
             })
             .done(result=>{
-                // console.log('Hasil---->', result.data)
                 let hasil = result.data
                 $('#listtask').empty()
                 $('#listtask').append(
@@ -181,6 +198,8 @@ function loginuser(){
                     </div><br/>
                     `)  
                 });
+                // calculate global productivity
+                globalproductivitydisplay(result.globalcomplete, result.globalincomplete)
             })
             .fail(error=>{
                 console.log('ERROR Get list of todo ',error)
@@ -271,6 +290,9 @@ function registeruser(){
                         </div>
                     </div>`)  
                 });
+                // calculate global productivity
+                globalproductivitydisplay(result.globalcomplete, result.globalincomplete)
+                
             })
             .fail(error => {
                 console.log('ERROR Get lists of todo: ',error)    
@@ -364,7 +386,7 @@ function createtodo(){
                 method: 'GET',
                 url: 'http://localhost:3006/todolists/lists',
                 headers: {
-                token: token
+                  token: token
                 }
             })
             .done(result=>{
@@ -388,6 +410,9 @@ function createtodo(){
                     </div><br/>
                     `)  
                 });
+                // calculate global productivity
+                globalproductivitydisplay(result.globalcomplete, result.globalincomplete)
+                
                 $('#createtodoModal').modal('hide')
             })
             .fail(error=>{
@@ -450,6 +475,8 @@ function edittodo(editid){
                     `)  
                 });
                 // let get the todo display
+                // calculate global productivity
+                globalproductivitydisplay(result.globalcomplete, result.globalincomplete)
                 getdetail(editid)
             })
             .fail(error=>{
@@ -558,14 +585,16 @@ function deletetodo(deleteid){
                         <div class="card-body">
                             <h5 class="card-title">${todo.title}</h5>
                             <p class="card-text">Status: ${todo.status}</p>
-                            <button class="btn btn-warning">Edit</button>
+                            <button class="btn btn-warning" onclick="getformedittodo('${todo._id}')">Edit</button>
                             <button class="btn btn-danger" onclick="deletetodo('${todo._id}')">Delete</button>
                             <button class="btn btn-primary" onclick="getdetail('${todo._id}')">Detail</button>
                         </div>
                     </div><br/>
                     `)  
                 });
-                $('#createtodoModal').modal('hide')
+                // calculate global productivity
+                globalproductivitydisplay(result.globalcomplete, result.globalincomplete)
+                // $('#createtodoModal').modal('hide')
             })
             .fail(error=>{
                 console.log('ERROR Get list of todo ',error)
@@ -585,5 +614,6 @@ function logoutuser(){
     $('#navbarwelcome').empty()
     $('#listtask').empty()
     $('#individualtodo').empty()
+    $('#globalproductivity').empty()
     $('#sidebarnavcustom').hide()
 }

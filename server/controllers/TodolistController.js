@@ -52,9 +52,35 @@ class TodolistController{
             todouserid: req.decoded.userid
         })
           .then(todolists=>{
-            res.status(200).json({
-                msg: `List of todo by user ${req.decoded.name}`,
-                data: todolists
+            let listTodo = todolists  
+            // res.status(200).json({
+            //     msg: `List of todo by user ${req.decoded.name}`,
+            //     data: todolists
+            // })
+
+            // get all todolist
+            Todolist.find({})
+            .then(lists=>{
+                let completedTask = 0
+                let incompleteTask = 0
+                lists.forEach(todo=>{
+                    if(todo.status === 'COMPLETE'){
+                        completedTask +=1
+                    }else if(todo.status === 'INCOMPLETE'){
+                        incompleteTask +=1
+                    }
+                })
+                res.status(200).json({
+                    msg: `List of todo by user ${req.decoded.name}`,
+                    data: listTodo,
+                    globalcomplete: completedTask,
+                    globalincomplete: incompleteTask
+                })
+            })
+            .catch(error=>{
+                res.status(500).json({
+                    msg: 'ERROR Populate Todolist after create: ',error
+                })        
             })
           })
           .catch(error =>{
