@@ -1,0 +1,144 @@
+body {
+  background-color: gray;
+  margin: 0;
+  padding: 0;
+}
+
+.clearfix {
+  zoom: 1;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+.heading {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  color: rgb(10, 10, 10);
+  padding-top: 4%;
+}
+
+.nav-bar li {
+  list-style: none;
+  display: inline-block;
+  padding: 20px;
+}
+
+.heading h1 {
+  margin-left: 20%;
+  margin-top: 6%;
+}
+
+.nav-bar ul {
+  margin-left: 60%;
+}
+
+.heading a {
+  text-decoration: none;
+  color: rgb(41, 39, 39);
+}
+
+#logout {
+  color: #e3e7ec;
+  font-size: 20px;
+  background-color: rgb(41, 38, 38);
+  text-align: center;
+  cursor: pointer;
+}
+
+.welcome {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 60px;
+  text-align: center;
+  margin-top: 15%;
+  color: #ffff;
+  text-transform: uppercase;
+}
+
+
+
+#login,
+#register {
+  cursor: pointer;
+}
+
+.login-box,
+.register-box,
+.create-form,
+.update-form {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  background-color: #1a1b1bb7;
+  position: absolute;
+  padding: 10%;
+  width: 400px;
+  top: 200px;
+  left: 350px
+}
+
+input {
+  display: block;
+  border-radius: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 200px;
+  height: 30px;
+  margin-bottom: 10px;
+}
+
+#todo {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-top: 4%;
+  color: rgb(14, 13, 13);
+}
+
+#todo h2 {
+  background-color: slategray;
+  color: #ffff;
+  font-size: 25px;
+  padding: 1% 0;
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+
+#addTodo {
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.todo-list h3 {
+  color: #4283d0;
+  background-color: #ffff;
+  border-radius: 40px;
+  margin-bottom: 20px;
+  font-weight: 300;
+  width: 60%;
+  padding: 2% 0;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.todo-list a {
+  cursor: pointer;
+  text-decoration: none;
+}
