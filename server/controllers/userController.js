@@ -3,6 +3,8 @@ const { encrypt } = require('../helpers')
 const jwt  = require('jsonwebtoken')
 require('dotenv').config()
 const bcrypt = require('bcrypt')
+const {OAuth2Client} = require('google-auth-library')
+const axios = require('axios')
 
 class Controller {
     static signup(req,res){
@@ -68,6 +70,83 @@ class Controller {
                 message : `Invalid username`
             })
         })
+    }
+
+    static signinGoogle(req,res){
+        let token = req.headers.token
+        let CLIENT_ID = '914329180688-r067v7odjksdgah8f84o0aqruqa95566.apps.googleusercontent.com'
+        const client = new OAuth2Client(CLIENT_ID);
+        async function verify() {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        const userid = payload['sub']
+        }
+        console.log('sebelum axios..')
+        axios({
+            method:'GET',
+            url: `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${token}'`
+        })
+        .then(function(result) {
+            console.log('response === ',result)
+            const dataR = result
+            console.log(dataR)
+            User.findOne(
+                { email: result.data.email 
+            }).then(function(data){
+                console.log('dataaaaaaa=========',data)
+                if(data){
+                    console.log('masuk ke data tidak sama dengan null')
+                    // console.log(typeof data)
+                    
+                    let token = jwt.sign({
+                        userId : data._id,
+                        name : data.name,
+                        email : data.email
+                    }, process.env.SECRET_KEY)
+                    
+                    res.status(200).json({
+                        userId : data._id,
+                        name : data.name,
+                        email : data.email,
+                        token : token
+                    })
+                    
+                } else {
+                    console.log('masuk ke data = null')
+                    let newLogin = new User({
+                        name: dataR.data.name,
+                        gender : 'empty',
+                        address : 'empty',
+                        phoneNumber: dataR.data.email,
+                        email: dataR.data.email,
+                        password: 'empty'
+                    })
+                    
+                    console.log('new login',newLogin)
+                    newLogin.save()
+
+                    let token = jwt.sign({
+                        userId : newLogin._id,
+                        name : newLogin.name,
+                        email : newLogin.email
+                    }, process.env.SECRET_KEY)
+    
+                    res.status(200).json({
+                        userId : dataUser._id,
+                        name : dataUser.name,
+                        email : dataUser.email,
+                        token : token
+                    })
+                }
+            })
+        })
+        .catch(function(err){
+            console.log(err)
+        })
+        verify().catch(console.error);
     }
 }
 

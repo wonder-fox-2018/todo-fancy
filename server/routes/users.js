@@ -8,5 +8,6 @@ const userController = require('../controllers/userController')
 //BASIC SIGNUP AND SIGNIN
 router.post('/signup',userController.signup)
 router.post('/signin',userController.signin)
+router.post('/signinGoogle', userController.signinGoogle)
 
 module.exports = router
