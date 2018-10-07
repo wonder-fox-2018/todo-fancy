@@ -524,20 +524,20 @@ function getformedittodo(editid){
                         <form>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Title</label>
-                                <input type="text" class="form-control" id="edittodotitle" value = "${singletodo.title}" aria-describedby="emailHelp">
+                                <input type="text" class="form-control" id="edittodotitle" value = "${singletodo.title}" aria-describedby="emailHelp" placeholder="Enter title">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Description</label>
-                                <input type="text" class="form-control" id="edittododescription" value = "${singletodo.description}" aria-describedby="emailHelp">
+                                <input type="text" class="form-control" id="edittododescription" value = "${singletodo.description}" aria-describedby="emailHelp" placeholder="Enter description">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Status</label><br/>
-                                <input type="radio" name="edittodostatus" value="INCOMPLETE" ${incompletecheck}>INCOMPLETE<br>
+                                <input type="radio" name="edittodostatus" value="INCOMPLETE" ${incompletecheck}> INCOMPLETE<br>
                                 <input type="radio" name="edittodostatus" value="COMPLETE" ${completecheck}> COMPLETE<br>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Due Date</label>
-                                <input type="text" class="form-control" id="edittododuedate" value="${rawdate.getFullYear()}-${rawdate.getMonth()+1}-${rawdate.getDate()}" aria-describedby="emailHelp">
+                                <input type="text" class="form-control" id="edittododuedate" value="${rawdate.getFullYear()}-${rawdate.getMonth()+1}-${rawdate.getDate()}" aria-describedby="emailHelp" placeholder="Enter date in YYYY-MM-DD format">
                             </div>
                             <button type="button" class="btn btn-warning" onclick="edittodo('${singletodo._id}')">Update</button>
                         </form>
