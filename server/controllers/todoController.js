@@ -23,10 +23,12 @@ module.exports = {
       console.log(data)
       //Verifying Token
       jwt.verify(req.body.token, process.env.JWT_SECRET, (err,decoded)=>{
+       console.log(decoded)
         User.updateOne({ email: decoded.email },
           { $push: { todolist: new mongodb.ObjectId(data._id) } }
           )
           .then(data=>{
+            console.log('keupdate')
             res.status(200).json({message: 'new todo is added'})
           })
           .catch(err=>{

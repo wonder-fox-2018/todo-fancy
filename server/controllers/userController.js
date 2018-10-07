@@ -4,13 +4,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
 const nodeMailer = require('nodemailer');
-// const transporter = nodeMailer.createTransport({
-//   service: 'Gmail',
-//   auth: {
-//       user: 'agungatidhira@gmail.com',
-//       pass: process.env.GMAIL_PASSWORD
-//   }
-// });
+const transporter = nodeMailer.createTransport({
+  service: 'Gmail',
+  auth: {
+      user: 'agungatidhira@gmail.com',
+      pass: process.env.GMAIL_PASSWORD
+  }
+});
 
 module.exports = {
   addUser : function(req,res){
@@ -191,21 +191,21 @@ module.exports = {
   },
 
   findUser: (req, res) => {
-    jwt.verify(req.body.token,process.env.JWT_SECRET,(err,decoded)=>{
+    jwt.verify(req.headers.token,process.env.JWT_SECRET,(err,decoded)=>{
       if(!err){
         User.findOne({
           email: decoded.email
         })
-        .populate('ToDoList').
-        exec(function (error, data) {
+        .populate('ToDoList')
+        .exec(function (error, data) {
           if(!err){
             res.status(200).json({
-              data
+              data: data.todolist
             });
           }
           else{
             res.status(500).json({
-              error
+              error: error
             });
           }
 
