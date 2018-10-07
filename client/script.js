@@ -4,7 +4,8 @@ $(document).ready(() => {
   if (!token) {
       window.location = './index.html'
   } else {
-    
+    $('.update-form').hide()
+    $('.create-form').hide()
     //Adding todo form
     $("#addTodo").click(() => {
       $(".create-form").show();
@@ -40,7 +41,6 @@ $(document).ready(() => {
 
     $("#post-todo").submit((e) => {
       e.preventDefault();
-
       $.ajax({
         url: "http://localhost:3000/todo",
         method: "POST",
@@ -52,7 +52,7 @@ $(document).ready(() => {
         }
       })
         .done(data => {
-          swal("Welcome!", "Task Has Been Added!", "success");
+          swal("New Task Has Been Added!", "success");
           setTimeout(() => {
             location.reload();
           }, 3000);
@@ -67,42 +67,39 @@ $(document).ready(() => {
       $(document).ready(() => {
         $.ajax({
           url: "http://localhost:3000/findUser",
-          method: "POST",
-          data: {
-            title: $("#title").val(),
-            dueDate: $("#dueDate").val(),
-            description : $("#description").val(),
+          method: "GET",
+          headers: {
             token: localStorage.getItem("token")
           }
         })
-          .done(response => {
-            console.log(response);
-            const lists = response.data.todolist;
-            $(".todo-list").html("");
-            for (let i = 0; i < lists.length; i++) {
-              const date = formatDate(new Date(lists[i].dueDate));
-              console.log(lists[i]._id);
-              if (lists[i].status === "Finished") {
-                $(".todo-list").append(
-                  `<h3>
-                      <strong>${lists[i].name}</strong> <br> Description : ${lists[i].description} <br> <br><strong>Due Date : ${date}</strong>
-                  <br> TASK FINISHED ✅
-                  </h3> <br>
-                  `
-                );
-              } else {
-                $(".todo-list").append(
-                  `<h3>
-                  <strong>${lists[i].name}</strong> <br> Description :  ${lists[i].description} <br> <br> <strong>Due Date : ${date}</strong>
-                      <br> <a href="#" onclick="complete('${lists[i]._id}')">✅</a> <a onclick="erase('${lists[i]._id}')">❌</a> <a onclick="update('${lists[i]._id}')">✏️</a>
-                  </h3>`
-                );
-              }
+        .done(response => {
+          console.log('ini responsnya list',response);
+          const lists = response.data;
+          $(".todo-list").empty("");
+          for (let i = 0; i < lists.length; i++) {
+            const date = formatDate(new Date(lists[i].dueDate));
+            console.log(lists[i]._id);
+            if (lists[i].status === "Finished") {
+              $(".todo-list").append(
+                `<h3>
+                    <strong>${lists[i].title}</strong> <br> Description : ${lists[i].description} <br> <br><strong>Due Date : ${date}</strong>
+                <br> TASK FINISHED ✅
+                </h3> <br>
+                `
+              );
+            } else {
+              $(".todo-list").append(
+                `<h3>
+                <strong>${lists[i].title}</strong> <br> Description :  ${lists[i].description} <br> <br> <strong>Due Date : ${date}</strong>
+                    <br> <a href="#" onclick="complete('${lists[i]._id}')"><i class="check alternate icon"></i></a> <a onclick="deleteTask('${lists[i]._id}')"><i class="x alternate icon"></i></a> <a onclick="update('${lists[i]._id}')"><i class="pencil alternate icon"></i></a>
+                </h3>`
+              );
             }
-          })
-          .fail(err => {
-            console.log(err);
-          });
+          }
+        })
+        .fail(err => {
+          console.log(err);
+        });
       });
     }
 
@@ -122,7 +119,7 @@ $(document).ready(() => {
         });
     }
 
-    function erase(id) {
+    function deleteTask(id) {
       $.ajax({
         url: `http://localhost:3000/todo/${id}`,
         method: "DELETE",

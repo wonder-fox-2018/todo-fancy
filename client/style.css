@@ -126,9 +126,8 @@ input {
 }
 
 .todo-list h3 {
-  color: #4283d0;
-  background-color: #ffff;
-  border-radius: 40px;
+  color: #e9edf1;
+  background-color: rgb(34, 32, 32);
   margin-bottom: 20px;
   font-weight: 300;
   width: 60%;

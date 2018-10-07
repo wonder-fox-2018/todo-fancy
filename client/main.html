@@ -22,7 +22,10 @@
   <link href="./hover-min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+    
   <title>Fancy To Do</title>
   <style>
     body {
@@ -54,20 +57,20 @@
   </div>
 
   <div class="create-form">
-    <form method="POST" action="" id="post-todo">
+    <form method="POST" id="post-todo">
       <input type="text" name="title" placeholder="To Do Title" required class="inputForm" id="title">
       <input type="text" name="description" placeholder="To Do Description" required class="inputForm" id="description">
       <input type="date" name="dueDate" required class="inputForm" id="dueDate">
-      <input type="submit" value="Submit To Do!" class="formBtn">
+      <input type="submit" value="Submit" class="formBtn">
     </form>
   </div>
 
   <div class="update-form">
-    <form method="POST" action="" id="updateTodo">
+    <form method="POST" id="updateTodo">
       <input type="text" name="title" placeholder="To Do" required class="inputForm" id="title">
       <input type="text" name="description" placeholder="To Do Description" required class="inputForm" id="description">
       <input type="date" name="dueDate" placeholder="YEAR/MONTH/DATE" required class="inputForm" id="dueUpdate">
-      <input type="submit" value="Update To Do!" class="formBtn">
+      <input type="submit" value="Update" class="formBtn">
     </form>
   </div>
 

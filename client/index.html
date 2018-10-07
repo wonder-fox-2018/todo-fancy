@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="595266228745-tcbrob223qgqidcd75v31s6pp77bgor2.apps.googleusercontent.com">
-
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
@@ -60,6 +59,7 @@
         </div>
     </div>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    
     <script>
         $(function(){
             $('#error').hide()
@@ -114,7 +114,7 @@
                 console.log(err);
             });
         });
-        
+
         function onSignIn(googleUser) {
             var id_token = googleUser.getAuthResponse().id_token;
             // console.log(id_token)
