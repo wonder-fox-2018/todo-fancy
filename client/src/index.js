@@ -43,7 +43,7 @@ function onSignIn(googleUser) {
     // send google token to server
     $.ajax({
         method: 'POST',
-        url: 'http://localhost:3006/user/logingoogle',
+        url: 'http://35.198.206.124/user/logingoogle',
         data: {
           googletoken: id_token    
         }
@@ -66,7 +66,7 @@ function onSignIn(googleUser) {
         
        $.ajax({
           method: 'GET',
-          url: 'http://localhost:3006/users/detail',
+          url: 'http://35.198.206.124/users/detail',
           headers:{
             token: jwttoken
           }  
@@ -87,7 +87,7 @@ function onSignIn(googleUser) {
             // get list of data
             $.ajax({
                 method: 'GET',
-                url: 'http://localhost:3006/todolists/lists',
+                url: 'http://35.198.206.124/todolists/lists',
                 headers: {
                 token: localStorage.getItem('token')
                 }
@@ -137,7 +137,7 @@ function loginuser(){
 
     $.ajax({
         method: 'POST',
-        url: 'http://localhost:3006/user/login',
+        url: 'http://35.198.206.124/user/login',
         data: {
             email: loginemail,
             password: loginpassword
@@ -154,7 +154,7 @@ function loginuser(){
         // get detail data of user
         $.ajax({
             method: 'GET',
-            url: 'http://localhost:3006/users/detail',
+            url: 'http://35.198.206.124/users/detail',
             headers:{
                 token: jwttoken
             }
@@ -173,7 +173,7 @@ function loginuser(){
             // get list of data
             $.ajax({
                 method: 'GET',
-                url: 'http://localhost:3006/todolists/lists',
+                url: 'http://35.198.206.124/todolists/lists',
                 headers: {
                 token: localStorage.getItem('token')
                 }
@@ -229,7 +229,7 @@ function registeruser(){
 
     $.ajax({
         method: 'POST',
-        url: 'http://localhost:3006/user/register',
+        url: 'http://35.198.206.124/user/register',
         data: {
             name: registername,
             email: registeremail,
@@ -247,7 +247,7 @@ function registeruser(){
         // get detail data of user
         $.ajax({
             method: 'GET',
-            url: 'http://localhost:3006/users/detail',
+            url: 'http://35.198.206.124/users/detail',
             headers:{
                 token: jwttoken
             }
@@ -266,7 +266,7 @@ function registeruser(){
             // get list of data
             $.ajax({
                 method: 'GET',
-                url: 'http://localhost:3006/todolists/lists',
+                url: 'http://35.198.206.124/todolists/lists',
                 headers: {
                 token: localStorage.getItem('token')
                 }
@@ -329,7 +329,7 @@ function getdetail(detailid){
     // console.log('Edit id---->', editid)
     $.ajax({
         method: 'GET',
-        url: `http://localhost:3006/todolists/${detailid}`,
+        url: `http://35.198.206.124/todolists/${detailid}`,
         headers: {
             token: localStorage.getItem('token')
         }
@@ -368,7 +368,7 @@ function createtodo(){
 
     $.ajax({
         method: 'POST',
-        url: 'http://localhost:3006/todolists/',
+        url: 'http://35.198.206.124/todolists/',
         headers: {
             token: token
         },
@@ -384,7 +384,7 @@ function createtodo(){
           // let update the lists
           $.ajax({
                 method: 'GET',
-                url: 'http://localhost:3006/todolists/lists',
+                url: 'http://35.198.206.124/todolists/lists',
                 headers: {
                   token: token
                 }
@@ -434,7 +434,7 @@ function edittodo(editid){
 
     $.ajax({
         method: 'PUT',
-        url: `http://localhost:3006/todolists/${editid}`,
+        url: `http://35.198.206.124/todolists/${editid}`,
         headers: {
           token: token
         },
@@ -449,7 +449,7 @@ function edittodo(editid){
           // let's update the list
           $.ajax({
                 method: 'GET',
-                url: 'http://localhost:3006/todolists/lists',
+                url: 'http://35.198.206.124/todolists/lists',
                 headers: {
                 token: token
                 }
@@ -494,7 +494,7 @@ function getformedittodo(editid){
     let token = localStorage.getItem('token')
     $.ajax({
         method: 'GET',
-        url: `http://localhost:3006/todolists/${editid}`,
+        url: `http://35.198.206.124/todolists/${editid}`,
         headers: {
             token: token
         }
@@ -556,7 +556,7 @@ function deletetodo(deleteid){
     $('#individualtodo').empty()
     $.ajax({
         method: 'DELETE',
-        url: `http://localhost:3006/todolists/${deleteid}`,
+        url: `http://35.198.206.124/todolists/${deleteid}`,
         headers: {
             token: token
         }
@@ -566,7 +566,7 @@ function deletetodo(deleteid){
           // let update the lists
           $.ajax({
                 method: 'GET',
-                url: 'http://localhost:3006/todolists/lists',
+                url: 'http://35.198.206.124/todolists/lists',
                 headers: {
                 token: token
                 }
@@ -594,7 +594,6 @@ function deletetodo(deleteid){
                 });
                 // calculate global productivity
                 globalproductivitydisplay(result.globalcomplete, result.globalincomplete)
-                // $('#createtodoModal').modal('hide')
             })
             .fail(error=>{
                 console.log('ERROR Get list of todo ',error)
