@@ -93,11 +93,12 @@
                 }
             })
             .done(function (data) {
+                $('#task-list').empty()
                 // console.log(data)
                 console.log(data.task.todoList)
                 let todoList = data.task.todoList
                 $('#status').text(`read tasks of ${data.task.name} success`)
-                console.log(todoList[0])
+                // console.log(todoList[0])
                 /*
                 createdAt: "2018-10-07T15:25:30.925Z"
                 description: "Haram Jaddah"
@@ -108,11 +109,20 @@
                 __v: 0
                 _id: "5bba256a28ba7c1a3ffc3f4d"
                 */
-                for(let i = 0 ; i < todoList.length ; i ++){  
+                for(let i = 0 ; i < todoList.length ; i ++){
+                    let cb = `<input type="checkbox"><br>`
+                    if(todoList[i].status == true){
+                        cb = `<input type="checkbox" checked><br>`
+                    }
+                    
                     $('#task-list').append(`
                     <div class="task">
-                    <h4>${todoList[i].name}</h4>
+                    <h4>${todoList[i].name} ${cb} </h4>
                     <p>${todoList[i].description}</p>
+                    <button id="button${todoList[i]._id}" onclick="editing('${todoList[i]._id}')">Edit Task</button>
+                    <div id=edit${todoList[i]._id}></div>
+                    <button onclick="completing('${todoList[i]._id}')">Mark as completed</button>
+                    <button onclick="deleting('${todoList[i]._id}')">Delete</button>
                     </div>
                     `)
                 }
@@ -127,6 +137,88 @@
         $('#task-list').empty()
     }
 
+    function deleting(id){
+        $.ajax({
+                method: "DELETE",
+                url: `http://localhost:3000/todo/delete/${id}`,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+            .done(function () {
+                $('#status').text('delete success')
+                $('#task-list').empty()
+            })
+            .fail(function (err) {
+                console.log(err)
+                $('#status').text('error')
+        })
+    }
+
+    function completing(id){
+        $.ajax({
+                method: "PUT",
+                url: `http://localhost:3000/todo/complete/${id}`,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+            .done(function () {
+                $('#status').text('completing success')
+                $('#task-list').empty()
+            })
+            .fail(function (err) {
+                console.log(err)
+                $('#status').text('error')
+        })
+    }
+
+    function editing(id){
+        $(`#button${id}`).hide()
+
+        $(`#edit${id}`).empty()
+        $(`#edit${id}`).append(`
+        <form>
+        <label>name</label>
+        <input type='text' id='name${id}'>
+        <label>description</label>
+        <input type='text' id='description${id}'>
+        <label>date</label>
+        <input type='date'>
+        <button onclick="confirmEdit('${id}')">Update</button>
+        </form>
+        `)
+    }
+
+    function confirmEdit(id){
+        let name = $(`#name${id}`).val()
+        console.log(name)
+        let description = $(`#description${id}`).val()
+        console.log(description)
+        let data = {
+        name,
+        description
+        }
+        $.ajax({
+                method: "PUT",
+                url: `http://localhost:3000/todo/update/${id}`,
+                headers: {
+                    token: localStorage.getItem('token')
+                },
+                data
+            })
+            .done(function () {
+                $('#status').text('updating success')
+                $('#task-list').empty()
+            })
+            .fail(function (err) {
+                console.log(err)
+                $('#status').text('error')
+        })
+    }
+    
+
 
 </script>
+<!-- <script src="main.js"></script> -->
 </html>

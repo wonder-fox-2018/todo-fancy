@@ -50,6 +50,60 @@ class Controller {
             })
         })
     }
+    
+    static update(req,res){
+        Todo.findOneAndUpdate(
+            { _id : req.params.id}, 
+            { 
+             name : req.body.name,
+             description: req.body.description,
+             dueDate : new Date()
+            }
+        )
+        .then(function(task){
+            res.status(200).json({
+                message : `update ${task.name} success`
+            })
+        })
+        .catch(function(err){
+            res.status(500).json({
+                err
+            })
+        })
+    }
+
+    static delete(req,res){
+        Todo.findByIdAndRemove(
+            { _id : req.params.id},
+        )
+        .then(function(task){
+            res.status(200).json({
+                message : `${task.name} removed..`
+            })
+        })
+        .catch(function(err){
+            res.status(500).json({
+                err
+            })
+        })
+    }
+
+    static complete(req,res){
+        Todo.findOneAndUpdate(
+            { _id : req.params.id},
+            { status : true }
+        )
+        .then(function(task){
+            res.status(200).json({
+                message : `${task.name} completed...`
+            })
+        })
+        .catch(function(err){
+            res.status(500).json({
+                err
+            })
+        })
+    }
 }
 
 module.exports = Controller;
