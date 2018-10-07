@@ -430,7 +430,6 @@ function edittodo(editid){
                 });
                 // let get the todo display
                 getdetail(editid)
-                // $('#individualtodo').empty()
             })
             .fail(error=>{
                 console.log('ERROR Get list of todo ',error)
@@ -456,6 +455,7 @@ function getformedittodo(editid){
         // console.log('Detail of TODO--->', result.data)
         let singletodo = result.data
         let rawdate = new Date(result.data.duedate)
+        // check which radio button to display
         let completecheck = ''
         let incompletecheck = ''
         if(singletodo.status === 'COMPLETE'){
@@ -491,7 +491,7 @@ function getformedittodo(editid){
                                 <label for="exampleInputEmail1">Due Date</label>
                                 <input type="text" class="form-control" id="edittododuedate" value="${rawdate.getFullYear()}-${rawdate.getMonth()+1}-${rawdate.getDate()}" aria-describedby="emailHelp">
                             </div>
-                            <button type="button" class="btn btn-warning" onclick="edittodo('${singletodo._id}')">SAVE</button>
+                            <button type="button" class="btn btn-warning" onclick="edittodo('${singletodo._id}')">Update</button>
                         </form>
                 </div>
             </div><br/>`
