@@ -5,12 +5,14 @@ const axios = require('axios');
 const User = require('../models/user');
 const ServerResponse = require('../helpers/serverResponse');
 const Token = require('../helpers/token');
+const encryptPassword = require('../helpers/encryptPassword');
 
 module.exports = {
    register: (req, res) => {
 
         req.body.oauth = false;
-        console.log(req.body);
+        
+        req.body.password = encryptPassword(req.body.password);
 
         let {email, password, oauth, todo, name} = req.body;
         User.create({
@@ -28,7 +30,7 @@ module.exports = {
    },
 
    login: (req, res) => {
-       console.log('login');
+       req.body.password = encryptPassword(req.body.password);
        let {email, password} = req.body;
 
        User.findOne({
@@ -95,7 +97,7 @@ module.exports = {
                         User.create({
                             email: result.data.email,
                             password: null,
-                            oauth: false,
+                            oauth: true,
                             name: result.data.name
                         }).then((user) => {
                             ServerResponse.success(res, 200, 'user has been registered', user);
