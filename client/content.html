@@ -13,7 +13,7 @@
         crossorigin="anonymous">
 
     <!-- google-signout -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
     <!-- datepicker -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -218,15 +218,22 @@
 
         function signOut() {
 
-            var auth2 = gapi.auth2.getAuthInstance();
-            localStorage.clear()
-            sessionStorage.clear();
-            auth2.signOut().then(function () {
-                console.log('User has been signed out.');
-                location.replace('index.html');
-                localStorage.clear()
-                sessionStorage.clear();
-            });
+            
+                var auth2 = gapi.auth2.getAuthInstance();
+
+
+                auth2.signOut().then(function () {
+                    console.log('User has been signed out.');
+                    localStorage.clear()
+                    location.replace('index.html');
+
+                }).catch((err) => {
+                    localStorage.clear()
+                    location.replace('index.html');
+            
+                })
+            
+                
         }
 
         function onLoad() {
@@ -388,7 +395,7 @@
                             </div>
                         `
                     )
-                    
+
                     $(finishedTask).prependTo($('.finished-task-list-container')).show('slow');
                     setDeleteButton();
 
