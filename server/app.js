@@ -8,7 +8,8 @@ const IndexRoutes = require('./routes/IndexRoutes')
 const UserRoutes = require('./routes/UserRoutes')
 const TodolistRoutes = require('./routes/TodolistRoutes')
 
-mongoose.connect('mongodb://localhost:27017/todolistfancydb' ,{useNewUrlParser : true})
+// mongoose.connect('mongodb://localhost:27017/todolistfancydb' ,{useNewUrlParser : true})
+mongoose.connect(process.env.MONGO_USER, { useNewUrlParser : true});
 app.use(express.urlencoded({ extended: false}))
 app.use(express.json())
 app.use(cors())
