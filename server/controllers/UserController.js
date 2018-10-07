@@ -83,7 +83,7 @@ class UserController{
                     })
                 }else if(user=== null){
                     res.status(400).json({
-                        msg: 'ERROR Login: User not found'
+                        msg: 'User not found, Please check your email/password'
                     })
                 }
             })
