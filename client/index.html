@@ -11,42 +11,91 @@
         <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
         <script src="https://apis.google.com/js/platform.js" async defer></script>
         <meta name="google-signin-client_id" content="196400388485-ja50pc2ioih8f7jqkhk7r1r9ka3l8qej.apps.googleusercontent.com">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <div class="container">
             <h1 class="text-center text-primary" style="font-size: 50px; margin-top: 50px"><a href='index.html'>Inged<span class="border bg-primary px-2" style="color: white">In</span></a></h1>
-            <div id='loginBtn' class="text-center mt-4">
-                <h3 class="text-primary" style="margin-top: 50px; margin-bottom: 20px">Please log in</h3>
-                <div class="g-signin2" data-onsuccess="onSignIn"></div><br>
+            <div id='loginBtn' class="text-center" style="margin-top:10vh">
+                <div id="signinSection">
+                    <input type="text" id='email' placeholder="Email"><br><br>
+                    <input type="password" id='password' placeholder="Password"><br><br>
+                    <button class="btn logBtn" id='r-signin-btn' onclick="regulerSignIn()">Sign In</button><br><br>
+                    or<br><br>
+                    <div class="g-signin2" data-onsuccess="onSignIn" style="display:inline-block"></div><br><br>
+                </div>
+                <div id="signupSection">
+                    <input type="text" id='newname' placeholder="Name"><br><br>                
+                    <input type="text" id='newemail' placeholder="Email"><br><br>
+                    <input type="password" id='newpassword' placeholder="Password"><br><br>
+                    <button class="btn logBtn" id='r-signup-btn' onclick="signUp()">Sign Up</button><br><br>
+                </div>
+                <div id='logNotice' style="color:transparent">.</div>
+                <div style="display:inline-block; margin-top:2.5vh">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <button class="btn logBtn" id='form-signin-btn' onclick="signinSection()">Sign In</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn logBtn" id='form-signup-btn' onclick="signupSection()">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id='logoutBtn' class="text-center mt-4">
+            <div id='logoutBtn' class="text-center">
                 <button class="btn btn-primary" onclick="logOut()">Log Out</button>
             </div>
             <div id='app'>
                 <div id='addAlert' class="alert mt-4" role="alert"></div>
-                <div class="row mb-4">
-                    <button class="btn btn-outline-primary col-sm-12 col-md-4" onclick="sort('name')">Sort by Name</button>
-                    <button class="btn btn-outline-primary col-sm-12 col-md-4" onclick="sort('dueDate')">Sort by Due Date</button>
-                    <button class="btn btn-outline-primary col-sm-12 col-md-4" onclick="sort('importance')">Sort by Importance Level</button>
+                <div class="row" id='menu'>
+                    <div class="col-2"></div>
+                    <button class="btn col-2 menuBtn" onclick="showToday()" id='today' title="Today's Tasks"></button>
+                    <button class="btn col-2 menuBtn" onclick="show()" id='alltasks' title="All Tasks"><i class="fas fa-tasks"></i></button>
+                    <button class="btn col-2 menuBtn" onclick="sort('name')" title="Sort by Name"><i class="fab fa-neos"></i></button>
+                    <button class="btn col-2 menuBtn" onclick="sort('dueDate')" title="Sort by Date"><i class="far fa-calendar-alt"></i></button>
+                    <button class="btn col-2 menuBtn" onclick="sort('importance')" title="Sort by Importance"><i class="fas fa-exclamation-triangle"></i></button>
+                    <div class="col-2"></div>
                 </div>
-                <div id='list' class='mb-4'></div>
-                <div class="row">
+                <div id='add' class="row m-1">
                     <input id='name' type="text" class="col-sm-3 col-md-2" placeholder="Name">
                     <input id='desc' type="text" class="col-sm-9 col-md-4" placeholder="Description">
                     <input id='dueDate' type="date" class="col-sm-5 col-md-2">
                     <select id='importance' class="custom-select col-sm-5 col-md-2">
-                            <option selected>Importance Level</option>
-                            <option value="Very Important">Very Important</option>
-                            <option value="Important">Important</option>
-                            <option value="Unimportant">Unimportant</option>
+                        <option value="Unimportant" selected>Unimportant</option>
+                        <option value="Important">Important</option>
+                        <option value="Very Important">Very Important</option>
                     </select>
-                    <button class="btn btn-outline-primary col-2" onclick="add()">Add</button>
+                    <button class="btn btn-outline-primary col-2" onclick="add()"><b>Add</b></button>
                 </div>
+                <div id='edit' class="row  m-1">
+                    <input id='editname' type="text" class="col-sm-3 col-md-2" placeholder="Name">
+                    <input id='editdesc' type="text" class="col-sm-9 col-md-4" placeholder="Description">
+                    <input id='editduedate' type="date" class="col-sm-5 col-md-2">
+                    <select id='editimportance' class="custom-select col-sm-5 col-md-2">
+                        <option value="Unimportant">Unimportant</option>
+                        <option value="Important">Important</option>
+                        <option value="Very Important">Very Important</option>
+                    </select>
+                    <button class="btn btn-outline-primary col-sm-2 col-md-1" id='editBtn'><b>Edit</b></button>
+                    <button class="btn btn-outline-danger col-sm-2 col-md-1" onclick="closeEdit()"><b>Cancel</b></button>
+                </div>
+                <div id='list' class='mt-4'></div>
             </div>
         </div>
 
         <script>
+            $('document').ready(() => {
+                let today = String(new Date().getDate())
+                if (today.length === 1) {
+                    today = '0' + today
+                }
+                $('#today').text('')
+                $('#today').append(`<b>${today}</b>`)
+                $('#alltasks').hide()
+                $('#edit').hide()
+            })
+
             function onSignIn(googleUser) {
                 let id_token = googleUser.getAuthResponse().id_token;                
                 $.ajax({
@@ -56,16 +105,65 @@
                 .then(data => {
                     localStorage.setItem('token', data.token)
                     localStorage.setItem('lgnMtd', 'g')                    
-                    show()
+                    if (localStorage.getItem('state') === 't') {
+                        showToday()
+                    } else {
+                        show()
+                    }
                 })
                 .catch(err => {
                     console.log(err)
                 })
             }
 
-            show()
+            function regulerSignIn() {
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/user/rlogin',
+                    data: {email: $('#email').val(), password: $('#password').val()}
+                })
+                .then(data => {
+                    localStorage.setItem('token', data.token)
+                    localStorage.setItem('lgnMtd', 'r')
+                    if (localStorage.getItem('state') === 't') {
+                        showToday()
+                    } else {
+                        show()
+                    }
+                })
+                .catch(err => {
+                    $('#logNotice').text(err.responseJSON.message)
+                    $('#logNotice').css('color', 'red')
+                    console.log(err.responseJSON.message)
+                })
+            }
 
+            function signUp() {
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/user/register',
+                    data: {name: $('#newname').val(), email: $('#newemail').val(), password: $('#newpassword').val()}
+                })
+                .then(data => {
+                    $('#logNotice').text(data.message)
+                    $('#logNotice').css('color', 'green')
+                    signinSection()
+                })
+                .catch(err => {
+                    $('#logNotice').text(err.responseJSON.message)
+                    $('#logNotice').css('color', 'red')
+                    console.log(err.responseJSON.message)
+                })
+            }
+
+            if (localStorage.getItem('state') === 't') {
+                showToday()
+            } else {
+                show()
+            }
+            
             function showLogIn() {
+                signinSection()
                 $('#loginBtn').show()
                 $('#logoutBtn').hide()
                 $('#app').hide()
@@ -77,6 +175,20 @@
                 $('#app').show()
             }
 
+            function signinSection() {
+                $('#form-signin-btn').addClass('logActive')
+                $('#form-signup-btn').removeClass('logActive')
+                $('#signinSection').show()
+                $('#signupSection').hide()
+            }
+
+            function signupSection() {
+                $('#form-signin-btn').removeClass('logActive')
+                $('#form-signup-btn').addClass('logActive')
+                $('#signinSection').hide()
+                $('#signupSection').show()
+            }
+
             function logOut() {
                 if (localStorage.getItem('lgnMtd') === 'g') {
                     var auth2 = gapi.auth2.getAuthInstance();
@@ -85,7 +197,7 @@
                     });
                 }
                 localStorage.clear()
-                location.reload()
+                show()
             }
 
             function add() {
@@ -103,13 +215,24 @@
                     }
                 })
                 .then(data => {
-                    localStorage.setItem('addAlert', 'success')
-                    location.reload()
+                    $('#addAlert').addClass('alert-success').removeClass('alert-danger')
+                    $('#addAlert').text('')
+                    $('#addAlert').append('Task successfully added')
+                    $('#name').val('')
+                    $('#desc').val('')
+                    $('#dueDate').val('')
+                    $('#importance').val('Unimportant')
+                    if (localStorage.getItem('state') === 't') {
+                        showToday()
+                    } else {
+                        show()
+                    }
                 })
                 .catch(err => {
                     console.log(err)
-                    localStorage.setItem('addAlert', 'danger')
-                    location.reload()
+                    $('#addAlert').addClass('alert-danger').removeClass('alert-success')
+                    $('#addAlert').text('')
+                    $('#addAlert').append('Failed to add the task, please try again with a valid input (note: the name has to be unique)')
                 })
             }
 
@@ -122,6 +245,9 @@
                 })
                 .then(data => {
                     list(data.tasks)
+                    $('#today').show()
+                    $('#alltasks').hide()
+                    localStorage.setItem('state', 'a')
                     showApp()
                 })
                 .catch(err => {
@@ -131,15 +257,6 @@
             }
 
             function list(tasks) {
-                if (localStorage.getItem('addAlert') === 'success') {
-                    $('#addAlert').addClass('alert-success')
-                    $('#addAlert').append('Task successfully added')
-                    localStorage.removeItem('addAlert')
-                } else if (localStorage.getItem('addAlert') === 'danger') {
-                    $('#addAlert').addClass('alert-danger')
-                    $('#addAlert').append('Failed to add the task, please try again with a valid input (note: the name has to be unique)')
-                    localStorage.removeItem('addAlert')
-                }
                 $('#list').text("")
                 tasks.forEach(task => {
                     if(task.status === 'completed') {
@@ -160,7 +277,7 @@
                                 <div class="col-sm-9 col-md-3 border vertically-centered">${task.desc}</div>
                                 <div class="col-sm-6 col-md-2 border vertically-centered">${task.dueDate.slice(0, 10)}</div>
                                 <div class="col-sm-6 col-md-2 border vertically-centered">${task.importance}</div>
-                                <button class="btn btn-outline-primary col-sm-3 col-md-1 border" onclick="edit('${task.name}', '${task.desc}', '${task.dueDate}', '${task.importance}')"><strong>Edit</strong></button> 
+                                <button class="btn btn-outline-primary col-sm-3 col-md-1 border" onclick="edit('${task._id}', '${task.name}', '${task.desc}', '${task.dueDate}', '${task.importance}')"><strong>Edit</strong></button> 
                                 <button class="btn btn-outline-success col-sm-6 col-md-2 border" onclick="complete('${task.name}')"><strong>Complete</strong></button> 
                                 <button class="btn btn-outline-danger col-sm-3 col-md-1 border" onclick="remove('${task.name}')"><strong>Delete</strong></button> 
                             </div>`
@@ -178,7 +295,7 @@
                 }
                 if (base === 'importance') {
                     $.ajax ({
-                        url: `http://localhost:3000/list/show/importance/${localStorage.getItem(`${base}SortDir`)}`,
+                        url: `http://localhost:3000/list/show/importance/${localStorage.getItem('importanceSortDir')}/${localStorage.getItem('state')}`,
                         headers: {
                             token: localStorage.getItem('token')
                         }
@@ -196,8 +313,9 @@
                         console.log(err)
                     })
                 } else {
+                    let sortDir = base + 'SortDir'
                     $.ajax ({
-                        url: `http://localhost:3000/list/show/${base}/${localStorage.getItem(`${base}SortDir`)}`,
+                        url: `http://localhost:3000/list/show/${base}/${localStorage.getItem(sortDir)}/${localStorage.getItem('state')}`,
                         headers: {
                             token: localStorage.getItem('token')
                         }
@@ -210,6 +328,26 @@
                     })
                 }
             }
+            
+            function showToday() {
+                $.ajax({
+                    url: `http://localhost:3000/list/show/today`,
+                    headers: {
+                        token: localStorage.getItem('token')
+                    }
+                })
+                .then(data => {
+                    list(data.tasks)
+                    $('#today').hide()
+                    $('#alltasks').show()
+                    localStorage.setItem('state', 't')
+                    showApp()
+                })
+                .catch(err => {
+                    showLogIn()
+                    console.log(err)
+                })
+            }
 
             function complete(name) {
                 $.ajax({
@@ -220,7 +358,11 @@
                     }
                 })
                 .then(() => {
-                    location.reload()
+                    if (localStorage.getItem('state') === 't') {
+                        showToday()
+                    } else {
+                        show()
+                    }
                 })
                 .catch(err => {
                     console.log(err)
@@ -236,19 +378,63 @@
                     }
                 })
                 .then(() => {
-                    location.reload()
+                    if (localStorage.getItem('state') === 't') {
+                        showToday()
+                    } else {
+                        show()
+                    }
                 })
                 .catch(err => {
                     console.log(err)
                 })
             }
 
-            function edit(name, desc, dueDate, importance) {
-                localStorage.setItem('nameEdit', name)
-                localStorage.setItem('descEdit', desc)
-                localStorage.setItem('dueDateEdit', dueDate)
-                localStorage.setItem('importanceEdit', importance)
-                window.location.href = "http://localhost:8080/edit.html"
+            function edit(id, name, desc, dueDate, importance) {
+                $('#edit').show()
+                $('#add').hide()
+                $('#editname').val(name)
+                $('#editdesc').val(desc)
+                $('#editduedate').val(dueDate.slice(0, 10))
+                $('#editimportance').val(importance)
+                $('#editBtn').click(function () {
+                    confirmEdit(id)
+                })
+            }
+
+            function closeEdit() {
+                $('#edit').hide()
+                $('#add').show()
+                $('#editname').val('')
+                $('#editdesc').val('')
+                $('#editduedate').val('')
+                $('#editimportance').val('')
+            }
+
+            function confirmEdit(id) {
+                $.ajax({
+                    method: 'PUT',
+                    url: `http://localhost:3000/list/${id}`,
+                    headers: {
+                        token: localStorage.getItem('token')
+                    },
+                    data: {
+                        name: $('#editname').val(),
+                        desc: $('#editdesc').val(),
+                        dueDate: $('#editduedate').val(),
+                        importance: $('#editimportance').val(),
+                    }
+                })
+                .then(() => {
+                    if (localStorage.getItem('state') === 't') {
+                        showToday()
+                    } else {
+                        show()
+                    }
+                    closeEdit()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
             }
         </script>
     </body>
