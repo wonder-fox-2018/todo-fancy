@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>IngedIn</title>
+        <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <meta name="google-signin-client_id" content="196400388485-ja50pc2ioih8f7jqkhk7r1r9ka3l8qej.apps.googleusercontent.com">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <script>
+            window.fbAsyncInit = function() {
+            FB.init({
+                appId            : 889851164543051,
+                autoLogAppEvents : true,
+                xfbml            : true,
+                version          : 'v3.1'
+            });
+            };
+        
+            (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
+        <div class="container">
+            <h1 class="text-center text-primary" style="font-size: 50px; margin-top: 50px"><a href='index.html'>Inged<span class="border bg-primary px-2" style="color: white">In</span></a></h1>
+            <div id='loginBtn' class="text-center mt-4">
+                <h3 class="text-primary" style="margin-top: 50px; margin-bottom: 20px">Please log in</h3>
+                <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button><br>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div><br>
+            </div>
+            <div id='logoutBtn' class="text-center mt-4">
+                <button class="btn btn-primary" onclick="logOut()">Log Out</button>
+            </div>
+            <div id='app'>
+                <div id='addAlert' class="alert mt-4" role="alert"></div>
+                <div class="row mb-4">
+                    <button class="btn btn-outline-primary col-sm-12 col-md-4" onclick="sort('name')">Sort by Name</button>
+                    <button class="btn btn-outline-primary col-sm-12 col-md-4" onclick="sort('dueDate')">Sort by Due Date</button>
+                    <button class="btn btn-outline-primary col-sm-12 col-md-4" onclick="sort('importance')">Sort by Importance Level</button>
+                </div>
+                <div id='list' class='mb-4'></div>
+                <div class="row">
+                    <input id='name' type="text" class="col-sm-3 col-md-2" placeholder="Name">
+                    <input id='desc' type="text" class="col-sm-9 col-md-4" placeholder="Description">
+                    <input id='dueDate' type="date" class="col-sm-5 col-md-2">
+                    <select id='importance' class="custom-select col-sm-5 col-md-2">
+                            <option selected>Importance Level</option>
+                            <option value="Very Important">Very Important</option>
+                            <option value="Important">Important</option>
+                            <option value="Unimportant">Unimportant</option>
+                    </select>
+                    <button class="btn btn-outline-primary col-2" onclick="add()">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function checkLoginState() {
+                FB.getLoginStatus(function(response) {
+                    retrieveInfo(response);
+                });
+            }
+            
+            function retrieveInfo(response) {
+                let token = response.authResponse.accessToken
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:3000/user/fblogin',
+                    data: {accessToken: token}
+                })
+                .then(data => {
+                    localStorage.setItem('jwtToken', data.token)
+                    localStorage.setItem('lgnMtd', 'fb')                    
+                    show()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+
+            function onSignIn(googleUser) {
+                let profile = googleUser.getBasicProfile();
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:3000/user/glogin',
+                    data: {profile: profile}
+                })
+                .then(data => {
+                    localStorage.setItem('jwtToken', data.token)
+                    localStorage.setItem('lgnMtd', 'g')                    
+                    show()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+
+            show()
+
+            function showLogIn() {
+                $('#loginBtn').show()
+                $('#logoutBtn').hide()
+                $('#app').hide()
+            }
+
+            function showApp() {
+                $('#loginBtn').hide()
+                $('#logoutBtn').show()
+                $('#app').show()
+            }
+
+            function logOut() {
+                if (localStorage.getItem('lgnMtd') === 'g') {
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    auth2.signOut().then(function () {
+                        console.log('User signed out.');
+                    });
+                }
+                localStorage.clear()
+                location.reload()
+            }
+
+            function add() {
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/list/add',
+                    data: {
+                        name: $('#name').val(),
+                        desc: $('#desc').val(),
+                        dueDate: $('#dueDate').val(),
+                        importance: $('#importance').val(),
+                        jwtToken: localStorage.getItem('jwtToken')
+                    }
+                })
+                .then(data => {
+                    localStorage.setItem('addAlert', 'success')
+                    location.reload()
+                })
+                .catch(err => {
+                    console.log(err)
+                    localStorage.setItem('addAlert', 'danger')
+                    location.reload()
+                })
+            }
+
+            function show() {
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/list/show',
+                    data: {
+                        jwtToken: localStorage.getItem('jwtToken')
+                    }
+                })
+                .then(data => {
+                    list(data.tasks)
+                    showApp()
+                })
+                .catch(err => {
+                    showLogIn()
+                    console.log(err)
+                })
+            }
+
+            function list(tasks) {
+                if (localStorage.getItem('addAlert') === 'success') {
+                    $('#addAlert').addClass('alert-success')
+                    $('#addAlert').append('Task successfully added')
+                    localStorage.removeItem('addAlert')
+                } else if (localStorage.getItem('addAlert') === 'danger') {
+                    $('#addAlert').addClass('alert-danger')
+                    $('#addAlert').append('Failed to add the task, please try again with a valid input (note: the name has to be unique)')
+                    localStorage.removeItem('addAlert')
+                }
+                $('#list').text("")
+                tasks.forEach(task => {
+                    if(task.status === 'completed') {
+                        $('#list').append(
+                            `<div class="row border m-1">
+                                <div class="col-sm-3 col-md-1 border vertically-centered">${task.name}</div>
+                                <div class="col-sm-9 col-md-3 border vertically-centered">${task.desc}</div>
+                                <div class="col-sm-6 col-md-2 border vertically-centered">${task.dueDate.slice(0, 10)}</div>
+                                <div class="col-sm-6 col-md-2 border vertically-centered">${task.importance}</div>
+                                <button class="btn btn-outline-success col-sm-9 col-md-3 border"><strong>Completed</strong></button> 
+                                <button class="btn btn-outline-danger col-sm-3 col-md-1 border" onclick="remove('${task.name}')"><strong>Delete</strong></button> 
+                            </div>`
+                        )
+                    } else {
+                        $('#list').append(
+                            `<div class="row border m-1">
+                                <div class="col-sm-3 col-md-1 border vertically-centered">${task.name}</div>
+                                <div class="col-sm-9 col-md-3 border vertically-centered">${task.desc}</div>
+                                <div class="col-sm-6 col-md-2 border vertically-centered">${task.dueDate.slice(0, 10)}</div>
+                                <div class="col-sm-6 col-md-2 border vertically-centered">${task.importance}</div>
+                                <button class="btn btn-outline-primary col-sm-3 col-md-1 border" onclick="edit('${task.name}', '${task.desc}', '${task.dueDate}', '${task.importance}')"><strong>Edit</strong></button> 
+                                <button class="btn btn-outline-success col-sm-6 col-md-2 border" onclick="complete('${task.name}')"><strong>Complete</strong></button> 
+                                <button class="btn btn-outline-danger col-sm-3 col-md-1 border" onclick="remove('${task.name}')"><strong>Delete</strong></button> 
+                            </div>`
+                        )
+                    }
+                })
+            }
+
+            function sort(base) {
+                let lC = localStorage.getItem(`${base}SortDir`)
+                if (lC === 'asc') {
+                    localStorage.setItem(`${base}SortDir`, 'desc')
+                } else {
+                    localStorage.setItem(`${base}SortDir`, 'asc')
+                }
+                if (base === 'importance') {
+                    $.ajax ({
+                        method: 'POST',
+                        url: `http://localhost:3000/list/show/importance/${localStorage.getItem(`${base}SortDir`)}`,
+                        data: {
+                            jwtToken: localStorage.getItem('jwtToken')
+                        }
+                    })
+                    .then(data => {
+                        let result = []
+                        data.tasks.forEach(tasks => {
+                            for (var i = 0; i < tasks.length; i++) {
+                                result.push(tasks[i])
+                            }
+                        })
+                        list(result)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                } else {
+                    $.ajax ({
+                        method: 'POST',
+                        url: `http://localhost:3000/list/show/${base}/${localStorage.getItem(`${base}SortDir`)}`,
+                        data: {
+                            jwtToken: localStorage.getItem('jwtToken')
+                        }
+                    })
+                    .then(data => {
+                        list(data.tasks)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                }
+            }
+
+            function complete(name) {
+                $.ajax({
+                    method: 'PUT',
+                    url: `http://localhost:3000/list/complete/${name}`,
+                    data: {
+                        jwtToken: localStorage.getItem('jwtToken')
+                    }
+                })
+                .then(() => {
+                    location.reload()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+
+            function remove(name) {
+                $.ajax({
+                    method: 'DELETE',
+                    url: `http://localhost:3000/list/${name}`,
+                    data: {
+                        jwtToken: localStorage.getItem('jwtToken')
+                    }
+                })
+                .then(() => {
+                    location.reload()
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+
+            function edit(name, desc, dueDate, importance) {
+                localStorage.setItem('nameEdit', name)
+                localStorage.setItem('descEdit', desc)
+                localStorage.setItem('dueDateEdit', dueDate)
+                localStorage.setItem('importanceEdit', importance)
+                window.location.href = "http://localhost:8080/edit.html"
+            }
+        </script>
+    </body>
+</html>
