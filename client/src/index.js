@@ -191,7 +191,14 @@ function loginuser(){
         })
     })
     .fail(error =>{
-        console.log('ERROR Login: ',error)
+        let parsedError = error.responseJSON.msg
+        $('#errorlogin').empty()
+        $('#errorlogin').append(
+            `<button type="button" class="btn btn-danger">
+                ${parsedError}</button><br><br>
+            `
+        )
+        setTimeout(()=>{ $('#errorlogin').empty() }, 3000)
     })
 }
 
