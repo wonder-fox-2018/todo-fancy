@@ -246,7 +246,6 @@ function registeruser(){
                 }
             })
             .done(result=>{
-                // console.log('Hasil---->', result.data)
                 let hasil = result.data
                 $('#listtask').empty()
                 $('#listtask').append(
@@ -275,7 +274,22 @@ function registeruser(){
         })
     })
     .fail(error =>{
-        console.log('ERROR Register: ',error)
+        let parsedError = error.responseJSON
+        let errorMsg = ''
+        if(parsedError.hasOwnProperty('error')){
+            errorMsg = parsedError.error.errors.email.message 
+        }else{
+            errorMsg = parsedError.msg
+        }
+        $('#errorregister').empty()
+        $('#errorregister').append(
+            ` <button type="button" class="btn btn-danger">
+                ${errorMsg}</button> 
+             <br> <br>   `
+        )
+        setTimeout( function (){ 
+            $('#errorregister').empty() 
+        }, 3000)
     })
 }
 
