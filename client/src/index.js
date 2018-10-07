@@ -383,9 +383,9 @@ function edittodo(editid){
     let token = localStorage.getItem('token')
     let edittitle = $('#edittodotitle').val()
     let editdescription = $('#edittododescription').val()
-    let editstatus = $('#edittodostatus').val()
+    let editstatus = $("input[name='edittodostatus']:checked").val()
     let editduedate = $('#edittododuedate').val()
-    
+
     $.ajax({
         method: 'PUT',
         url: `http://localhost:3006/todolists/${editid}`,
@@ -445,8 +445,6 @@ function edittodo(editid){
 function getformedittodo(editid){
     $('#individualtodo').empty()
     let token = localStorage.getItem('token')
-    // console.log('Token Detail----->',token),
-    // console.log('Edit id---->', editid)
     $.ajax({
         method: 'GET',
         url: `http://localhost:3006/todolists/${editid}`,
@@ -458,6 +456,16 @@ function getformedittodo(editid){
         // console.log('Detail of TODO--->', result.data)
         let singletodo = result.data
         let rawdate = new Date(result.data.duedate)
+        let completecheck = ''
+        let incompletecheck = ''
+        if(singletodo.status === 'COMPLETE'){
+            completecheck = 'checked'
+            incompletecheck = ''
+        }else if(singletodo.status === 'INCOMPLETE'){
+            completecheck = ''
+            incompletecheck = 'checked'
+        }
+
         $('#individualtodo').empty()
         $('#individualtodo').append(
             `
@@ -475,8 +483,9 @@ function getformedittodo(editid){
                                 <input type="text" class="form-control" id="edittododescription" value = "${singletodo.description}" aria-describedby="emailHelp">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Status</label>
-                                <input type="text" class="form-control" id="edittodostatus" value="${singletodo.status}" aria-describedby="emailHelp">
+                                <label for="exampleInputEmail1">Status</label><br/>
+                                <input type="radio" name="edittodostatus" value="INCOMPLETE" ${incompletecheck}>INCOMPLETE<br>
+                                <input type="radio" name="edittodostatus" value="COMPLETE" ${completecheck}> COMPLETE<br>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Due Date</label>
