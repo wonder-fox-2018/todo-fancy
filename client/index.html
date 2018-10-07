@@ -95,6 +95,7 @@
                 $('#alltasks').hide()
                 $('#edit').hide()
             })
+            
 
             function onSignIn(googleUser) {
                 let id_token = googleUser.getAuthResponse().id_token;                
@@ -155,11 +156,13 @@
                     console.log(err.responseJSON.message)
                 })
             }
-
-            if (localStorage.getItem('state') === 't') {
-                showToday()
-            } else {
-                show()
+            
+            if (localStorage.getItem('lgnMtd') !== 'g') {
+                if (localStorage.getItem('state') === 't') {
+                    showToday()
+                } else {
+                    show()
+                }
             }
             
             function showLogIn() {
@@ -257,9 +260,12 @@
             }
 
             function list(tasks) {
+                console.log('A')
+                let counter = 0
                 $('#list').text("")
                 tasks.forEach(task => {
                     if(task.status === 'completed') {
+                        counter ++
                         $('#list').append(
                             `<div class="row border m-1">
                                 <div class="col-sm-3 col-md-1 border vertically-centered">${task.name}</div>
@@ -284,6 +290,22 @@
                         )
                     }
                 })
+                if (counter === tasks.length) {
+                    if ('Notification' in window) {
+                        Notification
+                        .requestPermission()
+                        .then((permission) => {
+                            if (permission !== 'granted') throw new Error('No access!');
+                        })
+                        .then(() => {
+                            const title = "Hooray! You've completed all tasks for today!";
+                            new Notification(title);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                    }
+                }
             }
 
             function sort(base) {
