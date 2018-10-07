@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/list', listRouter);
 app.use('/user', userRouter);
 
-mongoose.connect('mongodb://localhost:27017/todo-fancy', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost:27017/wonder-todo-fancy', {useNewUrlParser: true});
 
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

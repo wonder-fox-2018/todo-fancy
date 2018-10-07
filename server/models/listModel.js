@@ -23,8 +23,9 @@ const listSchema = new Schema ({
         type: String,
         required: true
     },
-    userEmail: {
-        type: String,
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     }
 }, {

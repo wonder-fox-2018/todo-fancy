@@ -14,29 +14,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
-        <script>
-            window.fbAsyncInit = function() {
-            FB.init({
-                appId            : 889851164543051,
-                autoLogAppEvents : true,
-                xfbml            : true,
-                version          : 'v3.1'
-            });
-            };
-        
-            (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>
         <div class="container">
             <h1 class="text-center text-primary" style="font-size: 50px; margin-top: 50px"><a href='index.html'>Inged<span class="border bg-primary px-2" style="color: white">In</span></a></h1>
             <div id='loginBtn' class="text-center mt-4">
                 <h3 class="text-primary" style="margin-top: 50px; margin-bottom: 20px">Please log in</h3>
-                <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button><br>
                 <div class="g-signin2" data-onsuccess="onSignIn"></div><br>
             </div>
             <div id='logoutBtn' class="text-center mt-4">
@@ -66,38 +47,14 @@
         </div>
 
         <script>
-            function checkLoginState() {
-                FB.getLoginStatus(function(response) {
-                    retrieveInfo(response);
-                });
-            }
-            
-            function retrieveInfo(response) {
-                let token = response.authResponse.accessToken
-                $.ajax({
-                    type: 'POST',
-                    url: 'http://localhost:3000/user/fblogin',
-                    data: {accessToken: token}
-                })
-                .then(data => {
-                    localStorage.setItem('jwtToken', data.token)
-                    localStorage.setItem('lgnMtd', 'fb')                    
-                    show()
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            }
-
             function onSignIn(googleUser) {
-                let profile = googleUser.getBasicProfile();
+                let id_token = googleUser.getAuthResponse().id_token;                
                 $.ajax({
-                    type: 'POST',
                     url: 'http://localhost:3000/user/glogin',
-                    data: {profile: profile}
+                    headers: {id_token: id_token}
                 })
                 .then(data => {
-                    localStorage.setItem('jwtToken', data.token)
+                    localStorage.setItem('token', data.token)
                     localStorage.setItem('lgnMtd', 'g')                    
                     show()
                 })
@@ -135,12 +92,14 @@
                 $.ajax({
                     method: 'POST',
                     url: 'http://localhost:3000/list/add',
+                    headers: {
+                        token: localStorage.getItem('token')
+                    },
                     data: {
                         name: $('#name').val(),
                         desc: $('#desc').val(),
                         dueDate: $('#dueDate').val(),
                         importance: $('#importance').val(),
-                        jwtToken: localStorage.getItem('jwtToken')
                     }
                 })
                 .then(data => {
@@ -156,10 +115,9 @@
 
             function show() {
                 $.ajax({
-                    method: 'POST',
                     url: 'http://localhost:3000/list/show',
-                    data: {
-                        jwtToken: localStorage.getItem('jwtToken')
+                    headers: {
+                        token: localStorage.getItem('token')
                     }
                 })
                 .then(data => {
@@ -220,10 +178,9 @@
                 }
                 if (base === 'importance') {
                     $.ajax ({
-                        method: 'POST',
                         url: `http://localhost:3000/list/show/importance/${localStorage.getItem(`${base}SortDir`)}`,
-                        data: {
-                            jwtToken: localStorage.getItem('jwtToken')
+                        headers: {
+                            token: localStorage.getItem('token')
                         }
                     })
                     .then(data => {
@@ -240,10 +197,9 @@
                     })
                 } else {
                     $.ajax ({
-                        method: 'POST',
                         url: `http://localhost:3000/list/show/${base}/${localStorage.getItem(`${base}SortDir`)}`,
-                        data: {
-                            jwtToken: localStorage.getItem('jwtToken')
+                        headers: {
+                            token: localStorage.getItem('token')
                         }
                     })
                     .then(data => {
@@ -259,8 +215,8 @@
                 $.ajax({
                     method: 'PUT',
                     url: `http://localhost:3000/list/complete/${name}`,
-                    data: {
-                        jwtToken: localStorage.getItem('jwtToken')
+                    headers: {
+                        token: localStorage.getItem('token')
                     }
                 })
                 .then(() => {
@@ -275,8 +231,8 @@
                 $.ajax({
                     method: 'DELETE',
                     url: `http://localhost:3000/list/${name}`,
-                    data: {
-                        jwtToken: localStorage.getItem('jwtToken')
+                    headers: {
+                        token: localStorage.getItem('token')
                     }
                 })
                 .then(() => {

@@ -1,103 +1,70 @@
 const User = require('../models/userModel')
 const axios = require('axios')
 const jwt = require('jsonwebtoken');
+const CLIENT_ID = process.env.CLIENT_ID;
 
 module.exports = {
     
-    FBLogin: function (req, res) {
-        axios({
-            method:'get',
-            url:`https://graph.facebook.com/me?fields=email,name&access_token=${req.body.accessToken}`,
-        })
-        .then(result => {
-            User.findOne({email: result.data.email}, (err, findResult) => {
+    GLogin: function (req, res) {
+        const {OAuth2Client} = require('google-auth-library');
+        const client = new OAuth2Client(CLIENT_ID);
+        const gToken = req.headers.id_token
+        const ticket = new Promise ((resolve, reject) => {
+            client.verifyIdToken({
+                idToken: gToken,
+                audience: CLIENT_ID,
+            }, (err, ticket) => {
                 if (err) {
-                    console.log(err)
+                    reject(err)
                 } else {
-                    if(findResult) {
-                        jwt.sign({
-                            id: findResult._id,
-                            email: result.data.email,
-                            name: result.data.name
-                        }, process.env.JWT_KEY, (err, token) => {
-                            if (err) {
-                                res.status(500).json({message: err.message})
-                            } else {
-                                res.status(201).json({token: token})
-                            }
-                        })
-                    } else {
-                        User.create({
-                            email: result.data.email,
-                            name: result.data.name
-                        }, (err, user) => {
-                            if (err) {
-                                res.status(500).json({message: err.message})
-                            } else {
-                                jwt.sign({
-                                    id: user._id,
-                                    email: result.data.email,
-                                    name: result.data.name
-                                }, process.env.JWT_KEY, (err, token) => {
-                                    if (err) {
-                                        res.status(500).json({message: err.message})
-                                    } else {
-                                        res.status(201).json({token: token})
-                                    }
-                                })
-                            }
-                        })
-                    }
+                    const payload = ticket.getPayload();
+                    const userid = payload['sub'];
+                    resolve(userid)
                 }
             })
         })
-        .catch(err => {
-            console.log(err)
+        .then(userid => {
+            axios({
+                url: `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${gToken}`
+            })
+            .then(data => {
+                User.findOne({
+                    email: data.data.email
+                })
+                .then(user => {
+                    if (user) {
+                        if (user.gSignIn === 1) {
+                            let token = jwt.sign({id: user._id}, process.env.JWT_KEY)
+                            res.status(200).json({token: token})
+                        } else {
+                            res.status(500).json({message: 'Sorry, but please log in manually'})
+                        }
+                    } else {
+                        User.create({
+                            email: data.data.email,
+                            name: data.data.name,
+                            password: 'abcde12345',
+                            gSignIn: 1
+                        })
+                        .then(newuser => {
+                            let token = jwt.sign({id: newuser._id}, process.env.JWT_KEY)
+                            res.status(200).json({token: token})
+                        })
+                        .catch(err => {
+                            res.status(500).json({message: err})
+                        })
+                    }
+                })
+                .catch(err => {
+                    res.status(500).json({message: err})
+                })
+            })
+            .catch(err => {
+                res.status(500).json({message: err})
+            })
         })
-    },
-    
-    GLogin: function (req, res) {
-        let name = req.body['profile[ig]']
-        let email = req.body['profile[U3]']
-        User.findOne({email: email}, (err, result) => {
-            if (err) {
-                console.log(err)
-            } else {
-                if(result) {
-                    jwt.sign({
-                        id: result._id,
-                        email: email,
-                        name: name
-                    }, process.env.JWT_KEY, (err, token) => {
-                        if (err) {
-                            res.status(500).json({message: err.message})
-                        } else {
-                            res.status(201).json({token: token})
-                        }
-                    })
-                } else {
-                    User.create({
-                        email: email,
-                        name: name
-                    }, (err, user) => {
-                        if (err) {
-                            res.status(500).json({message: err.message})
-                        } else {
-                            jwt.sign({
-                                id: user._id,
-                                email: email,
-                                name: name
-                            }, process.env.JWT_KEY, (err, token) => {
-                                if (err) {
-                                    res.status(500).json({message: err.message})
-                                } else {
-                                    res.status(201).json({token: token})
-                                }
-                            })
-                        }
-                    })
-                }
-            }
+        .catch(err => {
+            res.status(500).json({message: err})
         })
     }
 }

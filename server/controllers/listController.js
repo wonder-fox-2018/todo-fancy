@@ -1,5 +1,4 @@
 const listModel = require('../models/listModel')
-const jwt = require('jsonwebtoken');
 
 module.exports = {
     add: function(req, res) {
@@ -9,7 +8,7 @@ module.exports = {
         }
         listModel.find({
             name: req.body.name,
-            userEmail: req.userEmail
+            userId: req.userId
         })
         .then(data => {
             if(data.length < 1) {
@@ -18,7 +17,7 @@ module.exports = {
                     desc: req.body.desc,
                     dueDate: req.body.dueDate,
                     importance: req.body.importance,
-                    userEmail: req.userEmail
+                    userId: req.userId
                 })
                 .then(() => {
                     res.status(201).json({})
@@ -37,7 +36,7 @@ module.exports = {
 
     show: function(req, res) {
         listModel.find({
-            userEmail: req.userEmail
+            userId: req.userId
         })
         .then(data => {
             res.status(200).json({tasks: data})
@@ -51,17 +50,17 @@ module.exports = {
         var result = [];
         if (req.params.dir === 'asc') {
             listModel.find({
-                userEmail: req.userEmail,
+                userId: req.userId,
                 importance: 'Very Important'
             })
             .then(data => {
                 listModel.find({
-                    userEmail: req.userEmail,
+                    userId: req.userId,
                     importance: 'Important'
                 })
                 .then(data2 => {
                     listModel.find({
-                        userEmail: req.userEmail,
+                        userId: req.userId,
                         importance: 'Unimportant'
                     })
                     .then(data3 => {
@@ -75,17 +74,17 @@ module.exports = {
             })
         } else if (req.params.dir === 'desc') {
             listModel.find({
-                userEmail: req.userEmail,
+                userId: req.userId,
                 importance: 'Unimportant'
             })
             .then(data => {
                 listModel.find({
-                    userEmail: req.userEmail,
+                    userId: req.userId,
                     importance: 'Important'
                 })
                 .then(data2 => {
                     listModel.find({
-                        userEmail: req.userEmail,
+                        userId: req.userId,
                         importance: 'Very Important'
                     })
                     .then(data3 => {
@@ -102,7 +101,7 @@ module.exports = {
 
     showSorted: function(req, res) {
         listModel.find({
-            userEmail: req.userEmail
+            userId: req.userId
         }).sort({
             [req.params.sort]: req.params.dir
         }).exec(function(err, data) {
@@ -115,7 +114,7 @@ module.exports = {
     },
 
     complete: function(req, res) {
-        listModel.updateOne({name: req.params.name, userEmail: req.userEmail}, {
+        listModel.updateOne({name: req.params.name, userId: req.userId}, {
             status: 'completed'
         })
         .then(() => {
@@ -127,7 +126,7 @@ module.exports = {
     },
 
     remove: function(req, res) {
-        listModel.deleteOne({name: req.params.name, userEmail: req.userEmail})
+        listModel.deleteOne({name: req.params.name, userId: req.userId})
         .then(() => {
             res.status(200).json({})
         })
@@ -139,7 +138,7 @@ module.exports = {
     edit: function(req, res) {
         let importancePossible = ['Very Important', 'Important', 'Unimportant']
         if (importancePossible.indexOf(req.body.importance) === -1) {
-            listModel.updateOne({name: req.params.name, userEmail: req.userEmail}, {
+            listModel.updateOne({name: req.params.name, userId: req.userId}, {
                 name: req.body.name,
                 desc: req.body.desc,
                 dueDate: req.body.dueDate,
@@ -151,7 +150,7 @@ module.exports = {
                 res.status(500).json({message: err.message})
             })
         } else {
-            listModel.updateOne({name: req.params.name, userEmail: req.userEmail}, {
+            listModel.updateOne({name: req.params.name, userId: req.userId}, {
                 name: req.body.name,
                 desc: req.body.desc,
                 dueDate: req.body.dueDate,
