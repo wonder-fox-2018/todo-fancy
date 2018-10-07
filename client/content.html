@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="form-group">
-                            <input type="datetime" class="form-control" id="datepicker" name="date" placeholder="DD-MM-YYYY">
+                            <input type="datetime" class="form-control datepicker" name="date" placeholder="DD-MM-YYYY">
                         </div>
 
                     </form>
@@ -108,6 +108,55 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Edit Task -->
+    <div class="modal fade" id="edittask-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <input class="edit-id" type="hidden" name="id">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" name="name" aria-describedby="emailHelp"
+                                placeholder="Enter task name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">description</label>
+                            <textarea type="text" class="form-control" name="description" aria-label="With textarea"
+                                placeholder="describe the task"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="datetime" class="form-control datepicker" name="date" placeholder="DD-MM-YYYY">
+                        </div>
+
+
+                    </form>
+                    <button class="btn btn-primary btn-block submit-edit" data-dismiss="modal" onclick="editTask()">Edit</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal" onclick="deleteTask()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
 
     <!-- content -->
     <div class="container">
@@ -153,7 +202,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(function () {
-            $("#datepicker").datepicker({
+            $(".datepicker").datepicker({
                 dateFormat: 'dd-mm-yy'
             });
         });
@@ -220,7 +269,7 @@
                                     <b>Due: ${date}</b>
                                 </div>
                                 <div class="row justify-content-end">
-                                    <button type="button" class="btn btn-primary btn-sm edit-btn">Edit</button>
+                                    <button type="button" class="btn btn-primary btn-sm edit-btn" data-id="${id}" data-toggle="modal" data-target="#edittask-modal">Edit</button>
                                     <button type="button" class="btn btn-primary btn-sm complete-btn" data-id="${id}" data-name="${name}" data-description="${description}">Done!</button>
                                 </div>
                             </div>
@@ -232,11 +281,72 @@
 
                 });
                 setCompleteButton();
+                setEditButton();
+
             }).fail((err) => {
                 location.replace('index.html');
             });
 
 
+        }
+
+
+
+        function editTask() {
+            let id = $('#edittask-modal input[name=id]').val();
+            let name = $('#edittask-modal input[name=name]').val();
+            let description = $('#edittask-modal textarea[name=description]').val();
+            let due_date = $('#edittask-modal input[name=date]').val();
+
+            $.ajax({
+                method: 'PUT',
+                url: `${root}/task`,
+                headers: {
+                    'access-token': getToken()
+                },
+                data: {
+                    id: id,
+                    name: name,
+                    description: description,
+                    due_date: due_date
+                }
+            }).done((result) => {
+                showAllTask();
+            }).fail((err) => {
+                console.log(err);
+            });
+
+        }
+
+
+        function deleteTask() {
+            let id = $('#edittask-modal input[name=id]').val();
+
+            $.ajax({
+                method: 'DELETE',
+                url: `${root}/task`,
+                headers: {
+                    'access-token': getToken()
+                },
+                data: {
+                    id: id
+                }
+
+            }).done((result) => {
+                showAllTask();
+            }).fail((err) => {
+                console.log(err);
+            });
+        }
+
+        function setEditButton() {
+            $('.edit-btn').on('click', function (e) {
+
+                let taskId = $(this).attr('data-id');
+
+                $('#edittask-modal input[name=id]').val(taskId);
+
+            })
         }
 
         function setCompleteButton() {
@@ -273,14 +383,14 @@
                                     <b>Status: completed</b>
                                 </div>
                                 <div class="row justify-content-end">
-                                    <button type="button" class="btn btn-primary btn-sm edit-btn">Edit</button>
+                                    <button type="button" class="btn btn-primary btn-sm delete-btn" data-id="${id}">Delete</button>
                                 </div>
                             </div>
                         `
                     )
-
+                    
                     $(finishedTask).prependTo($('.finished-task-list-container')).show('slow');
-
+                    setDeleteButton();
 
 
 
@@ -322,21 +432,42 @@
                                     <b>Status: completed</b>
                                 </div>
                                 <div class="row justify-content-end">
-                                    <button type="button" class="btn btn-primary btn-sm edit-btn">Edit</button>
+                                    <button type="button" class="btn btn-primary btn-sm delete-btn" data-id="${id}">delete</button>
                                 </div>
                             </div>
-                        
                         
                         `
                         )
                     }
                 });
+                setDeleteButton();
             }).fail((err) => {
                 location.replace('index.html');
             })
 
+        }
 
+        function setDeleteButton() {
+            $('.delete-btn').click(function () {
+                let id = $(this).attr('data-id');
 
+                $.ajax({
+                    method: 'DELETE',
+                    url: `${root}/task`,
+                    headers: {
+                        'access-token': getToken()
+                    },
+                    data: {
+                        id: id
+                    }
+
+                }).done((result) => {
+                    showFinishedTask();
+                }).fail((err) => {
+                    console.log(err);
+                });
+
+            })
         }
 
         function greet() {
@@ -395,6 +526,9 @@
             showAllTask();
 
             showFinishedTask();
+
+
+
 
 
         })

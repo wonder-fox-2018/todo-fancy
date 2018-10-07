@@ -54,6 +54,13 @@ module.exports = {
     },
 
     update: (req, res) => {
+        
+        let splittedDate = req.body.due_date.split('-');
+
+        req.body.due_date = `${splittedDate[2]}-${splittedDate[1]}- ${splittedDate[0]}`
+
+
+
         let {name, description, due_date} = req.body;
         Task.update({_id: req.body.id}, {
             name,
