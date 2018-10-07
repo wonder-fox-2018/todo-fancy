@@ -51,50 +51,6 @@ to run the app use cd to server then run `nodemon/bin/www` and cd server then ru
 * **Notes:**
  
 
- **register**
-----
-  
-  This API call is made for registering a user to the web-app. the user will then receive a token that can be stored in the client localStorage
-  
-* **URL**
-    /register
-
-* **Method:**
-  `POST` 
-*  **URL Params**
-    None
-* **Data Params**
-
-  `email: String`
-  `password: String`
-  `name: String`
-* **Success Response:**
-  
-  * **Code:** 200 
-    **Content:** `{ token: string}`
- 
-* **Error Response:**
-
-  * **Code:** 500 INTERNAL SERVER ERROR 
-    **Content:** `{ error : "server error" }`
-
-
-* **Sample Call:**
-    
-    ```javascript
-    $.ajax({
-                method: 'POST',
-                url: 'http://localhost:xxxx/register',
-                data: {
-                    email: $('#register-form input[name=email]').val(),
-                    name: $('#register-form input[name=name]').val(),
-                    password: $('#register-form input[name=password]').val()
-                }
-            })
-    ```
-
-* **Notes:**
-
 **Google Sign In**
 ----
   
@@ -169,53 +125,15 @@ to run the app use cd to server then run `nodemon/bin/www` and cd server then ru
                 method: 'POST',
                 url: 'http://localhost:xxxx/register',
                 data: {
-                    email: $('#register-form input[name=email]').val(),
-                    name: $('#register-form input[name=name]').val(),
-                    password: $('#register-form input[name=password]').val()
+                    email: email,
+                    name: name,
+                    password: password
                 }
             })
     ```
 
 * **Notes:**
 
-**Google Sign In**
-----
-  
-  This API call is made for registering or logging in a user to the web-app through google oAuth. the user will then receive a token that can be stored in the client localStorage
-  
-* **URL**
-    /signin/google
-
-* **Method:**
-  `POST` 
-*  **URL Params**
-    None
-* **Data Params**
-
-  `token: google token`
-  
-* **Success Response:**
-  
-  * **Code:** 200 
-    **Content:** `{ token: string}`
- 
-* **Error Response:**
-
-  * **Code:** 500 INTERNAL SERVER ERROR 
-    **Content:** `{ error : "server error" }`
-
-
-* **Sample Call:**
-    
-    ```javascript
-    $.ajax({
-                method: 'POST',
-                url: `http://localhost:xxxx/signin/google`,
-                data: {token: google_token}
-            })
-    ```
-
-* **Notes:**
 
 **get user info**
 ----
