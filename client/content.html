@@ -18,16 +18,20 @@
     <!-- datepicker -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
-    
+
 </head>
 
 <style>
-    .task-list-container {
-        margin-top: 10%;
+    .task-list-container, .finished-task-list-container {
+        margin-top: 5%;
     }
 
     .task-content{
         margin-top: 5%;
+    }
+
+    .finished-task-content {
+        margin-top: 11%;
     }
 
     .edit-btn {
@@ -67,7 +71,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Task</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -84,37 +88,34 @@
                         <div class="form-group">
                             <label for="description">description</label>
                             <textarea type="text" class="form-control" name="description" aria-label="With textarea"
-                                placeholder="describe the task">
-                            </textarea>
+                                placeholder="describe the task"></textarea>
                         </div>
 
                         <div class="form-group">
-                            <input type="datetime" class="form-control" id="datepicker" name="date" placeholder="MM/DD/YYYY">
+                            <input type="datetime" class="form-control" id="datepicker" name="date" placeholder="DD-MM-YYYY">
                         </div>
 
                     </form>
-                    <button class="btn btn-primary btn-block" onclick="addTask()">Add</button>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button class="btn btn-primary btn-block" onclick="addTask()" data-dismiss="modal">Add</button>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-
     <!-- content -->
     <div class="container">
         <div class="row">
-            <div class="col-sm">
-                One of three columns
+            <div class="col-sm-4">
+                Finished:
+                <div class="card border-0 finished-task-list-container">
+
+                    <!-- render finished task here -->
+
+                </div>
+
             </div>
-            <div class="col-sm">
+            <div class="col-sm-6">
+                Current To Do:
                 <div class="card border-0 task-list-container">
 
                     <!-- render on-progress task here -->
@@ -145,7 +146,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(function () {
-            $("#datepicker").datepicker();
+            $("#datepicker").datepicker({
+                dateFormat: 'dd-mm-yy'
+            });
         });
     </script>
     <script>
@@ -156,6 +159,7 @@
         }
 
         function showAllTask() {
+            $('.task-list-container').empty();
             $.ajax({
                 method: 'GET',
                 url: `${root}/task`,
@@ -166,6 +170,7 @@
 
                 result.output.forEach(task => {
                     if (!task.isComplete) {
+                        let id = task._id;
                         let name = task.name;
                         let description = task.description;
                         let date = new Date(task.due_date);
@@ -188,7 +193,87 @@
                                 </div>
                                 <div class="row justify-content-end">
                                     <button type="button" class="btn btn-primary btn-sm edit-btn">Edit</button>
-                                    <button type="button" class="btn btn-primary btn-sm complete-btn">Done!</button>
+                                    <button type="button" class="btn btn-primary btn-sm complete-btn" data-id="${id}" data-name="${name}" data-description="${description}">Done!</button>
+                                </div>
+                            </div>
+                        
+                        
+                        `
+                        )
+                    }
+                    setCompleteButton();
+                });
+            }).fail((err) => {
+                location.replace('index.html');
+            });
+
+
+        }
+
+        function setCompleteButton() {
+            $('.complete-btn').click(function () {
+                let id = $(this).attr('data-id');
+                let name = $(this).attr('data-name');
+                let description = $(this).attr('data-description');
+                //TODO ADD FINISHED TASK ANIMATION
+                $.ajax({
+                    method: 'PATCH',
+                    url: `${root}/task`,
+                    headers: {
+                        'access-token': getToken()
+                    },
+                    data: {
+                        id: id
+                    }
+                }).done((result) => {
+                    console.log('updated');
+
+                    $(this).closest('.task-content').slideUp();
+                    $('.finished-task-list-container').empty();
+                    showFinishedTask();
+
+                }).fail((err) => {
+                    console.log(err);
+                });
+
+            })
+        }
+
+        function showFinishedTask() {
+            $('.finished-task-list-container').empty();
+            $.ajax({
+                method: 'GET',
+                url: `${root}/task`,
+                headers: {
+                    'access-token': getToken()
+                }
+            }).done((result) => {
+
+                result.output.forEach(task => {
+                    if (task.isComplete) {
+                        let id = task._id;
+                        let name = task.name;
+                        let description = task.description;
+                        let date = new Date(task.due_date);
+                        date = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+                        $('.finished-task-list-container').append(
+                            `
+                        
+                            <div class="card-body border border-primary rounded finished-task-content">
+                                <div class="row text-primary">
+                                    <h3>${name}</h3>
+                                </div>
+                                <div class="row">
+                                    <b>Description:${description}</b>
+                                </div>
+                                <div class="row">
+                                    <b>Status: completed</b>
+                                </div>
+                                <div class="row">
+                                    <b>Due: ${date}</b>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <button type="button" class="btn btn-primary btn-sm edit-btn">Edit</button>
                                 </div>
                             </div>
                         
@@ -199,7 +284,8 @@
                 });
             }).fail((err) => {
                 location.replace('index.html');
-            });
+            })
+
 
 
         }
@@ -223,7 +309,26 @@
 
 
         function addTask() {
-            alert('added');
+            //alert('add');
+            console.log($('#addtask-modal input[name=name]').val(), $('#addtask-modal textarea[name=description').val(),
+                $('#addtask-modal input[name=date]').val());
+
+            $.ajax({
+                method: 'POST',
+                url: `${root}/task`,
+                headers: {
+                    'access-token': getToken()
+                },
+                data: {
+                    name: `${$('#addtask-modal input[name=name]').val()}`,
+                    description: `${$('#addtask-modal textarea[name=description').val()}`,
+                    due_date: `${$('#addtask-modal input[name=date]').val()}`
+                }
+            }).done((result) => {
+                showAllTask();
+            }).fail((err) => {
+                console.log(err);
+            });
         }
 
 
@@ -231,6 +336,8 @@
 
             greet();
             showAllTask();
+
+            showFinishedTask();
 
 
         })

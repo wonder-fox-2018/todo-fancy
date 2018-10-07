@@ -4,7 +4,11 @@ const ServerResponse = require('../helpers/serverResponse');
 
 module.exports = {
     add: (req, res) => {
-        
+        //converting string from dd-mm-yy to yy-mm-dd
+        let splittedDate = req.body.due_date.split('-');
+
+        req.body.due_date = `${splittedDate[2]}-${splittedDate[1]}- ${splittedDate[0]}`
+
         req.body.isComplete = false;
         
         let {user, name, description, isComplete, due_date} = req.body
@@ -26,6 +30,7 @@ module.exports = {
             });
     
         }).catch((err) => {
+            console.log(err);
             ServerResponse.error(res, 500, err);
         });
     },
@@ -39,7 +44,9 @@ module.exports = {
     },
 
     markAsComplete: (req, res) => {
+        console.log(req.body);
         Task.findOneAndUpdate({_id: req.body.id}, {$set: {isComplete: true}}).then((task) => {
+            console.log(task);
             ServerResponse.success(res, 200, 'task has been marked as complete', task); //task output is the found data
         }).catch((err) => {
             ServerResponse.error(res, 500, err);
