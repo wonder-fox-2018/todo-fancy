@@ -84,21 +84,21 @@ class Controller {
         const payload = ticket.getPayload();
         const userid = payload['sub']
         }
-        console.log('sebelum axios..')
+        // console.log('sebelum axios..')
         axios({
             method:'GET',
             url: `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${token}'`
         })
         .then(function(result) {
-            console.log('response === ',result)
+            // console.log('response === ',result)
             const dataR = result
-            console.log(dataR)
+            // console.log(dataR)
             User.findOne(
                 { email: result.data.email 
             }).then(function(data){
-                console.log('dataaaaaaa=========',data)
+                // console.log('dataaaaaaa=========',data)
                 if(data){
-                    console.log('masuk ke data tidak sama dengan null')
+                    // console.log('masuk ke data tidak sama dengan null')
                     // console.log(typeof data)
                     
                     let token = jwt.sign({
@@ -115,17 +115,17 @@ class Controller {
                     })
                     
                 } else {
-                    console.log('masuk ke data = null')
+                    // console.log('masuk ke data = null')
                     let newLogin = new User({
                         name: dataR.data.name,
-                        gender : 'empty',
-                        address : 'empty',
+                        gender : 'login with oauth',
+                        address : 'login with oauth',
                         phoneNumber: dataR.data.email,
                         email: dataR.data.email,
-                        password: 'empty'
+                        password: 'login with oauth'
                     })
                     
-                    console.log('new login',newLogin)
+                    // console.log('new login',newLogin)
                     newLogin.save()
 
                     let token = jwt.sign({

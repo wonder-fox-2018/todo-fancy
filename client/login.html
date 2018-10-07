@@ -12,7 +12,9 @@
 </head>
 <body>
     <center><div id="status"></div></center>
-        <div class="login-menu"></div>
+
+        <!-- LOGIN MENU -->
+        <div class="login-menu">
         <label>Username</label>
         <input id="login_email" type="text">
         <br>
@@ -22,6 +24,23 @@
         </div>
         <div class="login-with-google">
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+
+        <!-- REGISTER MENU -->
+        <div class="register-menu">
+        <label>name</label>
+        <input type="text" id="register_name">
+        <label>gender</label>
+        <input type="text" id="register_gender">
+        <label>phone number</label>
+        <input type="text" id="register_phoneNumber">
+        <label>address</label>
+        <input type="text" id="register_address">
+        <label>email</label>
+        <input type="text" id="register_email">
+        <label>password</label>
+        <input type="text" id="register_password">
+        <button id="register">Register</button>
         </div>
 </body>
 <script
@@ -72,9 +91,39 @@ function onSignIn(googleUser) {
             window.location.href = 'index.html'
         })
         .fail(function(err){})
-    
+   
 }
-    
 
+$("#register").click(function () {
+
+    let name = $('#register_name').val()
+    let gender = $('#register_gender').val()
+    let phone = $('#register_phoneNumber').val()
+    let address = $('#register_address').val()
+    let email = $('#register_email').val()
+    let password = $('#register_password').val()
+
+    let data = {
+        name,
+        gender,
+        phone,
+        address,
+        email,
+        password
+    }
+
+    $.ajax({
+            method: "POST",
+            url: "http://localhost:3000/users/signup",
+            data
+        })
+        .done(function (user) {
+            location.reload()
+        })
+        .fail(function (err) {
+            checkError(err)
+        })
+    })
+    
 </script>
 </html>
