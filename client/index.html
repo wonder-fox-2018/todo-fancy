@@ -1,0 +1,132 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Todo Fancy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script> -->
+</head>
+<body>
+    <h1>Masuk ke fancy todo !</h1>
+    <button id="logout">Logout</button>
+    <br>
+    <br>
+    <center><div id="status"></div></center>
+    
+
+
+    <!-- MY TASK -->
+    <h3>My Tasks</h3>
+    <div class="my-tasks">
+        <button id="my-tasks" onclick="myTasks()">Show My Tasks</button>
+        <div id="task-list">
+
+        </div>
+        <button id="hide-tasks" onclick="hideTasks()">Hide Tasks</button>
+
+    </div>
+
+
+
+
+    <!-- ADD TASK -->
+    <div class="add-task">
+        <h3>Add Task</h3>
+        <input type="text" id="task_name">
+        <input type="text" id="task_description">
+        <button id="create_task">Create Task</button>
+    </div>
+
+
+
+
+
+    
+</body>
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+<script>
+    let token = localStorage.getItem('token')
+    if (!token) window.location = 'login.html'
+
+    $("#logout").click(function(){
+        localStorage.removeItem('token')
+        location.reload()
+    })
+
+    $("#create_task").click(function () {
+        let name = $("#task_name").val()
+        let description = $("#task_description").val()
+        // let dueDate = $("#deuDateTask").val()
+        let data = {
+            name,
+            description
+            // dueDate,
+        }
+        $.ajax({
+                method: "POST",
+                url: "http://localhost:3000/todo/create",
+                data,
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+            .done(function (task) {
+                $('#status').text('create task success')
+            })
+            .fail(function (err) {
+                $("#task_name").val('error')
+                $("#task_description").val('error')
+        })
+    })
+
+    function myTasks(){
+        $.ajax({
+                method: "GET",
+                url: "http://localhost:3000/todo/read",
+                headers: {
+                    token: localStorage.getItem('token')
+                }
+            })
+            .done(function (data) {
+                // console.log(data)
+                console.log(data.task.todoList)
+                let todoList = data.task.todoList
+                $('#status').text(`read tasks of ${data.task.name} success`)
+                console.log(todoList[0])
+                /*
+                createdAt: "2018-10-07T15:25:30.925Z"
+                description: "Haram Jaddah"
+                dueDate: "2018-10-07T15:25:30.917Z"
+                name: "Dagang Cau"
+                status: false
+                updatedAt: "2018-10-07T15:25:30.925Z"
+                __v: 0
+                _id: "5bba256a28ba7c1a3ffc3f4d"
+                */
+                for(let i = 0 ; i < todoList.length ; i ++){  
+                    $('#task-list').append(`
+                    <div class="task">
+                    <h4>${todoList[i].name}</h4>
+                    <p>${todoList[i].description}</p>
+                    </div>
+                    `)
+                }
+            })
+            .fail(function (err) {
+                console.log(err)
+                $('#status').text('error')
+        })
+    }
+
+    function hideTasks(){
+        $('#task-list').empty()
+    }
+
+
+</script>
+</html>

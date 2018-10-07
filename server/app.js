@@ -23,7 +23,7 @@ app.use(express.json())
 
 //ROUTES
 app.use('/', routes)
-app.use('/users/',userRoutes)
+app.use('/users',userRoutes)
 app.use('/todo',todoRoutes)
 
 app.listen(port, function(){

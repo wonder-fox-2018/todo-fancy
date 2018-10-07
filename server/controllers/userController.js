@@ -35,6 +35,7 @@ class Controller {
     }
 
     static signin(req,res){
+        console.log('signin proces...')
         User.findOne({
             email : req.body.email
         })

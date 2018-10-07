@@ -14,12 +14,16 @@ class Controller {
         newTask.save()
         .then(function(task){
 
-            User.findByIdAndUpdate(
+            User.findOneAndUpdate(
                 { _id : req.id}, 
                 { $push : { todoList : task._id } } 
             )
-            .then(()=>{})
-            .catch(()=>{})
+            .then(()=>{
+
+            })
+            .catch(()=>{
+
+            })
 
             res.status(200).json({
                 task
@@ -46,7 +50,6 @@ class Controller {
             })
         })
     }
-
 }
 
 module.exports = Controller;
