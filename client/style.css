@@ -1,0 +1,27 @@
+.task-list-container, .finished-task-list-container {
+    margin-top: 5%;
+}
+
+.task-content{
+    margin-top: 5%;
+}
+
+.finished-task-content {
+    margin-top: 11%;
+}
+
+.edit-btn {
+    margin-right: 2%;
+}
+
+header {
+    color: white;
+}
+
+#form-container {
+    margin-top: 5%;
+}
+
+.g-signin2 {
+    margin-top: 5%;
+}
