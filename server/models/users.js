@@ -20,8 +20,7 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-    required: [true, 'Error "email" is required'],
-    unique: [true, 'Error "email" already in use']
+    required: [true, 'Error "email" is required']
   },
   password: {
     type: String,
