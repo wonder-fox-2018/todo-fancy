@@ -13,7 +13,7 @@
         crossorigin="anonymous">
 
     <!-- google-signin -->
-    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <title>Document</title>
 </head>
@@ -38,10 +38,13 @@
         </li>
     </ul>
 
+    <div class="alert alert-warning" role="alert">
+        
+    </div>
 
 
     <div class="container">
-            
+
         <div class="row">
 
             <div class="col">
@@ -126,7 +129,7 @@
     <script>
         $().ready(() => {
             $('#register-form').hide();
-
+            $('.alert').hide();
         })
 
         function toggleForm() {
@@ -148,7 +151,8 @@
                 localStorage.setItem('access-token', result.output);
                 window.location.replace('./content.html');
             }).fail((err) => {
-                console.log(err);
+                $('.alert').show().text(err.responseText);
+                console.log(err.responseText);
             });
         }
 
@@ -158,10 +162,11 @@
             $.ajax({
                 method: 'POST',
                 url: `http://localhost:3000/signin/google`,
-                data: {token: id_token}
+                data: {
+                    token: id_token
+                }
             }).done((result) => {
-                
-                console.log(result.output);
+
                 localStorage.setItem('access-token', result.output);
                 window.location.replace('./content.html');
             }).fail((err) => {
@@ -178,13 +183,15 @@
                     password: $('#register-form input[name=password]').val(),
                     name: $('#register-form input[name=name]').val()
                 }
-            }).done((result) => {           
+            }).done((result) => {
                 toggleForm();
             }).fail((err) => {
+                console.log('gagal');
+                $('.alert').show().text(err.responseText);
+                console.log(err.responseText);
                 console.log(err);
             });
         }
-
     </script>
 </body>
 
