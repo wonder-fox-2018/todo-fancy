@@ -170,11 +170,13 @@
         function signOut() {
 
             var auth2 = gapi.auth2.getAuthInstance();
-
+            localStorage.clear()
+            sessionStorage.clear();
             auth2.signOut().then(function () {
                 console.log('User has been signed out.');
                 location.replace('index.html');
                 localStorage.clear()
+                sessionStorage.clear();
             });
         }
 
@@ -227,8 +229,9 @@
                         `
                         )
                     }
-                    setCompleteButton();
+
                 });
+                setCompleteButton();
             }).fail((err) => {
                 location.replace('index.html');
             });
@@ -241,7 +244,7 @@
                 let id = $(this).attr('data-id');
                 let name = $(this).attr('data-name');
                 let description = $(this).attr('data-description');
-                //TODO ADD FINISHED TASK ANIMATION
+
                 $.ajax({
                     method: 'PATCH',
                     url: `${root}/task`,
@@ -252,11 +255,34 @@
                         id: id
                     }
                 }).done((result) => {
-                    console.log('updated');
 
-                    $(this).closest('.task-content').slideUp();
-                    $('.finished-task-list-container').empty();
-                    showFinishedTask();
+
+                    $(this).closest('.task-content').slideUp('slow');
+
+                    let finishedTask = (
+                        `
+                        
+                            <div class="card-body border border-primary rounded finished-task-content" style="display: none;">
+                                <div class="row text-primary">
+                                    <h3>${name}</h3>
+                                </div>
+                                <div class="row">
+                                    <b>Description:${description}</b>
+                                </div>
+                                <div class="row">
+                                    <b>Status: completed</b>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <button type="button" class="btn btn-primary btn-sm edit-btn">Edit</button>
+                                </div>
+                            </div>
+                        `
+                    )
+
+                    $(finishedTask).prependTo($('.finished-task-list-container')).show('slow');
+
+
+
 
                 }).fail((err) => {
                     console.log(err);
@@ -294,9 +320,6 @@
                                 </div>
                                 <div class="row">
                                     <b>Status: completed</b>
-                                </div>
-                                <div class="row">
-                                    <b>Due: ${date}</b>
                                 </div>
                                 <div class="row justify-content-end">
                                     <button type="button" class="btn btn-primary btn-sm edit-btn">Edit</button>
@@ -359,6 +382,10 @@
 
 
         $().ready(() => {
+
+            if (localStorage['access-token'] === undefined) {
+                location.replace('index.html');
+            }
 
             //used for google sign in
             onLoad();

@@ -13,7 +13,7 @@
         crossorigin="anonymous">
 
     <!-- google-signin -->
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
     <title>Document</title>
 </head>
@@ -178,14 +178,13 @@
                     password: $('#register-form input[name=password]').val(),
                     name: $('#register-form input[name=name]').val()
                 }
-            }).done((result) => {
-                console.log(result);
+            }).done((result) => {           
                 toggleForm();
             }).fail((err) => {
                 console.log(err);
             });
         }
-        
+
     </script>
 </body>
 
