@@ -13,6 +13,8 @@ router.post('/register', UserController.register);
 
 router.post('/login', UserController.login);
 
+router.post('/signin/google', UserController.googleSignIn);
+
 router.use(Middlewares.isLogin);
 
 router.get('/user-info', UserController.findById);

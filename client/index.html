@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- google-meta -->
-    <!-- <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com"> -->
+    <meta name="google-signin-client_id" content="335865440711-ocn9ceovfjfaa5egaieb5e3870kig71t.apps.googleusercontent.com">
 
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
 
     <!-- google-signin -->
-    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <title>Document</title>
 </head>
@@ -41,7 +41,7 @@
 
 
     <div class="container">
-
+            
         <div class="row">
 
             <div class="col">
@@ -70,7 +70,7 @@
                         </div>
                     </form>
                     <button class="btn btn-primary btn-block" onclick="login()">Login</button>
-                    <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
                 </div>
 
@@ -135,21 +135,38 @@
         }
 
         function login() {
-          
-           $.ajax({
-               method: 'POST',
-               url: 'http://localhost:3000/login',
-               data: {
-                   email: $('#login-form input[name=email]').val(),
-                   password: $('#login-form input[name=password]').val()
 
-               }
-           }).done((result) => {
-               localStorage.setItem('access-token', result.output);
-               window.location.replace('./content.html');
-           }).fail((err) => {
-              console.log(err);
-           });
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3000/login',
+                data: {
+                    email: $('#login-form input[name=email]').val(),
+                    password: $('#login-form input[name=password]').val()
+
+                }
+            }).done((result) => {
+                localStorage.setItem('access-token', result.output);
+                window.location.replace('./content.html');
+            }).fail((err) => {
+                console.log(err);
+            });
+        }
+
+        //google sign in
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            $.ajax({
+                method: 'POST',
+                url: `http://localhost:3000/signin/google`,
+                data: {token: id_token}
+            }).done((result) => {
+                
+                console.log(result.output);
+                localStorage.setItem('access-token', result.output);
+                window.location.replace('./content.html');
+            }).fail((err) => {
+                console.log(err);
+            });
         }
 
         function register() {
@@ -158,8 +175,8 @@
                 url: 'http://localhost:3000/register',
                 data: {
                     email: $('#register-form input[name=email]').val(),
-                   password: $('#register-form input[name=password]').val(),
-                   name: $('#register-form input[name=name]').val()
+                    password: $('#register-form input[name=password]').val(),
+                    name: $('#register-form input[name=name]').val()
                 }
             }).done((result) => {
                 console.log(result);
@@ -168,6 +185,7 @@
                 console.log(err);
             });
         }
+        
     </script>
 </body>
 
