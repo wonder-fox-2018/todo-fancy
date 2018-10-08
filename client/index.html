@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ToDo Fancy</title>
+    <link rel="stylesheet" href="main.css" type="text/css">
+    <link rel="stylesheet" href="jBox.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico">
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous">
+    </script>
+
+    <script src="jBox.min.js"></script>   
+</head>
+<body>
+    <div id="content">
+        
+        <header>
+            <div class="logoSect">JQuery ToDo </div>
+            <div class="linkBar">
+                <p><input id="search" type="text" placeholder="Search"></p>
+                <p><input id="logout" type="button" value="logout" data-confirm ></p>
+                <p class="userlink"></p>
+            </div>
+        </header>
+
+        <nav>
+            <div class="addTask">+ Add Task</div>
+
+            <div class="categories">
+                
+               
+            </div>
+
+            <form id="newTaskForm">
+                <input id="title" type="text" name="title" placeholder="Task Title" value="">
+                <input id="notes" type="text" name="notes" placeholder="Notes" value="">
+                <input id="priority" type="text" name="priority" placeholder="priority" value="">
+                <input id="deadline" type="date" name="deadline" placeholder="Deadline" value="">
+                <div id="submitTask" class="button" type="submit" > add </div>  
+            </form>
+
+            <form id="loginForm">
+                <input id="loginEmail" type="email" autocomplete="email" name="loginEmail" placeholder="Email">
+                <input id="loginPassword" type="password" autocomplete="current-password" name="loginPassword" placeholder="Password">
+                <div id="loginBtn" class="button" type="submit" > login </div>  
+            </form>
+
+            <br>
+
+            <form id="registerForm">
+                <input id="registerName" type="text" name="registerName" placeholder="Name" value="">
+                <input id="registerEmail" type="email" autocomplete="email" name="registerEmail" placeholder="Email" value="">
+                <input id="registerPassword" type="password" autocomplete="current-password" name="registerPassword" placeholder="Password" value="">
+                <div id="registerBtn" class="button" type="submit" > Register </div>  
+            </form>
+            
+
+        </nav>
+        
+        <main>
+             
+            <div class="task">
+               <!-- will show each todos title -->
+            </div>
+
+
+            <div class="detail">
+                
+
+            </div>
+
+           
+        </main>
+        <footer>
+   
+        </footer>
+
+    </div>
+
+
+
+    <script src="main.js"></script>    
+</body>
+</html>
