@@ -48,3 +48,55 @@ input {
     color: blue;
     border-bottom: solid 2px blue;
 }
+.ui-datepicker {
+    background-color: white;
+    border: blue 1px solid;
+    width: 350px;
+    padding: 20px;
+}
+.ui-datepicker table {
+    width: 100%;
+}
+.ui-datepicker a {
+    color: black;
+    text-decoration: none;
+}
+.ui-datepicker-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid blue;
+}
+.ui-datepicker-prev, .ui-datepicker-next {
+    display: inline-block;
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+.ui-datepicker-prev {
+    float: left;
+}
+.ui-datepicker-next {
+    float: right;
+}
+.ui-datepicker td span, .ui-datepicker td a {
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+}
+.ui-datepicker th {
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 10px;
+    line-height: 30px;
+}
+.ui-datepicker-calendar .ui-state-hover, .ui-datepicker-calendar .ui-state-active {
+    background: blue;
+    color: white;
+}
