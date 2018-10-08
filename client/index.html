@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Work On</title>
+    <link rel="stylesheet" href="main.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous">
+    </script>
+    <meta name="google-signin-client_id" content="944393342423-g098v0uhgc4u9q49gpcdkjndkbhgnf45.apps.googleusercontent.com">
+</head>
+<body>
+    <div id="content">
+        
+        <header>
+            <div class="logoSect">ToDoooo</div>
+            <div class="linkBar">
+                <p><input id="search" type="text" placeholder="Search"></p>
+                <p><input id="logout" type="button" value="logout" ></p>
+                <p id="linkbars"></p>
+            </div>
+        </header>
+
+        <nav>
+            <div class="addTask">+ Add Task</div>
+            <br>
+            <div class="Pomodoro">+ Pomodoro</div>
+           
+            <div class="quote_place">
+                
+                <!-- <div id="submitTask" class="button" type="submit" > Quote Generator </div>
+                
+                <div class="quotes" id="quotePlace">
+                    
+                </div> -->
+            </div>
+
+            <form id="newTaskForm">
+                <input id="title" type="text" name="title" placeholder="Task Title" value="">
+                <input id="notes" type="text" name="notes" placeholder="Notes" value="">
+                <input id="priority" type="text" name="priority" placeholder="priority" value="">
+                <input id="deadline" type="date" name="deadline" placeholder="Deadline" value="">
+                <div id="submitTask" class="button" type="submit" > add </div>  
+            </form>
+            
+        </nav>
+        
+        <main>
+             <div class="task">
+
+             </div>
+
+            <div class="detail">
+                
+
+            </div>
+  
+        </main>
+        <footer>
+   
+        </footer>
+
+    </div>
+
+    <form id="loginForm">
+            <div id="gbutton" class="g-signin2" data-onsuccess="onSignIn"></div>
+        <br>
+        <h1>Form Login Todo : </h1>
+        <br>
+        <input id="email" type="email" name="email" placeholder="Email" value="">
+        <input id="password" type="password" name="password" placeholder="Password" value="">
+        <div id="loginBtn" class="button" type="submit" > login </div>  
+        <div id="registerBtn" class="button" type="submit" > register </div> 
+    </form>
+    
+    <form id="registerForm">
+        <br>
+        <h1>Form Register Todo : </h1>
+        <br>
+        <input id="namerg" type="text" name="name" placeholder="Name" value="">
+        <input id="emailrg" type="email" name="email" placeholder="Email" value="">
+        <input id="passwordrg" type="password" name="password" placeholder="Password" value="">
+        <div id="regBtn" class="button" type="submit" > register </div> 
+    </form>
+
+    <div class="container app" id="konten">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="name-tag">Pomodoro Clock</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 controls">
+                    <h4>Break Length</h4>
+                    <div class="btn-group">
+                        <div class="btn btn-default btn-lg switchDeduceBreak" onclick="deduceBreakTime()">-</div>
+                        <div class="btn btn-lg" id="timer-break">5</div>
+                        <div class="btn btn-default btn-lg switchAddBreak" onclick="addBreakTime()">+</div>
+                    </div>
+                </div>
+                <div class="col-xs-6 controls">
+                    <h4>Session Length</h4>
+                    <div class="btn-group">
+                        <div class="btn btn-default btn-lg switchDeduceSession" onclick="deduceSessionTime()">-</div>
+                        <div id="timer-session" class="btn btn-lg">25</div>
+                        <div class="btn btn-default btn-lg switchAddSession" onclick="addSessionTime()">+</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="countdown-clock" onclick="startTimer()">
+                        <div class="countdown-timer">
+                            <h2 id="sessionName">Current Session</h2>
+                            <h3 id="timeLeft">25</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="btn btn-default" onclick="reset()">Reset</div>
+                </div>
+            </div>
+        </div>
+    <div class="col-xs-12 white">
+        <h5 class="text-center">Brought to you by Agus Randhani R
+      </div>
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>
