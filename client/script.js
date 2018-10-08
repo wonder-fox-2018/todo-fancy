@@ -110,9 +110,9 @@ function showTask(){
             <td>${data.data[i].dueDate}</td>
             <td>${data.data[i].status}</td>
             <td>
-              <button type="button" class="btn btn-primary" onclick="finishTask(${data.data[i]._id})" >Finish!!</button>
-              <button type="button" class="btn btn-primary" onclick="updateTask(${data.data[i]._id})" >Edit</button>
-              <button type="button" class="btn btn-primary" onclick="deleteTask(${data.data[i]._id})" >Delete</button>
+              <button type="button" class="btn btn-primary" onclick="finishTask('${data.data[i]._id}')" >Finish!!</button>
+              <button type="button" class="btn btn-primary" onclick="updateTask('${data.data[i]._id}')" >Edit</button>
+              <button type="button" class="btn btn-primary" onclick="deleteTask('${data.data[i]._id}')" >Delete</button>
             </td>
           </tr>
             `)
