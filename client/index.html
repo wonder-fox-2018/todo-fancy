@@ -275,7 +275,7 @@
                                 <div class="col-sm-6 col-md-2 border vertically-centered">${task.dueDate.slice(0, 10)}</div>
                                 <div class="col-sm-6 col-md-2 border vertically-centered">${task.importance}</div>
                                 <button class="btn btn-outline-success col-sm-9 col-md-3 border"><strong>Completed</strong></button> 
-                                <button class="btn btn-outline-danger col-sm-3 col-md-1 border" onclick="remove('${task.name}')"><strong>Delete</strong></button> 
+                                <button class="btn btn-outline-danger col-sm-3 col-md-1 border" onclick="remove('${task._id}')"><strong>Delete</strong></button> 
                             </div>`
                         )
                     } else {
@@ -286,8 +286,8 @@
                                 <div class="col-sm-6 col-md-2 border vertically-centered">${task.dueDate.slice(0, 10)}</div>
                                 <div class="col-sm-6 col-md-2 border vertically-centered">${task.importance}</div>
                                 <button class="btn btn-outline-primary col-sm-3 col-md-1 border" onclick="edit('${task._id}', '${task.name}', '${task.desc}', '${task.dueDate}', '${task.importance}')"><strong>Edit</strong></button> 
-                                <button class="btn btn-outline-success col-sm-6 col-md-2 border" onclick="complete('${task.name}')"><strong>Complete</strong></button> 
-                                <button class="btn btn-outline-danger col-sm-3 col-md-1 border" onclick="remove('${task.name}')"><strong>Delete</strong></button> 
+                                <button class="btn btn-outline-success col-sm-6 col-md-2 border" onclick="complete('${task._id}')"><strong>Complete</strong></button> 
+                                <button class="btn btn-outline-danger col-sm-3 col-md-1 border" onclick="remove('${task._id}')"><strong>Delete</strong></button> 
                             </div>`
                         )
                     }
@@ -300,7 +300,12 @@
                             if (permission !== 'granted') throw new Error('No access!');
                         })
                         .then(() => {
-                            const title = "Hooray! You've completed all tasks for today!";
+                            let title = ''
+                            if (localStorage.getItem('state') === 't') {
+                                title = "Hooray! You've completed all tasks for today!";
+                            } else {
+                                title = "Hooray! You've completed all tasks!";
+                            }
                             new Notification(title);
                         })
                         .catch((err) => {
@@ -373,10 +378,10 @@
                 })
             }
 
-            function complete(name) {
+            function complete(id) {
                 $.ajax({
                     method: 'PUT',
-                    url: `http://localhost:3000/list/complete/${name}`,
+                    url: `http://localhost:3000/list/complete/${id}`,
                     headers: {
                         token: localStorage.getItem('token')
                     }
@@ -393,10 +398,10 @@
                 })
             }
 
-            function remove(name) {
+            function remove(id) {
                 $.ajax({
                     method: 'DELETE',
-                    url: `http://localhost:3000/list/${name}`,
+                    url: `http://localhost:3000/list/${id}`,
                     headers: {
                         token: localStorage.getItem('token')
                     }

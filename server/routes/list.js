@@ -8,7 +8,7 @@ router.get('/show/importance/:dir/:state', isLogin, showImportance)
 router.get('/show/:sort/:dir/:state', isLogin, showSorted)
 router.get('/show/today', isLogin, showToday)
 router.put('/:id', isLogin, edit)
-router.put('/complete/:name', isLogin, complete)
-router.delete('/:name', isLogin, remove)
+router.put('/complete/:id', isLogin, complete)
+router.delete('/:id', isLogin, remove)
 
 module.exports = router

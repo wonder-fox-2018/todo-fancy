@@ -220,7 +220,7 @@ module.exports = {
     },
 
     complete: function(req, res) {
-        listModel.updateOne({name: req.params.name, userId: req.userId}, {
+        listModel.updateOne({_id: req.params.id, userId: req.userId}, {
             status: 'completed'
         })
         .then(() => {
@@ -232,7 +232,7 @@ module.exports = {
     },
 
     remove: function(req, res) {
-        listModel.deleteOne({name: req.params.name, userId: req.userId})
+        listModel.deleteOne({_id: req.params.id, userId: req.userId})
         .then(() => {
             res.status(200).json({})
         })
