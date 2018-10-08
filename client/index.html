@@ -92,8 +92,8 @@ crossorigin="anonymous"></script>
             description,
             dueDate
         }
-        // console.log('data',data)
-        $.ajax({
+        if(name.length > 1 && description.length > 1){
+            $.ajax({
                 method: "POST",
                 url: "http://localhost:3000/todo/create",
                 data,
@@ -109,7 +109,11 @@ crossorigin="anonymous"></script>
             .fail(function (err) {
                 // $("#task_name").val('error')
                 // $("#task_description").val('error')
-        })
+            })
+        }else{
+            $("#task_name").val('cannot be empty')
+            $("#task_description").val('cannot be empty')
+        }
     })
 
     function myTasks(){
@@ -126,34 +130,12 @@ crossorigin="anonymous"></script>
                 // console.log(data.task.todoList)
                 let todoList = data.task.todoList
                 $('#status').text(`read tasks of ${data.task.name} success`)
-                // console.log(todoList[0])
-                /*
-                createdAt: "2018-10-07T15:25:30.925Z"
-                description: "Haram Jaddah"
-                dueDate: "2018-10-07T15:25:30.917Z"
-                name: "Dagang Cau"
-                status: false
-                updatedAt: "2018-10-07T15:25:30.925Z"
-                __v: 0
-                _id: "5bba256a28ba7c1a3ffc3f4d"
-                */
+                
                 for(let i = 0 ; i < todoList.length ; i ++){
                     let cb = `<input type="checkbox" onclick="completing('${todoList[i]._id}')"><br>`
                     if(todoList[i].status == true){
                         cb = `<input type="checkbox" checked><br>`
                     }
-
-                    // <div class="task">
-                    // <h4>${todoList[i].name} ${cb} </h4>
-                    // <br>
-                    // <p>${todoList[i].description}</p>
-                    // <br>
-                    // <button id="button${todoList[i]._id}" onclick="editing('${todoList[i]._id}')">Edit Task</button><div id=edit${todoList[i]._id}></div>
-                    // <button onclick="completing('${todoList[i]._id}')">Mark as completed</button>
-                    // <button onclick="deleting('${todoList[i]._id}')">Delete</button>
-                    // <br>
-                    // <br>
-                    // </div>
                     
                     $('#task-list').append(`
                     <h2>${todoList[i].name} ${cb}</h2>
