@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LOGIN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script> -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="914329180688-r067v7odjksdgah8f84o0aqruqa95566.apps.googleusercontent.com">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        /* Create two equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 50%;
+            padding: 10px;
+            height: 450px; /* Should be removed. Only for demonstration */
+        }
+        
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <center><div id="status"></div></center>
+    <h2>Todo App</h2>
+
+    <div class="row">
+      <div class="column" style="background-color:#aaa;">
+        <h2>Login</h2>
+        <div class="login-menu">
+            <label>Username</label>
+            <br>
+            <input id="login_email" type="text">
+            <br>
+            <label>Password</label>
+            <br>
+            <input id="login_password" type="text">
+            <br>
+            </div>
+            <button id="login">Login</button>
+            <br>
+            <div class="login-with-google">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+      </div>
+      <div class="column" style="background-color:#bbb;">
+        <h2>Register</h2>
+        <!-- REGISTER MENU -->
+        <div class="register-menu">
+            <label>name</label>
+            <br>
+            <input type="text" id="register_name">
+            <br>
+            <label>gender</label>
+            <br>
+            <input type="text" id="register_gender">
+            <br>
+            <label>phone number</label>
+            <br>
+            <input type="text" id="register_phoneNumber">
+            <br>
+            <label>address</label>
+            <br>
+            <input type="text" id="register_address">
+            <br>
+            <label>email</label>
+            <br>
+            <input type="text" id="register_email">
+            <br>
+            <label>password</label>
+            <br>
+            <input type="text" id="register_password">
+            <button id="register">Register</button>
+        </div>
+      </div>
+    </div>
+
+        <!-- LOGIN MENU -->
+        <!-- <div class="login-menu">
+        <label>Username</label>
+        <input id="login_email" type="text">
+        <br>
+        <label>Password</label>
+        <input id="login_password" type="text">
+        <button id="login">Login</button>
+        </div>
+        <div class="login-with-google">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div> -->
+
+        <!-- REGISTER MENU -->
+        <!-- <div class="register-menu">
+        <label>name</label>
+        <input type="text" id="register_name">
+        <label>gender</label>
+        <input type="text" id="register_gender">
+        <label>phone number</label>
+        <input type="text" id="register_phoneNumber">
+        <label>address</label>
+        <input type="text" id="register_address">
+        <label>email</label>
+        <input type="text" id="register_email">
+        <label>password</label>
+        <input type="text" id="register_password">
+        <button id="register">Register</button>
+        </div> -->
+</body>
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+<script>
+// $('#status').text('JQUERY ENABLED')
+let token = localStorage.getItem('token')
+if (token) window.location = '/'
+
+$("#login").click(function () {
+    let email = $('#login_email').val()
+    let password = $('#login_password').val()
+    let data = {
+        email,
+        password
+    }
+    $.ajax({
+            method: "POST",
+            url: "http://localhost:3000/users/signin",
+            data
+        })
+        .done(function (user) {
+            localStorage.setItem('userId', user.userId)
+            localStorage.setItem('token', user.token)
+            window.location.href = 'index.html'
+        })
+        .fail(function (err) {
+            $(document).ready(function () {
+                $('#status').text('failed to login')
+            })
+    })
+})
+
+function onSignIn(googleUser) {
+    let token = googleUser.getAuthResponse().id_token
+        $.ajax({
+            method: "POST",
+            url: "http://localhost:3000/users/signinGoogle",
+            headers: {
+                token: token
+            }
+        })
+        .done(function(user){
+            localStorage.setItem('userId', user.userId)
+            localStorage.setItem('token', user.token)
+            window.location.href = 'index.html'
+        })
+        .fail(function(err){})
+   
+}
+
+$("#register").click(function () {
+
+    let name = $('#register_name').val()
+    let gender = $('#register_gender').val()
+    let phone = $('#register_phoneNumber').val()
+    let address = $('#register_address').val()
+    let email = $('#register_email').val()
+    let password = $('#register_password').val()
+
+    let data = {
+        name,
+        gender,
+        phone,
+        address,
+        email,
+        password
+    }
+
+    $.ajax({
+            method: "POST",
+            url: "http://localhost:3000/users/signup",
+            data
+        })
+        .done(function (user) {
+            location.reload()
+        })
+        .fail(function (err) {
+            checkError(err)
+        })
+    })
+    
+</script>
+</html>
