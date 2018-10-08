@@ -7,8 +7,7 @@ class Controller {
         let newTask = new Todo({
             name : req.body.name,
             description: req.body.description,
-            dueDate : new Date()
-            // dueDate : req.body.dueDate
+            dueDate : req.body.dueDate
         })
 
         newTask.save()
