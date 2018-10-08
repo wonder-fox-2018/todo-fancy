@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+  <title>Register</title>
+</head>
+<body style="background: linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.3)), url('https://picsum.photos/1920/1080/?random&blur')">
+  <div class="ui grid">
+    <div class="ui ten wide column center aligned" style="margin: 200px auto 0px">
+      <p class="ui header" style="font-size: 60px; color: white">Register</p>
+    </div>
+    <div class="ui seven wide column raised segment" style="margin: 10px auto 0px">
+      <div class="ui large form">
+        <div class="ui two fields">
+          <div class="ui field required">
+            <label>First name</label>
+            <div class="ui input">
+              <input type="text" placeholder="First name" id="fname">
+            </div>
+          </div>
+          <div class="ui field">
+            <label>Last name</label>
+            <div class="ui input">
+              <input type="text" placeholder="Last name" id="lname">
+            </div>
+          </div>
+        </div>
+        <div class="ui three fields">
+          <div class="ui field required">
+            <label>Username</label>
+            <div class="ui input">
+              <input type="text" placeholder="Username" id="username">
+            </div>
+          </div>
+          <div class="ui field required">
+            <label>Email</label>
+            <div class="ui input">
+              <input type="text" placeholder="Email" id="email">
+            </div>
+          </div>
+          <div class="ui field required">
+            <label>Password</label>
+            <div class="ui input">
+              <input type="password" placeholder="Password" id="password">
+            </div>
+          </div>
+        </div>
+        <div class="ui extra content">
+          <div class="ui grid">
+            <div class="ui thirteen wide column">
+              <p style="color: red; font-weight: bold;" id="notifRegist"></p>
+            </div>
+            <div class="ui three wide column">
+              <button class="ui right floated large yellow button" tabindex="0" onclick="regist()"> Submit </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui grid">
+    <div class="ui seven wide column" style="margin: 0px auto; padding: 10px;">
+      <div class="ui field">
+        <p style="font-weight: regular; font-size: 15px; color: white">Already have an account?</p>
+        <a href="./index.html" style="font-size: 16px; color:white; font-weight: bold">Login</a>
+      </div>
+    </div>
+  </div>
+  <script src="./src/loginAndRegist.js"></script>
+</body>
+</html>
