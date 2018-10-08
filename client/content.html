@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- google-meta -->
+    <meta name="google-signin-client_id" content="335865440711-ocn9ceovfjfaa5egaieb5e3870kig71t.apps.googleusercontent.com">
+
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+
+    <!-- google-signout -->
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+
+    <!-- datepicker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Home-Todo</title>
+
+</head>
+
+<body>
+    <!-- header -->
+    <header class="sticky-top bg-dark">
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <h1>To Do <span class="badge badge-primary">Fancy</span></h1>
+            </li>
+        </ul>
+
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <div class="nav-link active" id="greet"></div>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addtask-modal">Add
+                    Task</button>
+            </li>
+        </ul>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <button type="button" class="btn btn-outline-warning float-right" onclick="signOut();">Sign out</button>
+            </li>
+        </ul>
+    </header>
+
+    <!-- Modal Add Task -->
+    <div class="modal fade" id="addtask-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Task</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" name="name" aria-describedby="emailHelp"
+                                placeholder="Enter task name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">description</label>
+                            <textarea type="text" class="form-control" name="description" aria-label="With textarea"
+                                placeholder="describe the task"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="datetime" class="form-control datepicker" name="date" placeholder="DD-MM-YYYY">
+                        </div>
+
+                    </form>
+                    <button class="btn btn-primary btn-block" onclick="addTask()" data-dismiss="modal">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Task -->
+    <div class="modal fade" id="edittask-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form>
+                        <input class="edit-id" type="hidden" name="id">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" name="name" aria-describedby="emailHelp"
+                                placeholder="Enter task name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">description</label>
+                            <textarea type="text" class="form-control" name="description" aria-label="With textarea"
+                                placeholder="describe the task"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="datetime" class="form-control datepicker" name="date" placeholder="DD-MM-YYYY">
+                        </div>
+
+
+                    </form>
+                    <button class="btn btn-primary btn-block submit-edit" data-dismiss="modal" onclick="editTask()">Edit</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal" onclick="deleteTask()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                Finished:
+                <div class="card border-0 finished-task-list-container">
+
+                    <!-- render finished task here -->
+
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <h4>Current To Do:</h4>
+                <div class="card border-0 task-list-container">
+
+                    <!-- render on-progress task here -->
+
+                </div>
+            </div>
+            <div class="col-sm">
+                
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+    <!-- bootsrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <!-- datePicker -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: 'dd-mm-yy'
+            });
+        });
+    </script>
+    <script>
+        const root = `http://localhost:3000`;
+
+        function getToken() {
+            return localStorage.getItem('access-token');
+        }
+
+        //google signout
+
+        function signOut() {
+
+            
+                var auth2 = gapi.auth2.getAuthInstance();
+
+
+                auth2.signOut().then(function () {
+                    console.log('User has been signed out.');
+                    localStorage.clear()
+                    location.replace('index.html');
+
+                }).catch((err) => {
+                    localStorage.clear()
+                    location.replace('index.html');
+            
+                })
+            
+                
+        }
+
+        function onLoad() {
+            gapi.load('auth2', function () {
+                gapi.auth2.init();
+            });
+        }
+
+        function showAllTask() {
+            $('.task-list-container').empty();
+            $.ajax({
+                method: 'GET',
+                url: `${root}/task`,
+                headers: {
+                    'access-token': getToken()
+                }
+            }).done((result) => {
+
+                result.output.forEach(task => {
+                    if (!task.isComplete) {
+                        let id = task._id;
+                        let name = task.name;
+                        let description = task.description;
+                        let date = new Date(task.due_date);
+                        date = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+                        $('.task-list-container').append(
+                            `
+                        
+                            <div class="card-body border border-primary rounded task-content">
+                                <div class="row text-primary">
+                                    <h3>${name}</h3>
+                                </div>
+                                <div class="row">
+                                    <b>Description:${description}</b>
+                                </div>
+                                <div class="row">
+                                    <b>Status: in progress</b>
+                                </div>
+                                <div class="row">
+                                    <b>Due: ${date}</b>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <button type="button" class="btn btn-primary btn-sm edit-btn" data-id="${id}" data-toggle="modal" data-target="#edittask-modal">Edit</button>
+                                    <button type="button" class="btn btn-primary btn-sm complete-btn" data-id="${id}" data-name="${name}" data-description="${description}">Done!</button>
+                                </div>
+                            </div>
+                        
+                        
+                        `
+                        )
+                    }
+
+                });
+                setCompleteButton();
+                setEditButton();
+
+            }).fail((err) => {
+                location.replace('index.html');
+            });
+
+
+        }
+
+
+
+        function editTask() {
+            let id = $('#edittask-modal input[name=id]').val();
+            let name = $('#edittask-modal input[name=name]').val();
+            let description = $('#edittask-modal textarea[name=description]').val();
+            let due_date = $('#edittask-modal input[name=date]').val();
+
+            $.ajax({
+                method: 'PUT',
+                url: `${root}/task`,
+                headers: {
+                    'access-token': getToken()
+                },
+                data: {
+                    id: id,
+                    name: name,
+                    description: description,
+                    due_date: due_date
+                }
+            }).done((result) => {
+                showAllTask();
+            }).fail((err) => {
+                console.log(err);
+            });
+
+        }
+
+
+        function deleteTask() {
+            let id = $('#edittask-modal input[name=id]').val();
+
+            $.ajax({
+                method: 'DELETE',
+                url: `${root}/task`,
+                headers: {
+                    'access-token': getToken()
+                },
+                data: {
+                    id: id
+                }
+
+            }).done((result) => {
+                showAllTask();
+            }).fail((err) => {
+                console.log(err);
+            });
+        }
+
+        function setEditButton() {
+            $('.edit-btn').on('click', function (e) {
+
+                let taskId = $(this).attr('data-id');
+
+                $('#edittask-modal input[name=id]').val(taskId);
+
+            })
+        }
+
+        function setCompleteButton() {
+            $('.complete-btn').click(function () {
+                let id = $(this).attr('data-id');
+                let name = $(this).attr('data-name');
+                let description = $(this).attr('data-description');
+
+                $.ajax({
+                    method: 'PATCH',
+                    url: `${root}/task`,
+                    headers: {
+                        'access-token': getToken()
+                    },
+                    data: {
+                        id: id
+                    }
+                }).done((result) => {
+
+
+                    $(this).closest('.task-content').slideUp('slow');
+
+                    let finishedTask = (
+                        `
+                        
+                            <div class="card-body border border-primary rounded finished-task-content" style="display: none;">
+                                <div class="row text-primary">
+                                    <h3>${name}</h3>
+                                </div>
+                                <div class="row">
+                                    <b>Description:${description}</b>
+                                </div>
+                                <div class="row">
+                                    <b>Status: completed</b>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <button type="button" class="btn btn-primary btn-sm delete-btn" data-id="${id}">Delete</button>
+                                </div>
+                            </div>
+                        `
+                    )
+
+                    $(finishedTask).prependTo($('.finished-task-list-container')).show('slow');
+                    setDeleteButton();
+
+
+
+                }).fail((err) => {
+                    console.log(err);
+                });
+
+            })
+        }
+
+        function showFinishedTask() {
+            $('.finished-task-list-container').empty();
+            $.ajax({
+                method: 'GET',
+                url: `${root}/task`,
+                headers: {
+                    'access-token': getToken()
+                }
+            }).done((result) => {
+
+                result.output.forEach(task => {
+                    if (task.isComplete) {
+                        let id = task._id;
+                        let name = task.name;
+                        let description = task.description;
+                        let date = new Date(task.due_date);
+                        date = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+                        $('.finished-task-list-container').append(
+                            `
+                        
+                            <div class="card-body border border-primary rounded finished-task-content">
+                                <div class="row text-primary">
+                                    <h3>${name}</h3>
+                                </div>
+                                <div class="row">
+                                    <b>Description:${description}</b>
+                                </div>
+                                <div class="row">
+                                    <b>Status: completed</b>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <button type="button" class="btn btn-primary btn-sm delete-btn" data-id="${id}">delete</button>
+                                </div>
+                            </div>
+                        
+                        `
+                        )
+                    }
+                });
+                setDeleteButton();
+            }).fail((err) => {
+                location.replace('index.html');
+            })
+
+        }
+
+        function setDeleteButton() {
+            $('.delete-btn').click(function () {
+                let id = $(this).attr('data-id');
+
+                $.ajax({
+                    method: 'DELETE',
+                    url: `${root}/task`,
+                    headers: {
+                        'access-token': getToken()
+                    },
+                    data: {
+                        id: id
+                    }
+
+                }).done((result) => {
+                    showFinishedTask();
+                }).fail((err) => {
+                    console.log(err);
+                });
+
+            })
+        }
+
+        function greet() {
+            $.ajax({
+                method: 'GET',
+                url: `${root}/user-info`,
+                headers: {
+                    'access-token': getToken()
+                }
+            }).done((result) => {
+                let name = result.output.name;
+                name = name.split(' ')[0];
+                $('#greet').text(`Hello ${name}!`);
+            }).fail((err) => {
+
+            });
+        }
+
+
+
+        function addTask() {
+            //alert('add');
+            console.log($('#addtask-modal input[name=name]').val(), $('#addtask-modal textarea[name=description').val(),
+                $('#addtask-modal input[name=date]').val());
+
+            $.ajax({
+                method: 'POST',
+                url: `${root}/task`,
+                headers: {
+                    'access-token': getToken()
+                },
+                data: {
+                    name: `${$('#addtask-modal input[name=name]').val()}`,
+                    description: `${$('#addtask-modal textarea[name=description').val()}`,
+                    due_date: `${$('#addtask-modal input[name=date]').val()}`
+                }
+            }).done((result) => {
+                showAllTask();
+            }).fail((err) => {
+                console.log(err);
+            });
+        }
+
+
+        $().ready(() => {
+
+            if (localStorage['access-token'] === undefined) {
+                location.replace('index.html');
+            }
+
+            //used for google sign in
+            onLoad();
+
+            greet();
+
+            showAllTask();
+
+            showFinishedTask();
+
+
+
+
+
+        })
+    </script>
+</body>
+
+
+</html>
