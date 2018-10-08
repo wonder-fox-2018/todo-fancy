@@ -24,7 +24,7 @@ $("#btnSignin").click(function () {
 
   $.ajax({
       method: "POST",
-      url: "http://localhost:3000/users/signin",
+      url: "https://servertodoku.harlesbayuanggara.tech/users/signin",
       data
   })
   .done(function (response) {
@@ -54,7 +54,7 @@ $("#btnSignup").click(function () {
 
   $.ajax({
       method: "POST",
-      url: "http://localhost:3000/users/signup",
+      url: "https://servertodoku.harlesbayuanggara.tech/users/signup",
       data
   })
   .done(function (response) {
@@ -106,7 +106,7 @@ function clikPassword(){
 function onSuccess(googleUser) {
   var profile = googleUser.Zi.id_token
   $.ajax({
-    url: `http://localhost:3000/users/signinGoogle`,
+    url: `https://servertodoku.harlesbayuanggara.tech/users/signinGoogle`,
     method: 'post',
     data: {
       token : profile

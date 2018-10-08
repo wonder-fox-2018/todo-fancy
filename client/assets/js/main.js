@@ -19,6 +19,12 @@ $(document).ready(function(){
       $(this).next().slideDown();
     }
   })
+
+
+  $( function() {
+    $( ".datepicker" ).datepicker();
+  });
+
 })
 
 let token = localStorage.getItem('token')
@@ -36,12 +42,12 @@ $("#createTask").click(function () {
   let data = {
     name : $("#nameTask").val(),
     description : $("#descTask").val(),
-    dueDate : $("#deuDateTask").val()
+    dueDate : new Date($("#deuDateTask").val()).toISOString()
   }
 
   $.ajax({
     method: "POST",
-    url: "http://localhost:3000/todos/create",
+    url: "https://servertodoku.harlesbayuanggara.tech/todos/create",
     data,
     headers: {
       token: localStorage.getItem('token')
@@ -68,7 +74,7 @@ function btnUncomplete() {
 
   $.ajax({
     method: "GET",
-    url: "http://localhost:3000/todos/findTask",
+    url: "https://servertodoku.harlesbayuanggara.tech/todos/findTask",
     headers: {
       token: localStorage.getItem('token')
     }
@@ -121,7 +127,7 @@ function btnComplete() {
 
   $.ajax({
     method: "GET",
-    url: "http://localhost:3000/todos/findTask",
+    url: "https://servertodoku.harlesbayuanggara.tech/todos/findTask",
     headers: {
         token: localStorage.getItem('token')
     }
@@ -169,7 +175,7 @@ function btnComplete() {
 function completedTask(id) {
   $.ajax({
     method: "PUT",
-    url: `http://localhost:3000/todos/complete?todosId=${id}`,
+    url: `https://servertodoku.harlesbayuanggara.tech/todos/complete?todosId=${id}`,
     headers: {
       token: localStorage.getItem('token')
     }
@@ -183,7 +189,7 @@ function completedTask(id) {
 function UncompletedTask(id) {
   $.ajax({
     method: "PUT",
-    url: `http://localhost:3000/todos/uncomplete?todosId=${id}`,
+    url: `https://servertodoku.harlesbayuanggara.tech/todos/uncomplete?todosId=${id}`,
     headers: {
       token: localStorage.getItem('token')
     }
@@ -248,7 +254,7 @@ function updateTask(id, nameTask, descriptionTask, dueDateTask, statusTask) {
 
     $.ajax({
       method: "PUT",
-      url: `http://localhost:3000/todos/update?todosId=${id}`,
+      url: `https://servertodoku.harlesbayuanggara.tech/todos/update?todosId=${id}`,
       data,
       headers : {
           token : localStorage.getItem('token')
@@ -272,7 +278,7 @@ function updateTask(id, nameTask, descriptionTask, dueDateTask, statusTask) {
 function removeTask(id) {
 $.ajax({
       method: "DELETE",
-      url: `http://localhost:3000/todos/delete?todosId=${id}`,
+      url: `https://servertodoku.harlesbayuanggara.tech/todos/delete?todosId=${id}`,
       headers: {
           token: localStorage.getItem('token')
       }
@@ -287,7 +293,7 @@ $.ajax({
 function quotes() {
   $.ajax({
     method: "GET",
-    url: `http://localhost:3000/todos/quotes`,
+    url: `https://servertodoku.harlesbayuanggara.tech/todos/quotes`,
     })
     .done(function (quote) {
         $("#quotesOfTheDay").append(
