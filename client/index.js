@@ -88,7 +88,8 @@ $('#dueDate').val(nday + '-' + nmonth + '-' + nyear)
 function getTodos () {
   $.ajax({
     type: 'GET',
-    url: 'http://localhost:3000/api/todos/list',
+    // url: 'http://localhost:3000/api/todos/list',
+    url: `https://fancytd-server.hanabc.xyz/api/todos/list`,
     headers: {
       token: localStorage.getItem('token')
     },
@@ -166,7 +167,8 @@ function addTodo(title, desc, dueDate, isCompleted) {
 
   $.ajax({
     method: 'POST',
-    url: `http://localhost:3000/api/todos/list`,
+    // url: `http://localhost:3000/api/todos/list`,
+    url: `https://fancytd-server.hanabc.xyz/api/todos/list`,
     headers: {
       token: localStorage.getItem('token')
     },
@@ -179,7 +181,11 @@ function addTodo(title, desc, dueDate, isCompleted) {
     dataType: 'json'
   })
     .done(function(data) {
-      if (data) getTodos()
+      if (data) {
+        getTodos()
+        $('#create-form #title').val('')
+        $('#create-form #desc').val('')
+      }
       else alertify.alert('Sorry, your connection to database is interrupted');
     })
     .fail(err => {
@@ -200,7 +206,8 @@ function toggleTodo(title, isCompleted) {
 
   $.ajax({
     method: 'PUT',
-    url: `http://localhost:3000/api/todos/list`,
+    // url: `http://localhost:3000/api/todos/list`,
+    url: `https://fancytd-server.hanabc.xyz/api/todos/list`,
     headers: {
       token: localStorage.getItem('token')
     },
@@ -291,7 +298,8 @@ function saveTask(data) {
 
   $.ajax({
     method: 'PUT',
-    url: `http://localhost:3000/api/todos/${oldtitle}`,
+    // url: `http://localhost:3000/api/todos/${oldtitle}`,
+    url: `https://fancytd-server.hanabc.xyz/api/todos/${oldtitle}`,
     headers: {
           token: localStorage.getItem('token')
         },
@@ -318,7 +326,8 @@ function deleteTask(index, title) {
   alertify.confirm('Delete Confirmation', 'Are you sure?', () => {
     $.ajax({
       method: 'DELETE',
-      url: `http://localhost:3000/api/todos/${title}`,
+      // url: `http://localhost:3000/api/todos/${title}`,
+      url: `https://fancytd-server.hanabc.xyz/api/todos/${title}`,
       headers: {
         token: localStorage.getItem('token')
       },

@@ -3,7 +3,8 @@ function onSignIn(googleUser) {
   
   $.ajax({
     method: "POST",
-    url: `http://localhost:3000/api/google-signin`,
+    // url: `http://localhost:3000/api/google-signin`,
+    url: `https://fancytd-server.hanabc.xyz/api/google-signin`,
     data: {
       googleToken: id_token
     }

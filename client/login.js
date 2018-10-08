@@ -24,7 +24,8 @@ $(document).ready(function(){
     e.preventDefault()
     $.ajax({
       method: "POST",
-      url: `http://localhost:3000/api/register`,
+      // url: `http://localhost:3000/api/register`,
+      url: `https://fancytd-server.hanabc.xyz/api/register`,
       data: {
         name: $('#username-signup').val(),
         email: $('#email-signup').val(),
@@ -72,7 +73,8 @@ $(document).ready(function(){
     e.preventDefault()
     $.ajax({
       method: "POST",
-      url: `http://localhost:3000/api/login`,
+      // url: `http://localhost:3000/api/login`,
+      url: `https://fancytd-server.hanabc.xyz/api/login`,
       data: {
         email: $('#email-login').val(),
         password: $('#password-login').val()
