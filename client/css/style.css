@@ -1,0 +1,11 @@
+#register .register-inner {
+    padding-top: 120px;
+}
+
+#register .card-form {
+    opacity: 0.9;
+}
+
+#login .card-form {
+    opacity: 0.9;
+}
