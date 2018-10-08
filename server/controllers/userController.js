@@ -49,6 +49,7 @@ class UserController {
 
     static googleLogin(req, res) {
         const googleToken = req.body.googleToken;
+        console.log(googleToken);
         var ticket = new Promise(function(resolve, reject) {
             client.verifyIdToken({
                 idToken: googleToken,
@@ -72,6 +73,7 @@ class UserController {
                         User.findOne({email: userData.data.email})
                             .then(function(user) {
                                 if (user) {
+                                    console.log(user);
                                     const token = jwt.sign({id: user._id, name: user.name, email: user.email}, process.env.SECRET_TOKEN);
                                     res.status(200).json({token: token});
                                 } else {
@@ -82,7 +84,8 @@ class UserController {
                                         googleLogin: 1
                                     })
                                         .then(function(newUser) {
-                                            res.status(200).json(newUser);
+                                            const token = jwt.sign({id: newUser._id, name: newUser.name, email: newUser.email}, process.env.SECRET_TOKEN);
+                                            res.status(200).json({token: token});
                                         })
                                         .catch(function(err) {
                                             res.status(500).json(err.message);

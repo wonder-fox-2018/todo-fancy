@@ -4,15 +4,156 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <script src="https://apis.google.com/js/platform.js" async defer></script>
         <meta name="google-signin-client_id" content="46112173464-l5381oaf0t8v2nqt9ftei0405ob5r4s1.apps.googleusercontent.com">
+        <link rel="stylesheet" href="css/style.css">
         <title>Todo Fancy</title>
     </head>
     <body>
+        <nav class="navbar navbar-expand-sm bg-warning navbar-dark fixed-top">
+            <div class="container">
+                <a href="index.html" class="navbar-brand">Todo Fancy</a>
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#task" class="nav-link">Task</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#profile" class="nav-link">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#register" class="nav-link">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-dark" data-toggle="modal" data-target="#loginModal">Login</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <header id="register">
+            <div class="register-inner container">
+                <div class="row">
+                    <div class="col-lg-8 d-none d-lg-block">
+                        <h1 class="display-4">Add Countless Task here</h1>
 
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        <a href="#" onclick="signOut();">Sign out</a>
+                        <div class="d-flex">
+                            <div class="p-4 align-self-start">
+                                <i class="fas fa-check fa-2x"></i>
+                            </div>
+                            <div class="p-4 align-self-end">
+                                Create Task
+                            </div>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="p-4 align-self-start">
+                                <i class="fas fa-check fa-2x"></i>
+                            </div>
+                            <div class="p-4 align-self-end">
+                                Update Task
+                            </div>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="p-4 align-self-start">
+                                <i class="fas fa-check fa-2x"></i>
+                            </div>
+                            <div class="p-4 align-self-end">
+                                Complete Task
+                            </div>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="p-4 align-self-start">
+                                <i class="fas fa-check fa-2x"></i>
+                            </div>
+                            <div class="p-4 align-self-end">
+                                Delete Task
+                            </div>
+                        </div>
+            
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card bg-primary text-center card-form">
+                            <div class="card-body text-white">
+                                <h3>Register Now</h3>
+                                <p>Please fill this form to register</p>
+                                <div class="form-group">
+                                    <input type="text" id="registerName" class="form-control form-control lg" placeholder="Name">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="registerEmail" class="form-control form-control lg" placeholder="Email">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="text" id="registerPassword" class="form-control form-control lg" placeholder="Password">
+                                </div>
+                                <input type="submit" value="Register" class="btn btn-outline-light btn-block mb-4" onclick="register()">
+                                <h3>OR</h3>
+                                <p class="mb-4">Login With Google Account</p>
+                                <div class="g-signin2 justify-content-center d-flex mb-2" data-onsuccess="onSignIn"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <header id="login">
+            <div class="login-inner container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card bg-success text-center card-form">
+                            <div class="card-body text-white">
+                                <h3>Login</h3>
+                                <p>Enter registered email and password</p>
+                                <div class="form-group">
+                                    <input type="text" id="loginEmail" class="form-control form-control lg" placeholder="Email">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="text" id="loginPassword" class="form-control form-control lg" placeholder="Password">
+                                </div>
+                                <input type="submit" value="Login" class="btn btn-outline-light btn-block" onclick="login()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="modal" id="loginModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" placeholder="Username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="text" placeholder="Password" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">Login</button>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" class="mt-5" onclick="signOut();">Sign out</a>
 
         <script
             src="https://code.jquery.com/jquery-3.3.1.js"
@@ -26,16 +167,52 @@
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
         </script>
         <script>
+            function register() {
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/register',
+                    data: {
+                        name: $('#registerName').val(),
+                        email: $('#registerEmail').val(),
+                        password: $('#registerPassword').val()
+                    }
+                })
+                    .done(function(result) {
+                        console.log(result);
+                    })
+                    .fail(function(err) {
+                        console.log(err);
+                    });
+            }
+
+            function login() {
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/login',
+                    data: {
+                        email: $('#loginEmail').val(),
+                        password: $('#loginPassword').val()
+                    }
+                })
+                    .done(function(result) {
+                        console.log(result);
+                        localStorage.setItem('token', result.token);
+                    })
+                    .fail(function(err) {
+                        console.log(err);
+                    });
+            }
+
             function onSignIn(googleUser) {
                 var id_token = googleUser.getAuthResponse().id_token;
                 $.ajax({
                     method: 'POST',
-                    url: 'http://localhost/3000/login/google',
+                    url: 'http://localhost:3000/googlelogin',
                     data: {googleToken: id_token}
                 })
                     .done(function(result) {
+                        console.log(result);
                         localStorage.setItem('token', result.token);
-
                     })
                     .fail(function(err) {
                         console.log(err);
