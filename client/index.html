@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="18229040173-c8cnia2v4jseslvf2j3j7m6vj8v2vbvk.apps.googleusercontent.com">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <a href="#" onclick="signOut();">Sign out</a>
+
+
+    <script>
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+
+            $.ajax({
+                method: 'GET',
+                url: 'http://localhost:3000/googleLogin',
+                headers: {
+                    token: id_token
+                }
+            })
+                .done(result => {
+                    console.log('kirim data nihh', result);
+                    localStorage.setItem('tokenjwt', result.token)
+                    $('.g-signin2').hide()
+                    $('#logbtn').show()
+                })
+                .fail(err => {
+                    console.log(err);
+                    
+                })
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+        }
+    </script>
+    
+</body>
+</html>
