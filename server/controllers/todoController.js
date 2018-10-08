@@ -74,7 +74,6 @@ class TodoController{
             
     }
     static updateTaskbyid(req,res){
-        console.log('edit pertama') 
         if(req.body.completed){
         
             TodoModel.findOneAndUpdate(req.params.id,{completed:true})
@@ -88,20 +87,32 @@ class TodoController{
          }
          else
          {
-            console.log('edit taask') 
+            
+            let obj={};
             Object.assign(obj, 
                 req.body.title ? { title: req.body.title } : null,
                 req.body.task ? { task: req.body.task } : null,
                 req.body.date ? { date: req.body.date } : null
-                );
-            TodoModel.findOneAndUpdate(req.params.id,{completed:true})
-            .then(result=>{
-                console.log(result)
-                    res.status(200).json({data:result}) 
-            }) 
-            .catch(err=>{
-                res.status(500).json({ message: err.message})
-            })  
+                )
+                var temp=req.body.date.split("/");
+                //req.body.date=`${temp[2]}/${temp[0]}/${temp[1]}`
+                //console.log(`${temp[2]}/${(parseInt(temp[1]))}/${temp[0]}`)
+                //console.log('date:' + new Date(Date.UTC(temp[2],parseInt(temp[1])-1)),temp[0])
+                //console.log(req.params.id)
+                TodoModel.findOneAndUpdate({ _id: req.params.id },{
+                    title: req.body.title,
+                    task: req.body.task,
+                    date: new Date(Date.UTC(temp[2],parseInt(temp[1])-1,temp[0]))
+
+                })
+                .then(result=>{
+                        res.status(200).json({data:result}) 
+                }) 
+                .catch(err=>{
+                    res.status(500).json({ message: err.message})
+                }) 
+            
+             
          }
             
     }

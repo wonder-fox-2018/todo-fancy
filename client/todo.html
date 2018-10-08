@@ -83,7 +83,7 @@
                     </div>
 
 
-                    <!-- Modal -->
+                    <!-- Modal edit-->
                 <div class="modal fade" id="editModalCenter" tabindex="-1" role="dialog" aria-labelledby="editModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -112,7 +112,8 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"  data-dismiss="modal" onclick="editTask()">Save changes</button>
+                            
+                            <div id="eidTask"></div>
                             </div>
                         </div>
                         </div>
@@ -142,7 +143,7 @@
 
 
     </div>   
-    <div id="eidTask"></div>
+    
    
     <script>
              $(document).ready(() => {
@@ -166,10 +167,8 @@
                 });
                 
             }
-            function editTask(){
-                //console.log('status'+ $('input[name=status]:checked').val() )
-                //console.log('date' +$('#datepicker').val())
-                let idTask=$('#eidTask').val()
+            function editTask(idTask){
+
                 $.ajax({
                     method: 'PUT',
                     url: `http://localhost:3000/api/todos/${idTask}`,
@@ -293,7 +292,9 @@
                         $("#emytask").val(result.data.task);
                         $("#edatepicker").val(`${new Date(result.data.date).getMonth()+1}/${new Date(result.data.date).getDate()}/${new Date(result.data.date).getFullYear()}`);
                         $("#eidTask").empty();
-                        $("#eidTask").append(`<input type="hidden" name="idTask" value="${result.data._id}">`)
+                       
+                        $("#eidTask").append(`<button type="button" class="btn btn-primary"  data-dismiss="modal" onclick="editTask('${result.data._id}')">Save changes</button>`)
+                        //$("#eidTask").append(`<input type="text" name="idTask" value="${result.data._id}">`)
                         let strButton='';
                         //
                         if(result.data.completed==false){
@@ -342,6 +343,12 @@
                             <button type="button" class="btn btn-danger" onclick="deleteTask('${result.data[0]._id}')">Delete</button>
                             </div>`
                     }
+                    $("#emytitle").val(result.data[0].title);
+                        $("#emytask").val(result.data[0].task);
+                        $("#edatepicker").val(`${new Date(result.data[0].date).getMonth()+1}/${new Date(result.data[0].date).getDate()}/${new Date(result.data[0].date).getFullYear()}`);
+                        $("#eidTask").empty();
+                       
+                        $("#eidTask").append(`<button type="button" class="btn btn-primary"  data-dismiss="modal" onclick="editTask('${result.data[0]._id}')">Save changes</button>`)
                     $('#mycard1').append(`${strButton}
                     <h5 class="card-title">Title: ${result.data[0].title}</h5>
                     <p class="card-text">Task: ${result.data[0].task}</p>
