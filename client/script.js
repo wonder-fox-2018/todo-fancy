@@ -2,7 +2,7 @@
 $(document).ready(() => {
   let token = localStorage.getItem('token')
   if (!token) {
-      window.location = './index.html'
+      // window.location = './index.html'
   } else {
     $('.update-form').hide()
     $('.create-form').hide()
@@ -78,7 +78,7 @@ $(document).ready(() => {
           $(".todo-list").empty("");
           for (let i = 0; i < lists.length; i++) {
             const date = formatDate(new Date(lists[i].dueDate));
-            console.log(lists[i]._id);
+            console.log('list[i].id-->',lists[i]);//undifined
             if (lists[i].status === "Finished") {
               $(".todo-list").append(
                 `<h3>

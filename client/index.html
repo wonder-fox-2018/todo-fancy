@@ -131,7 +131,7 @@
             .fail(err=>{
                 console.log(err)
                 $('#error').append(`
-                <h3>Error: ${err}<h3>
+                <h3>Error: ${err.message}<h3>
                 `)
             })
         }
