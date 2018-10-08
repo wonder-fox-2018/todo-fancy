@@ -36,5 +36,8 @@ untuk melakukan test dari postman
 ketika update, delete, complete, uncomplete
 harus memasukan token user pada headers
 dan end pointnya seperti berikut sebagai contoh :
-http://localhost:3000/todos/update?todosId=${id}
+http://localhost:3000/todos/update?todosId=${id} atau
+https://servertodoku.harlesbayuanggara.tech/todos/update?todosId=${id}`
+
+untuk database bisa menggunakan local ataupun mlab
 ```
