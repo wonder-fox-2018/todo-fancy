@@ -13,6 +13,7 @@ All server response bodies and request bodies MUST be valid JSON Media Type mess
 ## URLs and Operations
 ---
 Deploy page: [https://fancytd.hanabc.xyz](https://fancytd.hanabc.xyz)
+
 Below are the endpoints and the operations associated with them.
 ---
 
