@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="196184982638-ld52a4693dest6f343llmd86i85ula1q.apps.googleusercontent.com">
+  <title>todoku</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous">
+
+  <!-- Sweet Alert -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://unpkg.com/sweetalert2@7.8.2/dist/sweetalert2.all.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+  <link rel="stylesheet" href="./assets/css/custom.css">
+</head>
+
+<body>
+  <div class="ui inverted menu">
+    <a class="active item">
+      <span>Todo</span>Ku
+    </a>
+    <div class="right menu">
+      <a class="ui item" id="logout">
+        Logout
+      </a>
+    </div>
+  </div>
+
+  <div class="ui grid" style="padding: 30px;">
+    <div class="four wide column">
+
+      <div class="accordian" id="firstEvent">
+        <div style="padding: 5px;">
+          <div class="ui cards" style="margin-bottom:2px;">
+            <div class="card">
+              <div class="content">
+                <img class="right floated mini ui image" src="./assets/images/avatar.png">
+                <div class="header" id="userName">
+                 
+                </div>
+                <div class="meta" id="userEmail">
+                 
+                </div>
+                <div class="description" id="quotesOfTheDay">
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ul>
+          <li class="active">
+            <h3><span class="icon-tasks"></span>Tasks</h3>
+            <ul>
+              <li><a id="btnAddTask">Create Task</a></li>
+              <li><a onclick="btnUncomplete()">Un-complete</a></li>
+              <li><a onclick="btnComplete()">Complete</a></li>
+            </ul>
+          </li>
+          <li>
+            <h3><span class="icon-calendar"></span>Calendar</h3>
+            <ul>
+              <li><a href="#">Test 1</a></li>
+              <li><a href="#">Test 2</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="twelve wide column">
+      <div id="content">
+        
+        <div id="boxAddTask">
+          <div class="ui inverted segment" style="width: 500px;">
+            <div class="ui inverted form">
+    
+                <div class="field">
+                  <label>Title</label>
+                  <input id="nameTask" type="text">
+                </div>
+                <div class="field">
+                  <label>Description</label>
+                  <textarea id="descTask"></textarea>
+                </div>
+
+                <div class="field">
+                  <label>Date</label>
+                  <input type="datetime-local" id="deuDateTask">
+                </div>
+
+              <div class="ui submit button" id="createTask">Create Task</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="boxUncompleted">
+        </div>
+
+        <div id="boxCompleted">
+        </div>
+
+      </div>
+    </div>
+
+    <!-- <div class="four wide column">
+      <div>
+        <div class="accordian" id="secondEvent">
+          <ul>
+            <li>
+              <h3><span class="icon-tasks"></span>Date</h3>
+              <ul>
+                <li><a>12 Agustus 2018</a></li>
+                <li><a>12 Agustus 2018</a></li>
+                <li><a>12 Agustus 2018</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <div class="ui tiny modal" id="contentModal"></div>
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.0/dist/semantic.min.js"></script>
+  <script src="./assets/js/main.js"></script>
+
+</body>
+
+</html>
