@@ -20,15 +20,15 @@ module.exports = {
       description : req.body.description
     })
     .then(data=>{
-      console.log(data)
+      console.log('ini datea--',data)
       //Verifying Token
       jwt.verify(req.body.token, process.env.JWT_SECRET, (err,decoded)=>{
        console.log(decoded)
-        User.updateOne({ email: decoded.email },
-          { $push: { todolist: new mongodb.ObjectId(data._id) } }
+        User.findOneAndUpdate({ email: decoded.email },
+          { $push: { todolist: data } }
           )
           .then(data=>{
-            console.log('keupdate')
+            console.log('keupdate', data)
             res.status(200).json({message: 'new todo is added'})
           })
           .catch(err=>{

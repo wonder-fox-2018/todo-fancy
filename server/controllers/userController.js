@@ -95,6 +95,7 @@ module.exports = {
     const client = new OAuth2Client('595266228745-tcbrob223qgqidcd75v31s6pp77bgor2.apps.googleusercontent.com');
 
     let ticket = new Promise((resolve, reject)=>{
+      console.log(req.body.token)
       client.verifyIdToken({
       idToken: req.body.token,
       audience: '595266228745-tcbrob223qgqidcd75v31s6pp77bgor2.apps.googleusercontent.com',  
