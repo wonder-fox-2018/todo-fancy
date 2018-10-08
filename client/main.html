@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,500,700,900" rel="stylesheet">
+  <!-- jquery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+  <!-- swal -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  <!-- date -->
+  <script src="http://cdn.date-fns.org/v1.0.0/date_fns.min.js"></script>
+
+  <!-- hover -->
+  <link href="./hover-min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+    
+  <title>Fancy To Do</title>
+  <style>
+    body {
+      background-color: rgb(63, 57, 57);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="heading">
+    <div>
+      <h1>FANCY TODO</h1>
+    </div>
+    
+      <a href="#" onclick="signOut();">
+        <button class="btn hvr-grow-shadow"><h2>Log Out</h2></button>
+      </a>
+    </div>
+
+  <h1 class="welcome">
+    Welcome to The Todo App
+  </h1>
+
+
+  <div id="todo">
+    <h2 id="addTodo" class="hvr-grow-shadow">+ Add Your To Do Here</h2>
+      <div class="todo-list">
+    </div>
+  </div>
+
+  <div class="create-form">
+    <form method="POST" id="post-todo">
+      <input type="text" name="title" placeholder="To Do Title" required class="inputForm" id="title">
+      <input type="text" name="description" placeholder="To Do Description" required class="inputForm" id="description">
+      <input type="date" name="dueDate" required class="inputForm" id="dueDate">
+      <input type="submit" value="Submit" class="formBtn">
+    </form>
+  </div>
+
+  <div class="update-form">
+    <form method="POST" id="updateTodo">
+      <input type="text" name="title" placeholder="To Do" required class="inputForm" id="title">
+      <input type="text" name="description" placeholder="To Do Description" required class="inputForm" id="description">
+      <input type="date" name="dueDate" placeholder="YEAR/MONTH/DATE" required class="inputForm" id="dueUpdate">
+      <input type="submit" value="Update" class="formBtn">
+    </form>
+  </div>
+
+  <script src="./script.js"></script>
+  <script>
+    //Action when clicking logout
+    function signOut() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
+      localStorage.removeItem("token");
+      window.location = './index.html'
+    };
+  </script>
+</body>
+
+</html>

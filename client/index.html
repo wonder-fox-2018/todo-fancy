@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="595266228745-tcbrob223qgqidcd75v31s6pp77bgor2.apps.googleusercontent.com">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.js"></script>
+    <title>Login</title>
+</head>
+<body style="background-color:rgb(44, 39, 39); color:whitesmoke">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 id="error"></h3>
+        </div>
+    </div>
+    
+        <div class="register-box">
+        <h2 style="margin-bottom : 30px">Register</h2>
+        <form method="POST" action="#" id="post-register">
+            <input type="text" name="name" placeholder="Username" required class="inputForm" id="nameValue">
+            <input type="email" name="email" placeholder="Email" required class="inputForm" id="emailValue">
+            <input type="password" name="password" placeholder="Password" required class="inputForm" id="passwordValue">
+            <input type="submit" value="Register" class="formBtn">
+        </form> 
+    </div>
+    <div class="ui container text" style="">
+        <div class="ui large form segment" style="margin-top:200px;background-color:grey;">
+            <h2>Login :</h2>
+            <div class="ui left icon fluid input">
+                    <i class="user alternate icon"></i>
+                    <input type="text" placeholder="Your Username" id="name">
+                </div>
+                <br>
+            <div class="ui left icon fluid input">
+                <i class="mail alternate icon"></i>
+                <input type="text" placeholder="Your Email" id="Email">
+            </div>
+            <br>
+            <div class="ui left icon fluid input">
+                <i class="lock alternate icon"></i>
+                <input type="password" placeholder="Password" id="password">
+            </div>
+            <div class="ui grid" style="margin-top: 10px;">
+                <div class="ui two wide right floated column" style="margin-right:140px;">
+                    <!-- <div id="my-signin2"></div> -->
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                </div>
+                <div class="ui two wide column">
+                    <div class="ui button" id="login">Login</div>
+                </div>
+                <div class="ui two wide column" style="margin-right:30px;">
+                    <div class="ui button" id="register">Signup</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    
+    <script>
+        $(function(){
+            $('#error').hide()
+            $('.register-box').hide()
+        })
+        $('#register').click((e)=>{
+            $('.register-box').show()
+        })
+        //login post
+        $("#post-login").submit((e) => {
+            e.preventDefault();
+            $.ajax({
+            url: "http://localhost:3000/login",
+            method: "POST",
+            data: {
+                email: $("#emailValueLogin").val(),
+                password: $("#passwordValueLogin").val(),
+            }
+            })
+            .done(data => {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('email', data.email);
+                swal("Welcome!", "You have successfully logged in!", "success");
+                setTimeout(() => {
+                location.reload();
+                }, 3000);
+            })
+            .fail(err => {
+                console.log(err);
+            });
+        });
+        
+        //register post
+        $("#post-register").submit((e) => {
+            e.preventDefault();
+            $.ajax({
+            url: "http://localhost:3000/register",
+            method: "POST",
+            data: {
+                email: $("#email").val(),
+                password: $("#password").val(),
+                name: $("#nameValue").val(),
+            }
+            })
+            .done(data => {
+                swal("Welcome!", "You have been registered!", "success");
+                setTimeout(() => {
+                location.reload();
+                }, 3000);
+            })
+            .fail(err => {
+                console.log(err);
+            });
+        });
+
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            // console.log(id_token)
+            $.ajax({
+                url: 'http://localhost:3000/google-login',
+                method: 'POST',
+                data: {token: id_token}
+            })
+            .done(data=>{
+                console.log('data adalaah JWT: ', data)
+                localStorage.setItem('token', data.jwt)
+                window.location = './main.html'
+            })
+            .fail(err=>{
+                console.log(err)
+                $('#error').append(`
+                <h3>Error: ${err.message}<h3>
+                `)
+            })
+        }
+
+    </script>
+    <script src="./script.js"></script>
+</body>
+</html>
