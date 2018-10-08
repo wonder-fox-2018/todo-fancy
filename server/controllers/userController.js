@@ -197,20 +197,16 @@ module.exports = {
         User.findOne({
           email: decoded.email
         })
-        .populate('ToDoList')
-        .exec(function (error, data) {
-          if(!err){
-            res.status(200).json({
-              data: data.todolist
-            });
-          }
-          else{
-            res.status(500).json({
-              error: error
-            });
-          }
-
-        });
+        .populate('todolist')
+        .exec()
+        .then(user=>{
+          res.status(200).json(user)
+        })
+        .catch(err=>{
+          res.status(500).json({
+            message:err
+          })
+        })
       }
 
       else{

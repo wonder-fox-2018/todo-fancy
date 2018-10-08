@@ -13,7 +13,7 @@ const transporter = nodeMailer.createTransport({
 
 module.exports = {
   addTask : function(req,res){
-    console.log(req.body);
+    // console.log(req.body);
     Todo.create({
       title : req.body.title,
       dueDate : req.body.dueDate,
@@ -25,7 +25,7 @@ module.exports = {
       jwt.verify(req.body.token, process.env.JWT_SECRET, (err,decoded)=>{
        console.log(decoded)
         User.findOneAndUpdate({ email: decoded.email },
-          { $push: { todolist: data } }
+          { $push: { todolist: data._id } }
           )
           .then(data=>{
             console.log('keupdate', data)
