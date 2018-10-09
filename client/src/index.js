@@ -43,7 +43,7 @@ function onSignIn(googleUser) {
     // send google token to server
     $.ajax({
         method: 'POST',
-        url: 'http://35.198.206.124/user/logingoogle',
+        url: 'https://apitodo.efratsadeli.online/user/logingoogle',
         data: {
           googletoken: id_token    
         }
@@ -66,7 +66,7 @@ function onSignIn(googleUser) {
         
        $.ajax({
           method: 'GET',
-          url: 'http://35.198.206.124/users/detail',
+          url: 'https://apitodo.efratsadeli.online/users/detail',
           headers:{
             token: jwttoken
           }  
@@ -87,7 +87,7 @@ function onSignIn(googleUser) {
             // get list of data
             $.ajax({
                 method: 'GET',
-                url: 'http://35.198.206.124/todolists/lists',
+                url: 'https://apitodo.efratsadeli.online/todolists/lists',
                 headers: {
                 token: localStorage.getItem('token')
                 }
@@ -137,7 +137,7 @@ function loginuser(){
 
     $.ajax({
         method: 'POST',
-        url: 'http://35.198.206.124/user/login',
+        url: 'https://apitodo.efratsadeli.online/user/login',
         data: {
             email: loginemail,
             password: loginpassword
@@ -154,7 +154,7 @@ function loginuser(){
         // get detail data of user
         $.ajax({
             method: 'GET',
-            url: 'http://35.198.206.124/users/detail',
+            url: 'https://apitodo.efratsadeli.online/users/detail',
             headers:{
                 token: jwttoken
             }
@@ -173,7 +173,7 @@ function loginuser(){
             // get list of data
             $.ajax({
                 method: 'GET',
-                url: 'http://35.198.206.124/todolists/lists',
+                url: 'https://apitodo.efratsadeli.online/todolists/lists',
                 headers: {
                 token: localStorage.getItem('token')
                 }
@@ -229,7 +229,7 @@ function registeruser(){
 
     $.ajax({
         method: 'POST',
-        url: 'http://35.198.206.124/user/register',
+        url: 'https://apitodo.efratsadeli.online/user/register',
         data: {
             name: registername,
             email: registeremail,
@@ -247,7 +247,7 @@ function registeruser(){
         // get detail data of user
         $.ajax({
             method: 'GET',
-            url: 'http://35.198.206.124/users/detail',
+            url: 'https://apitodo.efratsadeli.online/users/detail',
             headers:{
                 token: jwttoken
             }
@@ -266,7 +266,7 @@ function registeruser(){
             // get list of data
             $.ajax({
                 method: 'GET',
-                url: 'http://35.198.206.124/todolists/lists',
+                url: 'https://apitodo.efratsadeli.online/todolists/lists',
                 headers: {
                 token: localStorage.getItem('token')
                 }
@@ -329,7 +329,7 @@ function getdetail(detailid){
     // console.log('Edit id---->', editid)
     $.ajax({
         method: 'GET',
-        url: `http://35.198.206.124/todolists/${detailid}`,
+        url: `https://apitodo.efratsadeli.online/todolists/${detailid}`,
         headers: {
             token: localStorage.getItem('token')
         }
@@ -368,7 +368,7 @@ function createtodo(){
 
     $.ajax({
         method: 'POST',
-        url: 'http://35.198.206.124/todolists/',
+        url: 'https://apitodo.efratsadeli.online/todolists/',
         headers: {
             token: token
         },
@@ -384,7 +384,7 @@ function createtodo(){
           // let update the lists
           $.ajax({
                 method: 'GET',
-                url: 'http://35.198.206.124/todolists/lists',
+                url: 'https://apitodo.efratsadeli.online/todolists/lists',
                 headers: {
                   token: token
                 }
@@ -434,7 +434,7 @@ function edittodo(editid){
 
     $.ajax({
         method: 'PUT',
-        url: `http://35.198.206.124/todolists/${editid}`,
+        url: `https://apitodo.efratsadeli.online/todolists/${editid}`,
         headers: {
           token: token
         },
@@ -449,7 +449,7 @@ function edittodo(editid){
           // let's update the list
           $.ajax({
                 method: 'GET',
-                url: 'http://35.198.206.124/todolists/lists',
+                url: 'https://apitodo.efratsadeli.online/todolists/lists',
                 headers: {
                 token: token
                 }
@@ -494,7 +494,7 @@ function getformedittodo(editid){
     let token = localStorage.getItem('token')
     $.ajax({
         method: 'GET',
-        url: `http://35.198.206.124/todolists/${editid}`,
+        url: `https://apitodo.efratsadeli.online/todolists/${editid}`,
         headers: {
             token: token
         }
@@ -556,7 +556,7 @@ function deletetodo(deleteid){
     $('#individualtodo').empty()
     $.ajax({
         method: 'DELETE',
-        url: `http://35.198.206.124/todolists/${deleteid}`,
+        url: `https://apitodo.efratsadeli.online/todolists/${deleteid}`,
         headers: {
             token: token
         }
@@ -566,7 +566,7 @@ function deletetodo(deleteid){
           // let update the lists
           $.ajax({
                 method: 'GET',
-                url: 'http://35.198.206.124/todolists/lists',
+                url: 'https://apitodo.efratsadeli.online/todolists/lists',
                 headers: {
                 token: token
                 }
