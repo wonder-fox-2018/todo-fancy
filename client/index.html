@@ -208,7 +208,7 @@
             function add() {
                 $.ajax({
                     method: 'POST',
-                    url: 'http://localhost:3000/list/add',
+                    url: 'http://localhost:3000/list',
                     headers: {
                         token: localStorage.getItem('token')
                     },
@@ -243,7 +243,7 @@
 
             function show() {
                 $.ajax({
-                    url: 'http://localhost:3000/list/show',
+                    url: 'http://localhost:3000/list',
                     headers: {
                         token: localStorage.getItem('token')
                     }
@@ -324,7 +324,7 @@
                 }
                 if (base === 'importance') {
                     $.ajax ({
-                        url: `http://localhost:3000/list/show/importance/${localStorage.getItem('importanceSortDir')}/${localStorage.getItem('state')}`,
+                        url: `http://localhost:3000/list/importance/${localStorage.getItem('importanceSortDir')}/${localStorage.getItem('state')}`,
                         headers: {
                             token: localStorage.getItem('token')
                         }
@@ -344,7 +344,7 @@
                 } else {
                     let sortDir = base + 'SortDir'
                     $.ajax ({
-                        url: `http://localhost:3000/list/show/${base}/${localStorage.getItem(sortDir)}/${localStorage.getItem('state')}`,
+                        url: `http://localhost:3000/list/${base}/${localStorage.getItem(sortDir)}/${localStorage.getItem('state')}`,
                         headers: {
                             token: localStorage.getItem('token')
                         }
@@ -360,7 +360,7 @@
             
             function showToday() {
                 $.ajax({
-                    url: `http://localhost:3000/list/show/today`,
+                    url: `http://localhost:3000/list/today`,
                     headers: {
                         token: localStorage.getItem('token')
                     }
@@ -380,7 +380,7 @@
 
             function complete(id) {
                 $.ajax({
-                    method: 'PUT',
+                    method: 'PATCH',
                     url: `http://localhost:3000/list/complete/${id}`,
                     headers: {
                         token: localStorage.getItem('token')
