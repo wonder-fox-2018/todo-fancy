@@ -1,0 +1,102 @@
+.vertically-centered {
+    display: flex;
+    align-items: center;
+}
+.logBtn {
+    background-color: transparent;
+    padding: 10px 40px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.logBtn:hover {
+    background-color: gainsboro;
+}
+#loginshadow {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+}
+#logincontent {
+    width: 99%;
+    height: 99%;
+}
+#email, #password, #newemail, #newpassword, #newname {
+    width: 30%;
+    font-size: 15px;
+    padding: 10px 20px;
+    border: none;
+}
+input {
+    border: none;
+}
+#menu {
+    margin: 3vh 0 5vh 0;
+}
+.menuBtn {
+    background-color: transparent;
+    color: blue;
+    padding: 20px 0;
+    font-size: 30px;
+}
+.menuBtn:hover {
+    border-bottom: solid 2px blue;
+}
+#logoutBtn {
+    margin-top: 5vh;
+}
+.logActive {
+    color: blue;
+    border-bottom: solid 2px blue;
+}
+.ui-datepicker {
+    background-color: white;
+    border: blue 1px solid;
+    width: 350px;
+    padding: 20px;
+}
+.ui-datepicker table {
+    width: 100%;
+}
+.ui-datepicker a {
+    color: black;
+    text-decoration: none;
+}
+.ui-datepicker-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid blue;
+}
+.ui-datepicker-prev, .ui-datepicker-next {
+    display: inline-block;
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+}
+.ui-datepicker-prev {
+    float: left;
+}
+.ui-datepicker-next {
+    float: right;
+}
+.ui-datepicker td span, .ui-datepicker td a {
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+}
+.ui-datepicker th {
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 10px;
+    line-height: 30px;
+}
+.ui-datepicker-calendar .ui-state-hover, .ui-datepicker-calendar .ui-state-active {
+    background: blue;
+    color: white;
+}
