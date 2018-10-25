@@ -1,3 +1,5 @@
+let port = "http://localhost:3000"
+
 /*jQuery time*/
 $(document).ready(function(){
   $("#firstEvent h3").click(function(){
@@ -47,7 +49,7 @@ $("#createTask").click(function () {
 
   $.ajax({
     method: "POST",
-    url: "https://servertodoku.harlesbayuanggara.tech/todos/create",
+    url: `${port}/todos/create`,
     data,
     headers: {
       token: localStorage.getItem('token')
@@ -74,7 +76,7 @@ function btnUncomplete() {
 
   $.ajax({
     method: "GET",
-    url: "https://servertodoku.harlesbayuanggara.tech/todos/findTask",
+    url: `${port}/todos/findTask`,
     headers: {
       token: localStorage.getItem('token')
     }
@@ -127,7 +129,7 @@ function btnComplete() {
 
   $.ajax({
     method: "GET",
-    url: "https://servertodoku.harlesbayuanggara.tech/todos/findTask",
+    url: `${port}/todos/findTask`,
     headers: {
         token: localStorage.getItem('token')
     }
@@ -175,7 +177,7 @@ function btnComplete() {
 function completedTask(id) {
   $.ajax({
     method: "PUT",
-    url: `https://servertodoku.harlesbayuanggara.tech/todos/complete?todosId=${id}`,
+    url: `${port}/todos/complete?todosId=${id}`,
     headers: {
       token: localStorage.getItem('token')
     }
@@ -189,7 +191,7 @@ function completedTask(id) {
 function UncompletedTask(id) {
   $.ajax({
     method: "PUT",
-    url: `https://servertodoku.harlesbayuanggara.tech/todos/uncomplete?todosId=${id}`,
+    url: `${port}/todos/uncomplete?todosId=${id}`,
     headers: {
       token: localStorage.getItem('token')
     }
@@ -227,7 +229,16 @@ function updateTask(id, nameTask, descriptionTask, dueDateTask, statusTask) {
 
           <div class="field">
             <label>Date</label>
-            <input type="datetime-local" id="dueDateUpdate" value="${dueDateTask.slice(0,19)}">
+
+            <h3>Input</h3>
+            <div class="ui calendar" id="example1">
+              <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" id="dueDateUpdate" placeholder="Date/Time" value="${dueDateTask.slice(0,19)}">
+              </div>
+            </div>
+
+            
           </div>
       </div>
     </div>
@@ -244,17 +255,21 @@ function updateTask(id, nameTask, descriptionTask, dueDateTask, statusTask) {
     </div>
   `)
 
+  // <input type="datetime-local" id="dueDateUpdate" value="${dueDateTask.slice(0,19)}">
+
+  $('#example1').calendar();
+
   $("#submitUpdate").click(function () {
 
     let data = {
       name: $("#nameUpdate").val(),
       description: $("#descUpdate").val(),
-      dueDate: $("#dueDateUpdate").val()
+      dueDate: new Date($("#dueDateUpdate").val()).toISOString()
     }
 
     $.ajax({
       method: "PUT",
-      url: `https://servertodoku.harlesbayuanggara.tech/todos/update?todosId=${id}`,
+      url: `${port}/todos/update?todosId=${id}`,
       data,
       headers : {
           token : localStorage.getItem('token')
@@ -278,7 +293,7 @@ function updateTask(id, nameTask, descriptionTask, dueDateTask, statusTask) {
 function removeTask(id) {
 $.ajax({
       method: "DELETE",
-      url: `https://servertodoku.harlesbayuanggara.tech/todos/delete?todosId=${id}`,
+      url: `${port}/todos/delete?todosId=${id}`,
       headers: {
           token: localStorage.getItem('token')
       }
@@ -293,7 +308,7 @@ $.ajax({
 function quotes() {
   $.ajax({
     method: "GET",
-    url: `https://servertodoku.harlesbayuanggara.tech/todos/quotes`,
+    url: `${port}/todos/quotes`,
     })
     .done(function (quote) {
         $("#quotesOfTheDay").append(

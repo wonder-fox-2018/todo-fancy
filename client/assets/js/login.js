@@ -1,3 +1,5 @@
+let port = "http://localhost:3000"
+
 let prism = document.querySelector(".rec-prism");
 
 function showSignup(){
@@ -24,7 +26,7 @@ $("#btnSignin").click(function () {
 
   $.ajax({
       method: "POST",
-      url: "https://servertodoku.harlesbayuanggara.tech/users/signin",
+      url: `${port}/users/signin`,
       data
   })
   .done(function (response) {
@@ -54,7 +56,7 @@ $("#btnSignup").click(function () {
 
   $.ajax({
       method: "POST",
-      url: "https://servertodoku.harlesbayuanggara.tech/users/signup",
+      url: `${port}/users/signup`,
       data
   })
   .done(function (response) {
@@ -103,26 +105,26 @@ function clikPassword(){
   $("#password").val('').css('color', 'black')
 }
 
-function onSuccess(googleUser) {
-  var profile = googleUser.Zi.id_token
-  $.ajax({
-    url: `https://servertodoku.harlesbayuanggara.tech/users/signinGoogle`,
-    method: 'post',
-    data: {
-      token : profile
-    }
-  })
-  .done((response) => {
-    localStorage.setItem('name', response.name)
-    localStorage.setItem('email', response.email)
-    localStorage.setItem('token', response.token)
-    location.reload()
-  })
-  .fail((errors) => {
-    console.log(errors.responseJSON.message)
-  })
+// function onSuccess(googleUser) {
+//   var profile = googleUser.Zi.id_token
+//   $.ajax({
+//     url: `${port}/users/signinGoogle`,
+//     method: 'post',
+//     data: {
+//       token : profile
+//     }
+//   })
+//   .done((response) => {
+//     localStorage.setItem('name', response.name)
+//     localStorage.setItem('email', response.email)
+//     localStorage.setItem('token', response.token)
+//     location.reload()
+//   })
+//   .fail((errors) => {
+//     console.log(errors.responseJSON.message)
+//   })
 
-}
+// }
 
 function onFailure(error) {
   console.log(error);
