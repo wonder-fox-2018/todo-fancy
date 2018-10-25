@@ -60,7 +60,7 @@ $("#btnSignup").click(function () {
       data
   })
   .done(function (response) {
-    showThankYou()
+    showLogin()
   })
   .fail(function (err) {
     checkError(err)
@@ -105,26 +105,26 @@ function clikPassword(){
   $("#password").val('').css('color', 'black')
 }
 
-// function onSuccess(googleUser) {
-//   var profile = googleUser.Zi.id_token
-//   $.ajax({
-//     url: `${port}/users/signinGoogle`,
-//     method: 'post',
-//     data: {
-//       token : profile
-//     }
-//   })
-//   .done((response) => {
-//     localStorage.setItem('name', response.name)
-//     localStorage.setItem('email', response.email)
-//     localStorage.setItem('token', response.token)
-//     location.reload()
-//   })
-//   .fail((errors) => {
-//     console.log(errors.responseJSON.message)
-//   })
+function onSuccess(googleUser) {
+  var profile = googleUser.Zi.id_token
+  $.ajax({
+    url: `${port}/users/signinGoogle`,
+    method: 'post',
+    data: {
+      token : profile
+    }
+  })
+  .done((response) => {
+    localStorage.setItem('name', response.name)
+    localStorage.setItem('email', response.email)
+    localStorage.setItem('token', response.token)
+    location.reload()
+  })
+  .fail((errors) => {
+    console.log(errors.responseJSON.message)
+  })
 
-// }
+}
 
 function onFailure(error) {
   console.log(error);
