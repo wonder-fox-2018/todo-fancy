@@ -517,7 +517,7 @@ function getformedittodo(editid){
         $('#individualtodo').empty()
         $('#individualtodo').append(
             `
-            <h3>Detail section</h3>
+            <h3>Edit section</h3>
             <hr>
             <div class="card" style="width: 30rem;">
                 <div class="card-body">
@@ -537,7 +537,7 @@ function getformedittodo(editid){
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Due Date</label>
-                                <input type="date" class="form-control" id="edittododuedate" value="${rawdate.getFullYear()}-${rawdate.getMonth()+1}-${rawdate.getDate()}" aria-describedby="emailHelp" placeholder="Enter date in YYYY-MM-DD format">
+                                <input type="date" class="form-control" id="edittododuedate" value="${rawdate.getFullYear()}-${rawdate.getMonth()+1}-${rawdate.getDate()}" aria-describedby="emailHelp">
                             </div>
                             <button type="button" class="btn btn-warning" onclick="edittodo('${singletodo._id}')">Update</button>
                         </form>
