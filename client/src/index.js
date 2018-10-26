@@ -537,7 +537,7 @@ function getformedittodo(editid){
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Due Date</label>
-                                <input type="text" class="form-control" id="edittododuedate" value="${rawdate.getFullYear()}-${rawdate.getMonth()+1}-${rawdate.getDate()}" aria-describedby="emailHelp" placeholder="Enter date in YYYY-MM-DD format">
+                                <input type="date" class="form-control" id="edittododuedate" value="${rawdate.getFullYear()}-${rawdate.getMonth()+1}-${rawdate.getDate()}" aria-describedby="emailHelp" placeholder="Enter date in YYYY-MM-DD format">
                             </div>
                             <button type="button" class="btn btn-warning" onclick="edittodo('${singletodo._id}')">Update</button>
                         </form>
