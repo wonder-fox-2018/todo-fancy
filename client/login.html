@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="196184982638-ld52a4693dest6f343llmd86i85ula1q.apps.googleusercontent.com">
+  <title>todoku</title>
+  <link rel="stylesheet" href="./assets/css/login.css">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</head>
+
+<body>
+  <div style="margin-bottom:150px;"></div>
+  <div class="wrapper">
+    <div class="rec-prism">
+
+      <div class="face face-front">
+        <div class="content">
+          <h2>Sign in</h2>
+          <!-- <form> -->
+            <div class="field-wrapper">
+              <input id="emailLogin" type="text" name="username" placeholder="username">
+              <label>email</label>
+            </div>
+            <div class="field-wrapper">
+              <input id="passwordLogin" type="password" name="password" placeholder="password" autocomplete="new-password">
+              <label>password</label>
+            </div>
+            <div id="errorLogin" class="ui visible message" style="color: red"></div>
+            <div class="field-wrapper">
+              <input type="submit" value="signin" id="btnSignin" style="margin-bottom: 5px;">
+              <center>
+                <div id="my-signin2"></div>
+              </center>
+            </div>
+            <span class="signup" onclick="showSignup()">Not a user? Sign up</span>
+          <!-- </form> -->
+        </div>
+      </div>
+      
+      <div class="face face-right">
+        <div class="content">
+          <h2>Sign up</h2>
+          <form onsubmit="event.preventDefault()">
+            <div class="field-wrapper">
+              <input id="name" onclick="clikName()" type="text" name="fullname" placeholder="full name">
+              <label>full name</label>
+            </div>
+            <div class="field-wrapper">
+                <input id="phone" onclick="clikPhone()" type="text" name="phonenumber" placeholder="phone number">
+                <label>phone number</label>
+              </div>
+            <div class="field-wrapper">
+              <input id="email" onclick="clikEmail()" type="text" name="email" placeholder="email">
+              <label>e-mail</label>
+            </div>
+            <div class="field-wrapper">
+              <input id="password" onclick="clikPassword()" type="password" name="password" placeholder="password" autocomplete="new-password">
+              <label>password</label>
+            </div>
+            <div class="field-wrapper">
+              <input type="submit" value="signup" id="btnSignup">
+            </div>
+            <span class="singin" onclick="showLogin()">Already a user? Sign in</span>
+          </form>
+        </div>
+      </div>
+      
+      <div class="face face-bottom">
+        <div class="content">
+          <div class="thank-you-msg">
+            Thank you!
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <script src="./assets/js/login.js"></script>
+</body>
+
+</html>
